@@ -1,0 +1,314 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""res\\SolidSBCSrvCfgGUI.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""     // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\SolidSBCSrvCfgGUI.ico"
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 191, 62
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About SolidSBC Server Configurator"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,14,14,20,20
+    LTEXT           "SolidSBC Server Configurator, Version 1.3",IDC_STATIC,42,14,137,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2010, Moritz Wagner",IDC_STATIC,42,26,114,8
+    DEFPUSHBUTTON   "OK",IDOK,134,41,50,14,WS_GROUP
+END
+
+IDD_SOLIDSBCSRVCFGGUI_DIALOG DIALOGEX 0, 0, 359, 274
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "SolidSBC Server Configurator"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,302,253,50,14,NOT WS_VISIBLE
+    PUSHBUTTON      "Cancel",IDCANCEL,251,253,50,14,NOT WS_VISIBLE
+    PUSHBUTTON      "Start Service",IDC_START_BUTTON,260,10,79,15
+    PUSHBUTTON      "Stop Service",IDC_STOP_BUTTON,260,25,79,15
+    PUSHBUTTON      "Install Service",IDC_INSTALL_BUTTON,260,49,79,15
+    PUSHBUTTON      "Delete Service",IDC_DELETE_BUTTON,260,65,79,15
+    GROUPBOX        "Log",IDC_LOG_STATIC,7,81,345,166
+    CONTROL         "",IDC_LOG_RICHEDIT2,"RichEdit20W",ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY | ES_WANTRETURN | WS_BORDER | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP,14,93,329,148
+    COMBOBOX        IDC_DB_TYPE_COMBO,65,14,88,12,CBS_DROPDOWNLIST | CBS_SORT | WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "",IDC_DB_IPADDRESS,"SysIPAddress32",WS_DISABLED | WS_TABSTOP,66,32,87,12
+    EDITTEXT        IDC_DB_PORT_EDIT,156,32,44,12,ES_AUTOHSCROLL | ES_READONLY | ES_NUMBER
+    EDITTEXT        IDC_DB_NAME_EDIT,67,49,86,12,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        IDC_DB_USER_EDIT,67,65,86,12,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        IDC_DB_PASS_EDIT,156,65,86,12,ES_PASSWORD | ES_AUTOHSCROLL | ES_READONLY | ES_NUMBER
+    LTEXT           "DB Type",IDC_STATIC,15,17,36,8
+    LTEXT           "DB Host / Port",IDC_STATIC,15,32,47,8
+    LTEXT           "DB Name",IDC_STATIC,14,50,41,8
+    LTEXT           "DB User / Pass",IDC_STATIC,14,67,48,8
+    PUSHBUTTON      "Open Server Dir",IDC_OPEN_SERVER_DIR_BUTTON,7,253,70,14
+    PUSHBUTTON      "Edit Config",IDC_EDIT_CONFIG_BUTTON,81,253,70,14
+    PUSHBUTTON      "Profile Editor",IDC_PROFILE_EDITOR_BUTTON,155,253,70,14
+END
+
+IDD_PROFILE_EDITOR_DIALOG DIALOGEX 0, 0, 525, 287
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "SolidSBC Profile Editor"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,409,7,50,14,NOT WS_VISIBLE
+    PUSHBUTTON      "Cancel",IDCANCEL,468,7,50,14,NOT WS_VISIBLE
+    COMBOBOX        IDC_PROFILE_COMBO,7,7,134,16,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "",IDC_PROFILE_LIST,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,26,511,255
+    PUSHBUTTON      "Save Changes",IDC_SAVE_CHANGES_BUTTON,151,7,73,12
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,3,0,0
+ PRODUCTVERSION 1,3,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "mo-sys"
+            VALUE "FileDescription", "SolidSBC Server Configurator"
+            VALUE "FileVersion", "1.3.0.0"
+            VALUE "InternalName", "SolidSBCSrvCfgGUI.exe"
+            VALUE "LegalCopyright", "Copyright (C) 2010 Moritz Wagner"
+            VALUE "OriginalFilename", "SolidSBCSrvCfgGUI.exe"
+            VALUE "ProductName", "SolidSBC Server Configurator"
+            VALUE "ProductVersion", "1.3.0.0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 184
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 55
+    END
+
+    IDD_SOLIDSBCSRVCFGGUI_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 352
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 267
+    END
+
+    IDD_PROFILE_EDITOR_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 518
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 280
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    IDS_ABOUTBOX            "&About SolidSBC Server Configurator..."
+    IDS_PROFILE_HEADER_ATTRIBUTE_STRING "property"
+    IDS_PROFILE_HEADER_VALUE_STRING "value"
+    IDS_PROFILE_ID_STRING   "id"
+    IDS_PROFILE_NAME_STRING "name"
+    IDS_PROFILE_HD_ENABLE_STRING "harddrive_enable"
+    IDS_PROFILE_HD_RANDOM_READ_STRING "harddrive_random_read"
+    IDS_PROFILE_HD_RANDOM_WRITE_STRING "harddrive_random_write"
+    IDS_PROFILE_HD_READ_MAX_STRING "harddrive_read_max"
+    IDS_PROFILE_HD_WRITE_MAX_STRING "harddrive_write_max"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_BUTTON_PROFILE_EDITOR_STRING "profile editor"
+    IDS_PROFILE_HD_READWRITE_DELAY_STRING "harddrive_readwrite_delay"
+    IDS_PROFILE_HD_TRANSMIT_DATA_STRING "harddrive_transmit_data"
+    IDS_PROFILE_CPU_ENABLE_STRING "cpu_enable"
+    IDS_PROFILE_CPU_RANDOMIZE_STRING "cpu_random"
+    IDS_PROFILE_CPU_MAX_RANDOM_STRING "cpu_maxrand"
+    IDS_PROFILE_CPU_MAX_SLEEP_STRING "cpu_sleep_ms"
+    IDS_PROFILE_CPU_THREAD_COUNT_STRING "cpu_thread_cnt"
+    IDS_PROFILE_CPUMEASURE_ENABLE_STRING "cpumeasure_enable"
+    IDS_PROFILE_CPUMEASURE_ADDITION_COUNT_STRING "cpumeasure_addition_count"
+    IDS_PROFILE_CPUMEASURE_DIVISION_COUNT_STRING "cpumeasure_division_count"
+    IDS_PROFILE_CPUMEASURE_TRANSMIT_DATA_STRING "cpumeasure_transmit_data"
+    IDS_PROFILE_CPUMEASURE_FIX_MULTI_STRING "cpumeasure_autofix_multipliers"
+    IDS_PROFILE_CPUMEASURE_FIX_MULTI_THRESHOLD_STRING 
+                            "cpumeasure_fixmultipliers_threshold"
+    IDS_PROFILE_MEMORY_ENABLE_STRING "memory_enable"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_PROFILE_MEMORY_RANDOMIZE_STRING "memory_randomize"
+    IDS_PROFILE_MEMORY_MIN_STRING "memory_mem_min"
+    IDS_PROFILE_MEMORY_MAX_STRING "memory_mem_max"
+    IDS_PROFILE_MEMORY_TRANSMIT_DATA_STRING "memory_transmit_data"
+    IDS_PROFILE_NETWORK_ENABLEPINGTEST_STRING "network_enable_ping_test"
+    IDS_PROFILE_NETWORK_ENABLETCPCONTEST_STRING "network_enable_tcpconn_test"
+    IDS_PROFILE_NETWORK_PINGINTERVAL_STRING "network_ping_intervall"
+    IDS_PROFILE_NETWORK_PINGHOST_STRING "network_ping_host"
+    IDS_PROFILE_NETWORK_PINGTTL_STRING "network_ping_ttl"
+    IDS_CLIENT_HEADER_ID_STRING "id"
+    IDS_CLIENT_HEADER_NAME_STRING "hostname"
+    IDS_CLIENT_HEADER_IP_PORT_STRING "ip:port"
+    IDS_CLIENT_HEADER_STATUS_STRING "status"
+    IDS_CLIENT_HEADER_PROFILE_STRING "profile (click to change)"
+    IDS_BUTTON_CONFIGURE_CLIENT_STRING "configure clients"
+    IDS_BUTTON_CHANGE_PROFILE_STRING "change profile"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_PROFILE_NETWORK_PINGPAYLOAD_STRING "network_ping_payload_size"
+    IDS_PROFILE_NETWORK_PINGTRANSMITDATA_STRING "network_ping_transmit_data"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_PROFILE_NETWORK_TCPCONINTERVAL_STRING "network_tcpconn_interval"
+    IDS_PROFILE_NETWORK_TCPCONHOST_STRING "network_tcpconn_host"
+    IDS_PROFILE_NETWORK_TCPCONPORT_STRING "network_tcpconn_port"
+    IDS_PROFILE_NETWORK_TCPCONTTL_STRING "network_tcpconn_ttl"
+    IDS_PROFILE_NETWORK_TCPCONTRANSMITDATA_STRING 
+                            "network_tcpconn_transmit_data"
+END
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#include "res\SolidSBCSrvCfgGUI.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"     // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

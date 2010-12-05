@@ -1,0 +1,59 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SolidSBCCliSvc", "SolidSBCCliSvc\SolidSBCCliSvc.vcxproj", "{1EACC6F0-AE76-4149-961B-035B8389A869}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SolidSBCSrvSvc", "SolidSBCSrvSvc\SolidSBCSrvSvc.vcxproj", "{7CADD4A2-E191-482D-B068-FDDCE492DE47}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SolidSBCSrvSvcSetup", "SolidSBCSrvSvcSetup\SolidSBCSrvSvcSetup.vdproj", "{A071AD22-2F04-4E7C-9024-3AD4BCC57C23}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SolidSBCCliSvcSetup", "SolidSBCCliSvcSetup\SolidSBCCliSvcSetup.vdproj", "{B2657857-963F-4C09-9CF4-F2DABF4B3FDD}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SolidSBCCliCfgGUI", "SolidSBCCliCfgGUI\SolidSBCCliCfgGUI.vcxproj", "{41A351E1-F305-4D88-A068-D57D30BEBA01}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SolidSBCSrvCfgGUI", "SolidSBCSrvCfgGUI\SolidSBCSrvCfgGUI.vcxproj", "{56C04773-6D2E-4844-B0D5-C07ACA545003}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SolidSBCResultViewer", "SolidSBCResultViewer\SolidSBCResultViewer.vcxproj", "{2FF2AFC1-11A0-4EF5-97EE-F9D90BCC4F95}"
+EndProject
+Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+		Description = SolidSBC Win VS2010 Solution
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1EACC6F0-AE76-4149-961B-035B8389A869}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1EACC6F0-AE76-4149-961B-035B8389A869}.Debug|Win32.Build.0 = Debug|Win32
+		{1EACC6F0-AE76-4149-961B-035B8389A869}.Release|Win32.ActiveCfg = Release|Win32
+		{1EACC6F0-AE76-4149-961B-035B8389A869}.Release|Win32.Build.0 = Release|Win32
+		{7CADD4A2-E191-482D-B068-FDDCE492DE47}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7CADD4A2-E191-482D-B068-FDDCE492DE47}.Debug|Win32.Build.0 = Debug|Win32
+		{7CADD4A2-E191-482D-B068-FDDCE492DE47}.Release|Win32.ActiveCfg = Release|Win32
+		{7CADD4A2-E191-482D-B068-FDDCE492DE47}.Release|Win32.Build.0 = Release|Win32
+		{A071AD22-2F04-4E7C-9024-3AD4BCC57C23}.Debug|Win32.ActiveCfg = Debug
+		{A071AD22-2F04-4E7C-9024-3AD4BCC57C23}.Release|Win32.ActiveCfg = Release
+		{A071AD22-2F04-4E7C-9024-3AD4BCC57C23}.Release|Win32.Build.0 = Release
+		{B2657857-963F-4C09-9CF4-F2DABF4B3FDD}.Debug|Win32.ActiveCfg = Debug
+		{B2657857-963F-4C09-9CF4-F2DABF4B3FDD}.Release|Win32.ActiveCfg = Release
+		{B2657857-963F-4C09-9CF4-F2DABF4B3FDD}.Release|Win32.Build.0 = Release
+		{41A351E1-F305-4D88-A068-D57D30BEBA01}.Debug|Win32.ActiveCfg = Debug|Win32
+		{41A351E1-F305-4D88-A068-D57D30BEBA01}.Debug|Win32.Build.0 = Debug|Win32
+		{41A351E1-F305-4D88-A068-D57D30BEBA01}.Release|Win32.ActiveCfg = Release|Win32
+		{41A351E1-F305-4D88-A068-D57D30BEBA01}.Release|Win32.Build.0 = Release|Win32
+		{56C04773-6D2E-4844-B0D5-C07ACA545003}.Debug|Win32.ActiveCfg = Debug|Win32
+		{56C04773-6D2E-4844-B0D5-C07ACA545003}.Debug|Win32.Build.0 = Debug|Win32
+		{56C04773-6D2E-4844-B0D5-C07ACA545003}.Release|Win32.ActiveCfg = Release|Win32
+		{56C04773-6D2E-4844-B0D5-C07ACA545003}.Release|Win32.Build.0 = Release|Win32
+		{2FF2AFC1-11A0-4EF5-97EE-F9D90BCC4F95}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2FF2AFC1-11A0-4EF5-97EE-F9D90BCC4F95}.Debug|Win32.Build.0 = Debug|Win32
+		{2FF2AFC1-11A0-4EF5-97EE-F9D90BCC4F95}.Release|Win32.ActiveCfg = Release|Win32
+		{2FF2AFC1-11A0-4EF5-97EE-F9D90BCC4F95}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
