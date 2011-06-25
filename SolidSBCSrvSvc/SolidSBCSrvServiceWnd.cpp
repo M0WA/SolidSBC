@@ -68,7 +68,7 @@ int CSolidSBCSrvServiceWnd::LogServiceMessage(CString strMessage, SSBC_SRVSVC_LO
 	{
 		CFile cSvcLogFile( GetSvcLogFileName(), nOpenFlags );
 		cSvcLogFile.SeekToEnd();
-		cSvcLogFile.Write( pczMsg, strlen(pczMsg) );
+		cSvcLogFile.Write( pczMsg, (UINT)strlen(pczMsg) );
 		cSvcLogFile.Close( );
 	}
 	CATCH(CException, pEx)

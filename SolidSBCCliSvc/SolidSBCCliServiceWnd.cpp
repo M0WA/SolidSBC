@@ -69,7 +69,7 @@ int CSolidSBCCliServiceWnd::LogServiceMessage( CString strMessage, SSBC_CLISVC_L
 	{
 		CFile cSvcLogFile( GetSvcLogFileName(), nOpenFlags );
 		cSvcLogFile.SeekToEnd();
-		cSvcLogFile.Write( pczMsg, strlen(pczMsg) );
+		cSvcLogFile.Write( pczMsg, (UINT)strlen(pczMsg) );
 		cSvcLogFile.Close( );
 	}
 	CATCH(CException, pEx)

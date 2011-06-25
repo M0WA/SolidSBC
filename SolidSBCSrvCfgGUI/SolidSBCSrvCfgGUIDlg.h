@@ -58,7 +58,7 @@ private:
 
 	CRichEditCtrl m_ctlLogEdit;
 	CMutex m_cTimerMutex;
-	int m_nTimer;
+	UINT_PTR m_nTimer;
 	CComboBox m_ctlDbTypeCombo;
 	CIPAddressCtrl m_ctlDBIp;
 	CEdit m_ctlDBPortEdit;

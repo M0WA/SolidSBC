@@ -133,5 +133,7 @@
     <None Include="..\MySQL\VMPerformerResultsDB.mwb">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="config files\ssbc_profiles.xml" />
+    <None Include="config files\ssbc_srv.conf" />
   </ItemGroup>
 </Project>

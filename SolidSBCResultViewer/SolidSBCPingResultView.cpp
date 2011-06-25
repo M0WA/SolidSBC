@@ -134,7 +134,7 @@ void CSolidSBCPingResultView::RefreshList(void)
 	}
 	
 	if ( pingResults.size() )
-		lAvgDuration /= pingResults.size();
+		lAvgDuration /= (long)pingResults.size();
 
 	CString staticTxt = _T("");
 	staticTxt.Format( 

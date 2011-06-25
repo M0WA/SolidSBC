@@ -71,7 +71,7 @@ private:
 	CString m_strLogFileContent;
 	RECT    m_rectLogEdit;
 	RECT    m_rectLogStatic;
-	int m_nTimer;
+	UINT_PTR m_nTimer;
 	int m_nOldX;
 	int m_nOldY;
 };

@@ -84,7 +84,7 @@ void CSolidSBCClientListView::RefreshTree(void)
 	std::vector<CString>::iterator iCliUUIDIter = vClientUUIDs.begin();
 	for ( iCliUUIDIter = vClientUUIDs.begin(); iCliUUIDIter < vClientUUIDs.end(); iCliUUIDIter++)
 	{
-		int nUUIDArrayIdx = m_arUUIDs.Add( (*iCliUUIDIter) );
+		INT_PTR nUUIDArrayIdx = m_arUUIDs.Add( (*iCliUUIDIter) );
 
 		CString strNames = _T("");
 		std::vector<CString> vNames = g_cDatabaseConnection.GetClientNames( (*iCliUUIDIter) );
@@ -107,7 +107,7 @@ void CSolidSBCClientListView::RefreshTree(void)
 		int nPingCnt       = g_cDatabaseConnection.GetPingResultCount((*iCliUUIDIter));
 		int nTCPConCnt     = g_cDatabaseConnection.GetTCPResultCount((*iCliUUIDIter));
 		std::vector<SSBC_CLIENT_IDENTITY> vIdentity = g_cDatabaseConnection.GetClientIdentities((*iCliUUIDIter));
-		int nTimesSeen     = vIdentity.size();
+		int nTimesSeen     = (int)vIdentity.size();
 		
 		CString strTmp = _T("");
 		HTREEITEM hClientItem = m_ctlClientTree.InsertItem( strNames, 0, 0);

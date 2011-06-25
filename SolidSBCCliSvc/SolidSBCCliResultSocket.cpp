@@ -71,7 +71,7 @@ bool CSolidSBCCliResultSocket::WaitForConnect()
 	tv.tv_sec = 10; 
     tv.tv_usec = 0; 
 
-	int nErr = select(m_hCliResSocket+1,NULL,&writefds,NULL,&tv);
+	int nErr = select((int)m_hCliResSocket+1,NULL,&writefds,NULL,&tv);
 	if ( FD_ISSET(m_hCliResSocket,&writefds) ){
 	}else {
 		bReturn = false;
@@ -117,7 +117,7 @@ bool CSolidSBCCliResultSocket::WaitForPacket()
 	//readable socket means packet recieved
 	fd_set readfds; FD_ZERO(&readfds); FD_SET(m_hCliResSocket,&readfds);
 	
-	int nErr = select(m_hCliResSocket+1,&readfds,NULL,NULL,NULL);
+	int nErr = select((int)m_hCliResSocket+1,&readfds,NULL,NULL,NULL);
 
 	//check if socket is in set
 	if ( ( nErr == 1) && FD_ISSET(m_hCliResSocket,&readfds) ){

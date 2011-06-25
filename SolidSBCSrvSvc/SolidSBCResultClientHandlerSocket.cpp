@@ -67,7 +67,7 @@ bool CSolidSBCResultClientHandlerSocket::WaitForPacket(void)
 	//readable socket means packet recieved, 
 	fd_set readfds; FD_ZERO(&readfds); FD_SET(m_hSocket,&readfds);
 	
-	int nErr = select(m_hSocket+1,&readfds,NULL,NULL,NULL);
+	int nErr = select((int)m_hSocket+1,&readfds,NULL,NULL,NULL);
 	if ( ( nErr == 1) && FD_ISSET(m_hSocket,&readfds) ){
 		return true;}
 	else {

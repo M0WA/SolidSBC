@@ -15,13 +15,7 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_141360404F6F430E846CDD48B61A8416"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_26F172E20ABD4FDEABD36FA1A781EBB2"
+        "MsmKey" = "8:_10BF9F1CF560496F8C9EEA2D4C0B42CF"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -33,31 +27,37 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_7D9E13B261804012BC35718187ECCB92"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_A76E30DF95F04B02A2A88048703C6042"
-        "OwnerKey" = "8:_47123F7EB3374A23BF58C914A025FAF6"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_A76E30DF95F04B02A2A88048703C6042"
-        "OwnerKey" = "8:_BDE0A565F6094AD688B7D2288A952941"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_A76E30DF95F04B02A2A88048703C6042"
+        "MsmKey" = "8:_6AED8D64CE364FF9BDA8188870B0D3DD"
         "OwnerKey" = "8:_AC18B2A835C94333B3931FD72F77ACF8"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
+        "MsmKey" = "8:_6AED8D64CE364FF9BDA8188870B0D3DD"
+        "OwnerKey" = "8:_47123F7EB3374A23BF58C914A025FAF6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_6AED8D64CE364FF9BDA8188870B0D3DD"
+        "OwnerKey" = "8:_BDE0A565F6094AD688B7D2288A952941"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_94E9A64182E6488F87A1D28483DAEAB8"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_AC18B2A835C94333B3931FD72F77ACF8"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B174B3DE170C47B09B9C1AB8EA70851D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -69,20 +69,20 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_F23D21996C674D8C9B6EF94B7102FF15"
+        "MsmKey" = "8:_C86DE57C9CAD430989E1C34707EA5A86"
+        "OwnerKey" = "8:_AC18B2A835C94333B3931FD72F77ACF8"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C86DE57C9CAD430989E1C34707EA5A86"
         "OwnerKey" = "8:_47123F7EB3374A23BF58C914A025FAF6"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_F23D21996C674D8C9B6EF94B7102FF15"
+        "MsmKey" = "8:_C86DE57C9CAD430989E1C34707EA5A86"
         "OwnerKey" = "8:_BDE0A565F6094AD688B7D2288A952941"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_F23D21996C674D8C9B6EF94B7102FF15"
-        "OwnerKey" = "8:_AC18B2A835C94333B3931FD72F77ACF8"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -230,29 +230,9 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_141360404F6F430E846CDD48B61A8416"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_10BF9F1CF560496F8C9EEA2D4C0B42CF"
             {
-            "SourcePath" = "8:..\\Release\\ssbc_srv.conf"
-            "TargetName" = "8:ssbc_srv.conf"
-            "Tag" = "8:"
-            "Folder" = "8:_E1FABDE46348486CB34DDA242A189EAC"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_26F172E20ABD4FDEABD36FA1A781EBB2"
-            {
-            "SourcePath" = "8:..\\Release\\libmysql.dll"
+            "SourcePath" = "8:..\\mysql-win32\\lib\\libmysql.dll"
             "TargetName" = "8:libmysql.dll"
             "Tag" = "8:"
             "Folder" = "8:_E1FABDE46348486CB34DDA242A189EAC"
@@ -270,10 +250,30 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7D9E13B261804012BC35718187ECCB92"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_94E9A64182E6488F87A1D28483DAEAB8"
             {
-            "SourcePath" = "8:..\\Release\\ssbc_profiles.xml"
+            "SourcePath" = "8:..\\SolidSBCSrvSvc\\config files\\ssbc_profiles.xml"
             "TargetName" = "8:ssbc_profiles.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_E1FABDE46348486CB34DDA242A189EAC"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B174B3DE170C47B09B9C1AB8EA70851D"
+            {
+            "SourcePath" = "8:..\\SolidSBCSrvSvc\\config files\\ssbc_srv.conf"
+            "TargetName" = "8:ssbc_srv.conf"
             "Tag" = "8:"
             "Folder" = "8:_E1FABDE46348486CB34DDA242A189EAC"
             "Condition" = "8:"
@@ -358,7 +358,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SolidSBC Server"
         "ProductCode" = "8:{A7363CEA-301B-470B-BE43-D952D21EF587}"
-        "PackageCode" = "8:{56CCFE33-A61E-4DFB-BF63-EA49E352E819}"
+        "PackageCode" = "8:{011194EF-AB1B-428E-8645-3EC5F86CB6B9}"
         "UpgradeCode" = "8:{43EBC5F6-3E21-4F56-8D01-ADE065D6E984}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -902,7 +902,7 @@
         }
         "MergeModule"
         {
-            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_A76E30DF95F04B02A2A88048703C6042"
+            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_6AED8D64CE364FF9BDA8188870B0D3DD"
             {
             "UseDynamicProperties" = "11:TRUE"
             "IsDependency" = "11:TRUE"
@@ -916,7 +916,7 @@
             "Feature" = "8:"
             "IsolateTo" = "8:"
             }
-            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_F23D21996C674D8C9B6EF94B7102FF15"
+            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_C86DE57C9CAD430989E1C34707EA5A86"
             {
             "UseDynamicProperties" = "11:TRUE"
             "IsDependency" = "11:TRUE"
@@ -935,7 +935,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_47123F7EB3374A23BF58C914A025FAF6"
             {
-            "SourcePath" = "8:..\\Release\\SolidSBCSrvCfgGUI.exe"
+            "SourcePath" = "8:..\\x64\\Release\\SolidSBCSrvCfgGUI.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E1FABDE46348486CB34DDA242A189EAC"
@@ -963,7 +963,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_AC18B2A835C94333B3931FD72F77ACF8"
             {
-            "SourcePath" = "8:..\\Release\\SolidSBCResultViewer.exe"
+            "SourcePath" = "8:..\\x64\\Release\\SolidSBCResultViewer.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E1FABDE46348486CB34DDA242A189EAC"
@@ -991,7 +991,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_BDE0A565F6094AD688B7D2288A952941"
             {
-            "SourcePath" = "8:..\\Release\\SolidSBCSrvSvc.exe"
+            "SourcePath" = "8:..\\x64\\Release\\SolidSBCSrvSvc.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E1FABDE46348486CB34DDA242A189EAC"

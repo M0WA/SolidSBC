@@ -36,8 +36,8 @@
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
 #include <afxmt.h>
-#include <mysql.h>
 #include <vector>
+#include <mysql.h>
 
 //keynames for settings in config file
 #define SSBC_DATABASE_TYPE				_T("DatabaseType")
