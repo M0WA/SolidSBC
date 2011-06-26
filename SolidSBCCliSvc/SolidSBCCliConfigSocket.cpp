@@ -77,7 +77,7 @@ bool CSolidSBCCliConfigSocket::WaitForConnect()
 	int nErr = select(m_hCliConfSocket+1,NULL,&writefds,NULL,&tv);
 	if ( !FD_ISSET(m_hCliConfSocket,&writefds) ){
 		bReturn = false;
-	} else if ( !FD_ISSET(m_hCliConfSocket,&writefds) ){
+	} else if ( !FD_ISSET(m_hCliConfSocket,&exceptfds) ){
 		bReturn = false;
 		{
 			CString strMsg;
