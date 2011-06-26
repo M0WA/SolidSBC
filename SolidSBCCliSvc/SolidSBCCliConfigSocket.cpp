@@ -75,8 +75,7 @@ bool CSolidSBCCliConfigSocket::WaitForConnect()
     tv.tv_usec = 0; 
 
 	int nErr = select((int)m_hCliConfSocket+1,NULL,&writefds,NULL,&tv);
-	if ( FD_ISSET(m_hCliConfSocket,&writefds) ){
-	}else {
+	if ( !FD_ISSET(m_hCliConfSocket,&writefds) ){
 		bReturn = false;
 	}
 

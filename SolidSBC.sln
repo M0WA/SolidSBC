@@ -15,6 +15,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SolidSBCSrvCfgGUI", "SolidS
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SolidSBCResultViewer", "SolidSBCResultViewer\SolidSBCResultViewer.vcxproj", "{2FF2AFC1-11A0-4EF5-97EE-F9D90BCC4F95}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SolidSBCCliSvcX64Setup", "SolidSBCCliSvcX64Setup\SolidSBCCliSvcX64Setup.vdproj", "{F8A76BEF-58F5-44C0-919E-2AB6B1720255}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SolidSBCSrvSvcX64Setup", "SolidSBCSrvSvcX64Setup\SolidSBCSrvSvcX64Setup.vdproj", "{4F9FDDC2-9651-467C-9791-1D8AB6E5B12D}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -78,6 +82,16 @@ Global
 		{2FF2AFC1-11A0-4EF5-97EE-F9D90BCC4F95}.Release|x64.Build.0 = Release|x64
 		{2FF2AFC1-11A0-4EF5-97EE-F9D90BCC4F95}.Release|x86.ActiveCfg = Release|Win32
 		{2FF2AFC1-11A0-4EF5-97EE-F9D90BCC4F95}.Release|x86.Build.0 = Release|Win32
+		{F8A76BEF-58F5-44C0-919E-2AB6B1720255}.Debug|x64.ActiveCfg = Debug
+		{F8A76BEF-58F5-44C0-919E-2AB6B1720255}.Debug|x86.ActiveCfg = Debug
+		{F8A76BEF-58F5-44C0-919E-2AB6B1720255}.Release|x64.ActiveCfg = Release
+		{F8A76BEF-58F5-44C0-919E-2AB6B1720255}.Release|x64.Build.0 = Release
+		{F8A76BEF-58F5-44C0-919E-2AB6B1720255}.Release|x86.ActiveCfg = Release
+		{4F9FDDC2-9651-467C-9791-1D8AB6E5B12D}.Debug|x64.ActiveCfg = Debug
+		{4F9FDDC2-9651-467C-9791-1D8AB6E5B12D}.Debug|x86.ActiveCfg = Debug
+		{4F9FDDC2-9651-467C-9791-1D8AB6E5B12D}.Release|x64.ActiveCfg = Release
+		{4F9FDDC2-9651-467C-9791-1D8AB6E5B12D}.Release|x64.Build.0 = Release
+		{4F9FDDC2-9651-467C-9791-1D8AB6E5B12D}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
