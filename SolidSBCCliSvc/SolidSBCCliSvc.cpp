@@ -61,7 +61,7 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 				system("pause");
 				return nRetCode;
 			} 
-			else if ( !_tcscmp( argv[i], _T("/help") ) ){
+			else if ( !_tcscmp( argv[i], _T("/help") ) || !_tcscmp( argv[i], _T("/?") ) ){
 				PrintUsage();
 				system("pause");
 				return nRetCode;
@@ -86,6 +86,13 @@ CString GetImageBinaryPath(TCHAR* pszImageFileName)
 
 void PrintUsage(void)
 {
+	_tprintf(_T("SolidSBC Client Service\n"));
+	_tprintf(_T("Usage:\n\n"));
+	_tprintf(_T("/install: installs service (need administrator privileges)\n"));
+	_tprintf(_T("/delete:  deletes service  (need administrator privileges)\n"));
+	_tprintf(_T("/version: prints version\n"));
+	_tprintf(_T("/help   : prints this help\n"));
+	_tprintf(_T("\n"));
 }
 
 void PrintVersion(void)

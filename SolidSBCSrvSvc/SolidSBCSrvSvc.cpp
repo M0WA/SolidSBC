@@ -62,7 +62,7 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 				system("pause");
 				return nRetCode;
 			} 
-			else if ( !_tcscmp( argv[i], _T("/help") ) ){
+			else if ( !_tcscmp( argv[i], _T("/help") ) || !_tcscmp( argv[i], _T("/?") ) ){
 				PrintUsage();
 				system("pause");
 				return nRetCode;
@@ -97,6 +97,13 @@ void PrintVersion(void)
 
 void PrintUsage(void)
 {
+	_tprintf(_T("SolidSBC Server Service\n"));
+	_tprintf(_T("Usage:\n\n"));
+	_tprintf(_T("/install: installs service (need administrator privileges)\n"));
+	_tprintf(_T("/delete:  deletes service  (need administrator privileges)\n"));
+	_tprintf(_T("/version: prints version\n"));
+	_tprintf(_T("/help:    prints this help\n"));
+	_tprintf(_T("\n"));
 }
 
 void WINAPI ServiceMain(DWORD argc, LPTSTR *argv)
