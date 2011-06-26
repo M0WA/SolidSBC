@@ -88,8 +88,12 @@ void PrintUsage(void)
 {
 	_tprintf(_T("SolidSBC Client Service\n"));
 	_tprintf(_T("Usage:\n\n"));
-	_tprintf(_T("/install: installs service (need administrator privileges)\n"));
-	_tprintf(_T("/delete:  deletes service  (need administrator privileges)\n"));
+	_tprintf(_T("/install [opts]: installs service (need administrator privileges)\n"));
+	_tprintf(_T("\t/autoreconnect   : reconnect on connection loss\n"));
+	_tprintf(_T("\t/remote   [ip]   : ip of solidsbc server\n"));
+	_tprintf(_T("\t/dataport [port] : data port of solidsbc server\n"));
+	_tprintf(_T("\t/confport [port] : conf port of solidsbc server\n"));
+	_tprintf(_T("/delete : deletes service  (need administrator privileges)\n"));
 	_tprintf(_T("/version: prints version\n"));
 	_tprintf(_T("/help   : prints this help\n"));
 	_tprintf(_T("\n"));
