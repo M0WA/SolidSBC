@@ -165,7 +165,7 @@ int CSolidSBCConfigClientSocket::RecieveRequestProfileID(SOCKET hCfgListenSocket
 	if ( (nTotal != sizeof(SSBC_PROFILE_REQUEST_PACKET)) ){
 		{
 			CString strMsg;
-			strMsg.Format(_T("ReceiveReplyProfileID: Error while receiving profile request from client (invalid packet size %d bytes)."));
+			strMsg.Format(_T("ReceiveReplyProfileID: Error while receiving profile request from client (invalid packet size %d bytes)."), nTotal);
 			CSolidSBCSrvServiceWnd::LogServiceMessage(strMsg,SSBC_SRVSVC_LOGMSG_TYPE_ERROR);
 		}
 		nReturn = -1; }
