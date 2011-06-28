@@ -43,7 +43,12 @@ bool CSolidSBCCliResultSocket::Connect(SOCKADDR_IN target)
 	ioctlsocket(m_hCliResSocket, FIONBIO, &iMode);
 
 	int nErr = connect(m_hCliResSocket,(SOCKADDR*)&target,sizeof(SOCKADDR_IN));
-	if ( (nErr == SOCKET_ERROR) && (WSAGetLastError() == WSAEWOULDBLOCK ) ){
+	int nConnectGetLastError = WSAGetLastError();
+
+	iMode = 0;
+	ioctlsocket(m_hCliResSocket, FIONBIO, &iMode);
+
+	if ( (nErr == SOCKET_ERROR) && ( nConnectGetLastError == WSAEWOULDBLOCK ) ){
 		AfxBeginThread(SolidSBCCliResultConnectThread,(LPVOID)this);
 		return true;
 	} else 
@@ -57,36 +62,48 @@ bool CSolidSBCCliResultSocket::WaitForConnect()
 		strMsg.Format(_T("CSolidSBCCliResultSocket::WaitForConnect() waiting for connection..."));
 		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
 	}
-
+	
 	//writeable socket means successful connect()
-	fd_set writefds; FD_ZERO(&writefds); FD_SET(m_hCliResSocket,&writefds);
-	fd_set exceptfds; FD_ZERO(&exceptfds); FD_SET(m_hCliResSocket,&exceptfds);
-	
-	
-	u_long iMode = 1;
-	ioctlsocket(m_hCliResSocket, FIONBIO, &iMode);
-
-	bool bReturn = true;
-	struct timeval tv; 
-	tv.tv_sec = 10; 
-    tv.tv_usec = 0; 
-
-	int nErr = select((int)m_hCliResSocket+1,NULL,&writefds,NULL,&tv);
-	if ( FD_ISSET(m_hCliResSocket,&writefds) ){
-	}else {
-		bReturn = false;
-	}
-
+	HANDLE hEvent = CreateEvent(NULL,FALSE,FALSE,NULL);
+	int nError = 0;
+	if ( (nError = WSAEventSelect(m_hCliResSocket, hEvent, FD_WRITE)) == SOCKET_ERROR )
 	{
-		CString strMsg;
-		strMsg.Format(_T("CSolidSBCCliResultSocket::WaitForConnect() returns %d"),bReturn);
-		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+		{
+			CString strMsg;
+			strMsg.Format(_T("CSolidSBCCliResultSocket::WaitForConnect(): WSAEventSelect() returned %d, GetLastError() = %d, socket = %d "),nError,WSAGetLastError(),m_hCliResSocket);
+			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+			return false;
+		}
 	}
 
-	iMode = 0;
-	ioctlsocket(m_hCliResSocket, FIONBIO, &iMode);
-
-	return bReturn;
+	//wait if we get signaled...
+	DWORD dwTimeoutMS = 10000;
+	DWORD dwWait = WaitForSingleObject(hEvent,dwTimeoutMS);
+	CloseHandle(hEvent);
+	switch(dwWait)
+	{
+	case WAIT_OBJECT_0:
+		{
+			CString strMsg;
+			strMsg.Format(_T("CSolidSBCCliResultSocket::WaitForConnect(): returns 1, socket = %d "),m_hCliResSocket);
+			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+		}
+		return true;
+	case WAIT_TIMEOUT:
+		{
+			CString strMsg;
+			strMsg.Format(_T("CSolidSBCCliResultSocket::WaitForConnect(): WaitForSingleObject() timed out, GetLastError() = %d, socket = %d "),WSAGetLastError(),m_hCliResSocket);
+			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+		}
+		return false;
+	default:
+		{
+			CString strMsg;
+			strMsg.Format(_T("CSolidSBCCliResultSocket::WaitForConnect(): WaitForSingleObject() returned %d, GetLastError() = %d, socket = %d "),dwWait,WSAGetLastError(),m_hCliResSocket);
+			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+		}
+		return false;
+	}
 }
 
 bool CSolidSBCCliResultSocket::OnConnect(bool bSuccess)
@@ -115,16 +132,49 @@ bool CSolidSBCCliResultSocket::OnConnect(bool bSuccess)
 bool CSolidSBCCliResultSocket::WaitForPacket()
 {
 	//readable socket means packet recieved
-	fd_set readfds; FD_ZERO(&readfds); FD_SET(m_hCliResSocket,&readfds);
-	
-	int nErr = select((int)m_hCliResSocket+1,&readfds,NULL,NULL,NULL);
-
-	//check if socket is in set
-	if ( ( nErr == 1) && FD_ISSET(m_hCliResSocket,&readfds) ){
-		return true;}
-	else {
+	HANDLE hEvent = CreateEvent(NULL,FALSE,FALSE,NULL);
+	int nError = 0;
+	if ( (nError = WSAEventSelect(m_hCliResSocket, hEvent, FD_READ)) == SOCKET_ERROR )
+	{
+		{
+			CString strMsg;
+			strMsg.Format(_T("CSolidSBCCliResultSocket::WaitForPacket(): WSAEventSelect() returned %d, GetLastError() = %d, socket = %d "),nError,WSAGetLastError(),m_hCliResSocket);
+			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+		}
 		g_cClientService.ConnectionClosed();
-		return false;}
+		return false;
+	}
+	
+	//wait if we get signaled...
+	DWORD dwTimeoutMS = INFINITE;
+	DWORD dwWait = WaitForSingleObject(hEvent,dwTimeoutMS);
+	CloseHandle(hEvent);
+	switch(dwWait)
+	{
+	case WAIT_OBJECT_0:
+		{
+			CString strMsg;
+			strMsg.Format(_T("CSolidSBCCliResultSocket::WaitForPacket(): returns 1, socket = %d "),m_hCliResSocket);
+			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+		}
+		return true;
+	case WAIT_TIMEOUT:
+		{
+			CString strMsg;
+			strMsg.Format(_T("CSolidSBCCliResultSocket::WaitForPacket(): WaitForSingleObject() timed out, GetLastError() = %d, socket = %d "),WSAGetLastError(),m_hCliResSocket);
+			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+		}
+		g_cClientService.ConnectionClosed();
+		return false;
+	default:
+		{
+			CString strMsg;
+			strMsg.Format(_T("CSolidSBCCliResultSocket::WaitForPacket(): WaitForSingleObject() returned %d, GetLastError() = %d, socket = %d "),dwWait,WSAGetLastError(),m_hCliResSocket);
+			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+		}
+		g_cClientService.ConnectionClosed();
+		return false;
+	}
 }
 
 bool CSolidSBCCliResultSocket::OnRead()
