@@ -64,14 +64,47 @@ CSolidSBCResultClientHandlerSocket::~CSolidSBCResultClientHandlerSocket(void)
 
 bool CSolidSBCResultClientHandlerSocket::WaitForPacket(void)
 {
-	//readable socket means packet recieved, 
-	fd_set readfds; FD_ZERO(&readfds); FD_SET(m_hSocket,&readfds);
+	//readable socket means packet recieved
+	HANDLE hEvent = CreateEvent(NULL,FALSE,FALSE,NULL);
+	int nError = 0;
+	if ( (nError = WSAEventSelect(m_hSocket, hEvent, FD_READ)) == SOCKET_ERROR )
+	{
+		{
+			CString strMsg;
+			strMsg.Format(_T("CSolidSBCResultClientHandlerSocket::WaitForPacket(): WSAEventSelect() returned %d, GetLastError() = %d, socket = %d "),nError,WSAGetLastError(),m_hSocket);
+			CSolidSBCSrvServiceWnd::LogServiceMessage(strMsg,SSBC_SRVSVC_LOGMSG_TYPE_DEBUG);
+			return false;
+		}
+	}
 	
-	int nErr = select((int)m_hSocket+1,&readfds,NULL,NULL,NULL);
-	if ( ( nErr == 1) && FD_ISSET(m_hSocket,&readfds) ){
-		return true;}
-	else {
-		return false;}
+	//wait if we get signaled...
+	DWORD dwTimeoutMS = INFINITE;
+	DWORD dwWait = WaitForSingleObject(hEvent,dwTimeoutMS);
+	CloseHandle(hEvent);
+	switch(dwWait)
+	{
+	case WAIT_OBJECT_0:
+		{
+			CString strMsg;
+			strMsg.Format(_T("CSolidSBCResultClientHandlerSocket::WaitForPacket(): returns 1, socket = %d "),m_hSocket);
+			CSolidSBCSrvServiceWnd::LogServiceMessage(strMsg,SSBC_SRVSVC_LOGMSG_TYPE_DEBUG);
+		}
+		return true;
+	case WAIT_TIMEOUT:
+		{
+			CString strMsg;
+			strMsg.Format(_T("CSolidSBCResultClientHandlerSocket::WaitForPacket(): WaitForSingleObject() timed out, GetLastError() = %d, socket = %d "),WSAGetLastError(),m_hSocket);
+			CSolidSBCSrvServiceWnd::LogServiceMessage(strMsg,SSBC_SRVSVC_LOGMSG_TYPE_DEBUG);
+		}
+		return false;
+	default:
+		{
+			CString strMsg;
+			strMsg.Format(_T("CSolidSBCResultClientHandlerSocket::WaitForPacket(): WaitForSingleObject() returned %d, GetLastError() = %d, socket = %d "),dwWait,WSAGetLastError(),m_hSocket);
+			CSolidSBCSrvServiceWnd::LogServiceMessage(strMsg,SSBC_SRVSVC_LOGMSG_TYPE_DEBUG);
+		}
+		return false;
+	}
 }
 
 bool CSolidSBCResultClientHandlerSocket::OnRead(int nClientID)
