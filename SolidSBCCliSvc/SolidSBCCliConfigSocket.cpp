@@ -41,16 +41,54 @@ bool CSolidSBCCliConfigSocket::Connect(SOCKADDR_IN target)
 		Close();
 
 	m_hCliConfSocket = socket(AF_INET,SOCK_STREAM,0);
+	{
+		CString strMsg;
+		strMsg.Format(_T("CSolidSBCCliConfigSocket::Connect(): socket() created: %d"),m_hCliConfSocket);
+		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+	}
 
+	//set socket to non blocking...
 	u_long iMode = 1;
-	ioctlsocket(m_hCliConfSocket, FIONBIO, &iMode);
+	int   nError = 0;
+	if ( (nError = ioctlsocket(m_hCliConfSocket, FIONBIO, &iMode)) == SOCKET_ERROR )
+	{
+		{
+			CString strMsg;
+			strMsg.Format(_T("CSolidSBCCliConfigSocket::WaitForConnect(): ioctlsocket(non-block) returned %d, GetLastError() = %d, socket = %d "),nError,WSAGetLastError(),m_hCliConfSocket);
+			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+		}
+	}
 
 	int nErr = connect(m_hCliConfSocket,(SOCKADDR*)&target,sizeof(SOCKADDR_IN));
-	if ( (nErr == SOCKET_ERROR) && (WSAGetLastError() == WSAEWOULDBLOCK ) ){
+	int nConnectGetLastError = WSAGetLastError();
+	
+	//set socket to blocking mode...
+	iMode  = 0;
+	nError = 0;
+	if ( (nError = ioctlsocket(m_hCliConfSocket, FIONBIO, &iMode)) == SOCKET_ERROR )
+	{
+		{
+			CString strMsg;
+			strMsg.Format(_T("CSolidSBCCliConfigSocket::WaitForConnect(): ioctlsocket(block) returned %d, GetLastError() = %d, socket = %d "),nError,nConnectGetLastError,m_hCliConfSocket);
+			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+		}
+	}
+
+	//check if connect was successful and act accordingly
+	if ( (nErr == SOCKET_ERROR) && (nConnectGetLastError == WSAEWOULDBLOCK ) ){
 		AfxBeginThread(SolidSBCCliConfigConnectThread,(LPVOID)this);
 		return true;
-	} else 
+	} else if ( !nErr )
+		return true;
+	else {
+		
+		{
+			CString strMsg;
+			strMsg.Format(_T("CSolidSBCCliConfigSocket::WaitForConnect(): connect() returned %d, GetLastError() = %d, socket = %d "),nErr,nConnectGetLastError,m_hCliConfSocket);
+			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+		}
 		return false;
+	}
 }
 
 bool CSolidSBCCliConfigSocket::WaitForConnect()
@@ -62,40 +100,46 @@ bool CSolidSBCCliConfigSocket::WaitForConnect()
 	}
 
 	//writeable socket means successful connect()
-	fd_set writefds; FD_ZERO(&writefds); FD_SET(m_hCliConfSocket,&writefds);
-	fd_set exceptfds; FD_ZERO(&exceptfds); FD_SET(m_hCliConfSocket,&exceptfds);
-	
-	
-	u_long iMode = 1;
-	ioctlsocket(m_hCliConfSocket, FIONBIO, &iMode);
-
-	bool bReturn = true;
-	struct timeval tv; 
-	tv.tv_sec = 10; 
-    tv.tv_usec = 0; 
-
-	int nErr = select(m_hCliConfSocket+1,NULL,&writefds,NULL,&tv);
-	if ( !FD_ISSET(m_hCliConfSocket,&writefds) ){
-		bReturn = false;
-	} else if ( FD_ISSET(m_hCliConfSocket,&exceptfds) ){
-		bReturn = false;
+	HANDLE hEvent = CreateEvent(NULL,FALSE,FALSE,NULL);
+	int nError = 0;
+	if ( (nError = WSAEventSelect(m_hCliConfSocket, hEvent, FD_WRITE)) == SOCKET_ERROR )
+	{
 		{
 			CString strMsg;
-			strMsg.Format(_T("CSolidSBCCliConfigSocket::WaitForConnect(): an exception occurred on socket"));
+			strMsg.Format(_T("CSolidSBCCliConfigSocket::WaitForConnect(): WSAEventSelect() returned %d, GetLastError() = %d, socket = %d "),nError,WSAGetLastError(),m_hCliConfSocket);
 			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+			return false;
 		}
 	}
 
+	//wait if we get signaled...
+	DWORD dwTimeoutMS = 10000;
+	DWORD dwWait = WaitForSingleObject(hEvent,dwTimeoutMS);
+	CloseHandle(hEvent);
+	switch(dwWait)
 	{
-		CString strMsg;
-		strMsg.Format(_T("CSolidSBCCliConfigSocket::WaitForConnect() returns %d"),bReturn);
-		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+	case WAIT_OBJECT_0:
+		{
+			CString strMsg;
+			strMsg.Format(_T("CSolidSBCCliConfigSocket::WaitForConnect(): returns 1, socket = %d "),m_hCliConfSocket);
+			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+		}
+		return true;
+	case WAIT_TIMEOUT:
+		{
+			CString strMsg;
+			strMsg.Format(_T("CSolidSBCCliConfigSocket::WaitForConnect(): WaitForSingleObject() timed out, GetLastError() = %d, socket = %d "),WSAGetLastError(),m_hCliConfSocket);
+			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+		}
+		return false;
+	default:
+		{
+			CString strMsg;
+			strMsg.Format(_T("CSolidSBCCliConfigSocket::WaitForConnect(): WaitForSingleObject() returned %d, GetLastError() = %d, socket = %d "),dwWait,WSAGetLastError(),m_hCliConfSocket);
+			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+		}
+		return false;
 	}
-
-	iMode = 0;
-	ioctlsocket(m_hCliConfSocket, FIONBIO, &iMode);
-
-	return bReturn;
 }
 
 bool CSolidSBCCliConfigSocket::OnConnect(bool bSuccess)
@@ -139,14 +183,47 @@ bool CSolidSBCCliConfigSocket::Close(bool bLog)
 
 bool CSolidSBCCliConfigSocket::WaitForPacket()
 {
-	//readable socket means packet recieved, 
-	fd_set readfds; FD_ZERO(&readfds); FD_SET(m_hCliConfSocket,&readfds);
+	//readable socket means packet recieved
+	HANDLE hEvent = CreateEvent(NULL,FALSE,FALSE,NULL);
+	int nError = 0;
+	if ( (nError = WSAEventSelect(m_hCliConfSocket, hEvent, FD_READ)) == SOCKET_ERROR )
+	{
+		{
+			CString strMsg;
+			strMsg.Format(_T("CSolidSBCCliConfigSocket::WaitForPacket(): WSAEventSelect() returned %d, GetLastError() = %d, socket = %d "),nError,WSAGetLastError(),m_hCliConfSocket);
+			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+			return false;
+		}
+	}
 	
-	int nErr = select((int)(m_hCliConfSocket+1),&readfds,NULL,NULL,NULL);
-	if ( ( nErr == 1) && FD_ISSET(m_hCliConfSocket,&readfds) ){
-		return true;}
-	else {
-		return false;}
+	//wait if we get signaled...
+	DWORD dwTimeoutMS = INFINITE;
+	DWORD dwWait = WaitForSingleObject(hEvent,dwTimeoutMS);
+	CloseHandle(hEvent);
+	switch(dwWait)
+	{
+	case WAIT_OBJECT_0:
+		{
+			CString strMsg;
+			strMsg.Format(_T("CSolidSBCCliConfigSocket::WaitForPacket(): returns 1, socket = %d "),m_hCliConfSocket);
+			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+		}
+		return true;
+	case WAIT_TIMEOUT:
+		{
+			CString strMsg;
+			strMsg.Format(_T("CSolidSBCCliConfigSocket::WaitForPacket(): WaitForSingleObject() timed out, GetLastError() = %d, socket = %d "),WSAGetLastError(),m_hCliConfSocket);
+			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+		}
+		return false;
+	default:
+		{
+			CString strMsg;
+			strMsg.Format(_T("CSolidSBCCliConfigSocket::WaitForPacket(): WaitForSingleObject() returned %d, GetLastError() = %d, socket = %d "),dwWait,WSAGetLastError(),m_hCliConfSocket);
+			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+		}
+		return false;
+	}
 }
 
 bool CSolidSBCCliConfigSocket::OnRead()
@@ -169,6 +246,12 @@ bool CSolidSBCCliConfigSocket::OnRead()
 
 int CSolidSBCCliConfigSocket::SendRequestProfileID(void)
 {
+	{
+		CString strMsg;
+		strMsg.Format( _T("SendRequestProfileID: Sending profile request packet") );
+		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+	}
+
 	DWORD nNameSize = 1024;
 	TCHAR szComputerName[1024] = {0};
 	GetComputerName(szComputerName,&nNameSize);
@@ -233,141 +316,3 @@ int CSolidSBCCliConfigSocket::ReceiveReplyProfileID(void)
 	Close();
 	return nReturn;
 }
-
-/*
-
-// CServerConfigSocket
-
-CServerConfigSocket::CServerConfigSocket()
-: m_hMessageWnd(NULL)
-, m_nStatus(VMPERF_SERVER_CONFIG_SOCKET_STATUS_IDLE)
-, m_nProfileID(0)
-{
-}
-
-CServerConfigSocket::~CServerConfigSocket()
-{
-}
-
-
-// CServerConfigSocket member functions
-
-void CServerConfigSocket::OnConnect(int nErrorCode)
-{
-	CSolidSBCCliServiceWnd::LogServiceMessage(_T("CServerConfigSocket::OnConnect()"));
-
-	if ( nErrorCode != 0 ){
-		PostMessage( m_hMessageWnd, WM_SSBC_ERR, (LPARAM)SSBC_ERR_SRVCFG_CONNERR, (WPARAM)nErrorCode);
-	}		
-	else {
-		PostMessage( m_hMessageWnd, WM_SSBC_ERR, (LPARAM)SSBC_ERR_SRVCFG_CONN   , (WPARAM)nErrorCode);
-	}
-
-	CAsyncSocket::OnConnect(nErrorCode);
-}
-
-void CServerConfigSocket::OnReceive(int nErrorCode)
-{
-	CSolidSBCCliServiceWnd::LogServiceMessage(_T("CServerConfigSocket::OnReceive()"));
-
-	if ( nErrorCode != 0 ){
-		PostMessage( m_hMessageWnd, WM_SSBC_ERR, (LPARAM)SSBC_ERR_SRVCFG_RECVERR, (WPARAM)nErrorCode);}	
-
-	switch(m_nStatus)
-	{
-	case VMPERF_SERVER_CONFIG_SOCKET_STATUS_PROFILEID:
-		ReceiveReplyProfileID();
-		m_nStatus = VMPERF_SERVER_CONFIG_SOCKET_STATUS_IDLE;
-		break;
-	default:
-		break;
-	}
-
-	CAsyncSocket::OnReceive(nErrorCode);
-}
-
-void CServerConfigSocket::OnSend(int nErrorCode)
-{
-	CSolidSBCCliServiceWnd::LogServiceMessage(_T("CServerConfigSocket::OnSend()"));
-
-	if ( nErrorCode != 0 ){
-		PostMessage( m_hMessageWnd, WM_SSBC_ERR, (LPARAM)SSBC_ERR_SRVCFG_SENDERR, (WPARAM)nErrorCode);}	
-
-	switch(m_nStatus)
-	{
-	case VMPERF_SERVER_CONFIG_SOCKET_STATUS_IDLE:
-		m_nStatus = VMPERF_SERVER_CONFIG_SOCKET_STATUS_PROFILEID;
-		SendRequestProfileID();
-		break;
-#ifdef _DEBUG
-	case VMPERF_SERVER_CONFIG_SOCKET_STATUS_PROFILEID:
-		TRACE(_T("CServerConfigSocket::OnSend(): m_nStatus == VMPERF_SERVER_CONFIG_SOCKET_STATUS_PROFILEID (should not happen)\n"));
-		break;
-#endif
-	default:
-		break;
-	}
-
-	CAsyncSocket::OnSend(nErrorCode);
-}
-
-void CServerConfigSocket::OnClose(int nErrorCode)
-{
-	CSolidSBCCliServiceWnd::LogServiceMessage(_T("CServerConfigSocket::OnClose()"));
-
-	PostMessage( m_hMessageWnd, WM_SSBC_ERR, (LPARAM)SSBC_ERR_SRVCFG_CONNRST, (WPARAM)nErrorCode);
-	
-	CAsyncSocket::OnClose(nErrorCode);
-
-	m_nStatus = VMPERF_SERVER_CONFIG_SOCKET_STATUS_IDLE;
-}
-
-int CServerConfigSocket::SendRequestProfileID(void)
-{
-	DWORD nNameSize = 1024;
-	TCHAR szComputerName[1024] = {0};
-	GetComputerName(szComputerName,&nNameSize);
-	
-	SSBC_PROFILE_REQUEST_PACKET packet;
-	packet.nProfileID = m_nProfileID;
-	_stprintf_s(packet.szClient, SSBC_PROFILE_MAX_CLIENT_NAME, szComputerName);
-
-	return Send(&packet,sizeof(packet));
-}
-
-int CServerConfigSocket::ReceiveReplyProfileID(void)
-{
-	int nRead = 0, nTotal = 0;
-	int nBufferSize = sizeof(BYTE) * 1024;
-	PBYTE pBytes = (PBYTE)malloc( nBufferSize );
-	ZeroMemory(pBytes,1024);
-
-	do{
-		nRead = Receive(&(pBytes[nTotal]),nBufferSize);
-		if (nRead == nBufferSize){
-			nTotal += nRead;
-			pBytes = (PBYTE)realloc(pBytes, nTotal + nBufferSize );
-			ZeroMemory( &pBytes[nTotal], nBufferSize);
-		} else if( nRead > 0 ){
-			nTotal += nRead; }
-	} while (nRead == nBufferSize);
-
-	if ( nTotal != sizeof(SSBC_PROFILE_REPLY_PACKET) ) { 
-		//connection closed
-		PostMessage( m_hMessageWnd, WM_SSBC_ERR, (LPARAM)SSBC_ERR_SRVCFG_REQPROFIDERR, (WPARAM)nTotal );
-	}
-	else {
-		PSSBC_PROFILE_REPLY_PACKET pPacket = new SSBC_PROFILE_REPLY_PACKET;
-		(*pPacket) = (*(PSSBC_PROFILE_REPLY_PACKET)(pBytes));
-
-		PostMessage( m_hMessageWnd, WM_SSBC_ERR, (LPARAM)SSBC_ERR_SRVCFG_REQPROFIDSUC, (WPARAM)pPacket );
-	}
-
-	free(pBytes);
-	pBytes = NULL;
-
-	Close();
-	return 0;
-}
-
-*/
