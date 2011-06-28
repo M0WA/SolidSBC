@@ -10,8 +10,14 @@ EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SolidSBCCliSvcSetup", "SolidSBCCliSvcSetup\SolidSBCCliSvcSetup.vdproj", "{B2657857-963F-4C09-9CF4-F2DABF4B3FDD}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SolidSBCCliCfgGUI", "SolidSBCCliCfgGUI\SolidSBCCliCfgGUI.vcxproj", "{41A351E1-F305-4D88-A068-D57D30BEBA01}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1EACC6F0-AE76-4149-961B-035B8389A869} = {1EACC6F0-AE76-4149-961B-035B8389A869}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SolidSBCSrvCfgGUI", "SolidSBCSrvCfgGUI\SolidSBCSrvCfgGUI.vcxproj", "{56C04773-6D2E-4844-B0D5-C07ACA545003}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7CADD4A2-E191-482D-B068-FDDCE492DE47} = {7CADD4A2-E191-482D-B068-FDDCE492DE47}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SolidSBCResultViewer", "SolidSBCResultViewer\SolidSBCResultViewer.vcxproj", "{2FF2AFC1-11A0-4EF5-97EE-F9D90BCC4F95}"
 EndProject
