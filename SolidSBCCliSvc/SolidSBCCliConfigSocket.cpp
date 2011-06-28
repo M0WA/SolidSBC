@@ -102,7 +102,7 @@ bool CSolidSBCCliConfigSocket::WaitForConnect()
 	//writeable socket means successful connect()
 	HANDLE hEvent = CreateEvent(NULL,FALSE,FALSE,NULL);
 	int nError = 0;
-	if ( (nError = WSAEventSelect(m_hCliConfSocket, hEvent, FD_WRITE)) == SOCKET_ERROR )
+	if ( (nError = WSAEventSelect(m_hCliConfSocket, hEvent, FD_WRITE|FD_CLOSE)) == SOCKET_ERROR )
 	{
 		{
 			CString strMsg;
@@ -186,7 +186,7 @@ bool CSolidSBCCliConfigSocket::WaitForPacket()
 	//readable socket means packet recieved
 	HANDLE hEvent = CreateEvent(NULL,FALSE,FALSE,NULL);
 	int nError = 0;
-	if ( (nError = WSAEventSelect(m_hCliConfSocket, hEvent, FD_READ)) == SOCKET_ERROR )
+	if ( (nError = WSAEventSelect(m_hCliConfSocket, hEvent, FD_READ|FD_CLOSE)) == SOCKET_ERROR )
 	{
 		{
 			CString strMsg;

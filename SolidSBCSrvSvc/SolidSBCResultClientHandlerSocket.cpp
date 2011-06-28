@@ -67,7 +67,7 @@ bool CSolidSBCResultClientHandlerSocket::WaitForPacket(void)
 	//readable socket means packet recieved
 	HANDLE hEvent = CreateEvent(NULL,FALSE,FALSE,NULL);
 	int nError = 0;
-	if ( (nError = WSAEventSelect(m_hSocket, hEvent, FD_READ)) == SOCKET_ERROR )
+	if ( (nError = WSAEventSelect(m_hSocket, hEvent, FD_READ|FD_CLOSE)) == SOCKET_ERROR )
 	{
 		{
 			CString strMsg;
