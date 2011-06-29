@@ -80,14 +80,14 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)mysql-win32/include;$(IncludePath)</IncludePath>
+    <IncludePath>SolidSBCDBLib;$(SolutionDir)mysql-win32/include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)mysql-win32/lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)mysql-winx64/include;$(IncludePath)</IncludePath>
+    <IncludePath>SolidSBCDBLib;$(SolutionDir)mysql-winx64/include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)mysql-winx64/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -100,7 +100,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>libmysql.lib</AdditionalDependencies>
+      <AdditionalDependencies>libmysql.lib;</AdditionalDependencies>
       <AdditionalLibraryDirectories>
       </AdditionalLibraryDirectories>
       <LinkStatus>
@@ -127,7 +127,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>libmysql.lib</AdditionalDependencies>
+      <AdditionalDependencies>libmysql.lib;</AdditionalDependencies>
       <AdditionalLibraryDirectories>
       </AdditionalLibraryDirectories>
       <LinkStatus>
@@ -157,7 +157,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>libmysql.lib</AdditionalDependencies>
+      <AdditionalDependencies>libmysql.lib;</AdditionalDependencies>
       <AdditionalLibraryDirectories>
       </AdditionalLibraryDirectories>
       <LinkStatus>
@@ -188,7 +188,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>libmysql.lib</AdditionalDependencies>
+      <AdditionalDependencies>libmysql.lib;</AdditionalDependencies>
       <AdditionalLibraryDirectories>
       </AdditionalLibraryDirectories>
       <LinkStatus>
@@ -206,6 +206,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
+    <None Include="res\icon1.ico" />
     <None Include="res\SolidSBCClientHistoryForm.ico" />
     <None Include="res\SolidSBCClientList.ico" />
     <None Include="res\SolidSBCClientListView.ico" />
@@ -231,6 +232,8 @@
     <ClInclude Include="SolidSBCConfigFile.h" />
     <ClInclude Include="SolidSBCCPUMeasureResultDoc.h" />
     <ClInclude Include="SolidSBCCPUMeasureResultView.h" />
+    <ClInclude Include="SolidSBCGraphPlotterDoc.h" />
+    <ClInclude Include="SolidSBCGraphPlotterView.h" />
     <ClInclude Include="SolidSBCHDResultDoc.h" />
     <ClInclude Include="SolidSBCHDResultView.h" />
     <ClInclude Include="SolidSBCMemoryResultDoc.h" />
@@ -258,6 +261,8 @@
     <ClCompile Include="SolidSBCConfigFile.cpp" />
     <ClCompile Include="SolidSBCCPUMeasureResultDoc.cpp" />
     <ClCompile Include="SolidSBCCPUMeasureResultView.cpp" />
+    <ClCompile Include="SolidSBCGraphPlotterDoc.cpp" />
+    <ClCompile Include="SolidSBCGraphPlotterView.cpp" />
     <ClCompile Include="SolidSBCHDResultDoc.cpp" />
     <ClCompile Include="SolidSBCHDResultView.cpp" />
     <ClCompile Include="SolidSBCMemoryResultDoc.cpp" />

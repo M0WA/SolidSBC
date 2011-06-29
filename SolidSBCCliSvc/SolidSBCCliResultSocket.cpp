@@ -4,106 +4,13 @@
 #include "stdafx.h"
 #include "SolidSBCCliResultSocket.h"
 
-UINT SolidSBCCliResultConnectThread(LPVOID pParam)
-{
-	CSolidSBCCliResultSocket* pSocketClass = (CSolidSBCCliResultSocket*)pParam;
-	bool bSuccess = pSocketClass->WaitForConnect();
-	pSocketClass->OnConnect( bSuccess );
-
-	return 0;
-}
-
-UINT SolidSBCCliResultWaitForPacketThread(LPVOID pParam)
-{
-	CSolidSBCCliResultSocket* pSocketClass = (CSolidSBCCliResultSocket*)pParam;
-	if ( pSocketClass->WaitForPacket() )
-		pSocketClass->OnRead();		
-
-	return 0;
-}
-
 CSolidSBCCliResultSocket::CSolidSBCCliResultSocket()
-: m_hCliResSocket(NULL)
+: CSolidSBCClientSocket()
 {
 }
 
 CSolidSBCCliResultSocket::~CSolidSBCCliResultSocket()
 {
-	Close(false);
-}
-
-bool CSolidSBCCliResultSocket::Connect(SOCKADDR_IN target)
-{
-	if (m_hCliResSocket)
-		Close();
-
-	m_hCliResSocket = socket(AF_INET,SOCK_STREAM,0);
-
-	u_long iMode = 1;
-	ioctlsocket(m_hCliResSocket, FIONBIO, &iMode);
-
-	int nErr = connect(m_hCliResSocket,(SOCKADDR*)&target,sizeof(SOCKADDR_IN));
-	int nConnectGetLastError = WSAGetLastError();
-
-	iMode = 0;
-	ioctlsocket(m_hCliResSocket, FIONBIO, &iMode);
-
-	if ( (nErr == SOCKET_ERROR) && ( nConnectGetLastError == WSAEWOULDBLOCK ) ){
-		AfxBeginThread(SolidSBCCliResultConnectThread,(LPVOID)this);
-		return true;
-	} else 
-		return false;
-}
-
-bool CSolidSBCCliResultSocket::WaitForConnect()
-{
-	{
-		CString strMsg;
-		strMsg.Format(_T("CSolidSBCCliResultSocket::WaitForConnect() waiting for connection..."));
-		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
-	}
-	
-	//writeable socket means successful connect()
-	HANDLE hEvent = CreateEvent(NULL,FALSE,FALSE,NULL);
-	int nError = 0;
-	if ( (nError = WSAEventSelect(m_hCliResSocket, hEvent, FD_WRITE|FD_CLOSE)) == SOCKET_ERROR )
-	{
-		{
-			CString strMsg;
-			strMsg.Format(_T("CSolidSBCCliResultSocket::WaitForConnect(): WSAEventSelect() returned %d, GetLastError() = %d, socket = %d "),nError,WSAGetLastError(),m_hCliResSocket);
-			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
-			return false;
-		}
-	}
-
-	//wait if we get signaled...
-	DWORD dwTimeoutMS = 10000;
-	DWORD dwWait = WaitForSingleObject(hEvent,dwTimeoutMS);
-	CloseHandle(hEvent);
-	switch(dwWait)
-	{
-	case WAIT_OBJECT_0:
-		{
-			CString strMsg;
-			strMsg.Format(_T("CSolidSBCCliResultSocket::WaitForConnect(): returns 1, socket = %d "),m_hCliResSocket);
-			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
-		}
-		return true;
-	case WAIT_TIMEOUT:
-		{
-			CString strMsg;
-			strMsg.Format(_T("CSolidSBCCliResultSocket::WaitForConnect(): WaitForSingleObject() timed out, GetLastError() = %d, socket = %d "),WSAGetLastError(),m_hCliResSocket);
-			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
-		}
-		return false;
-	default:
-		{
-			CString strMsg;
-			strMsg.Format(_T("CSolidSBCCliResultSocket::WaitForConnect(): WaitForSingleObject() returned %d, GetLastError() = %d, socket = %d "),dwWait,WSAGetLastError(),m_hCliResSocket);
-			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
-		}
-		return false;
-	}
 }
 
 bool CSolidSBCCliResultSocket::OnConnect(bool bSuccess)
@@ -116,7 +23,7 @@ bool CSolidSBCCliResultSocket::OnConnect(bool bSuccess)
 
 	if (bSuccess){
 		SendResultConnRequest();
-		AfxBeginThread(SolidSBCCliResultWaitForPacketThread,(LPVOID)this);
+		GetNextPacket();
 	} else{
 		{
 			CString strMsg;
@@ -129,54 +36,6 @@ bool CSolidSBCCliResultSocket::OnConnect(bool bSuccess)
 	return true;
 }
 
-bool CSolidSBCCliResultSocket::WaitForPacket()
-{
-	//readable socket means packet recieved
-	HANDLE hEvent = CreateEvent(NULL,FALSE,FALSE,NULL);
-	int nError = 0;
-	if ( (nError = WSAEventSelect(m_hCliResSocket, hEvent, FD_READ|FD_CLOSE)) == SOCKET_ERROR )
-	{
-		{
-			CString strMsg;
-			strMsg.Format(_T("CSolidSBCCliResultSocket::WaitForPacket(): WSAEventSelect() returned %d, GetLastError() = %d, socket = %d "),nError,WSAGetLastError(),m_hCliResSocket);
-			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
-		}
-		g_cClientService.ConnectionClosed();
-		return false;
-	}
-	
-	//wait if we get signaled...
-	DWORD dwTimeoutMS = INFINITE;
-	DWORD dwWait = WaitForSingleObject(hEvent,dwTimeoutMS);
-	CloseHandle(hEvent);
-	switch(dwWait)
-	{
-	case WAIT_OBJECT_0:
-		{
-			CString strMsg;
-			strMsg.Format(_T("CSolidSBCCliResultSocket::WaitForPacket(): returns 1, socket = %d "),m_hCliResSocket);
-			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
-		}
-		return true;
-	case WAIT_TIMEOUT:
-		{
-			CString strMsg;
-			strMsg.Format(_T("CSolidSBCCliResultSocket::WaitForPacket(): WaitForSingleObject() timed out, GetLastError() = %d, socket = %d "),WSAGetLastError(),m_hCliResSocket);
-			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
-		}
-		g_cClientService.ConnectionClosed();
-		return false;
-	default:
-		{
-			CString strMsg;
-			strMsg.Format(_T("CSolidSBCCliResultSocket::WaitForPacket(): WaitForSingleObject() returned %d, GetLastError() = %d, socket = %d "),dwWait,WSAGetLastError(),m_hCliResSocket);
-			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
-		}
-		g_cClientService.ConnectionClosed();
-		return false;
-	}
-}
-
 bool CSolidSBCCliResultSocket::OnRead()
 {
 	int nRead = 0, nTotal = 0;
@@ -186,7 +45,7 @@ bool CSolidSBCCliResultSocket::OnRead()
 
 	do{
 		//read from socket
-		nRead = recv(m_hCliResSocket,(char*)&(pBytes[nTotal]),nBufferSize,0);
+		nRead = recv(m_hSocket,(char*)&(pBytes[nTotal]),nBufferSize,0);
 
 		//read even more
 		if (nRead == nBufferSize){
@@ -226,22 +85,6 @@ int CSolidSBCCliResultSocket::ReceiveChangeProfileRequest(PSSBC_RESULT_PROFILE_C
 	return 0;
 }
 
-bool CSolidSBCCliResultSocket::Close(bool bLog)
-{
-	if (bLog){
-		CString strMsg;
-		strMsg.Format(_T("CSolidSBCCliResultSocket::Close()"));
-		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
-	}
-
-	if (m_hCliResSocket){
-		closesocket(m_hCliResSocket);}
-
-	m_hCliResSocket = NULL;
-
-	return true;
-}
-
 int CSolidSBCCliResultSocket::SendResultConnRequest(void)
 {
 	USES_CONVERSION;
@@ -272,7 +115,7 @@ int CSolidSBCCliResultSocket::SendResultConnRequest(void)
 	//TODO: packet.client (sockaddr_in) is filled out and used and needed on server side only, 
 	//      make this stuff less dirty here, unneeded bytes go over the wire...but its just an once
 	//		per session packet
-	return send( m_hCliResSocket,(char*)pSendPacket, nNewSize,0 );
+	return send( m_hSocket,(char*)pSendPacket, nNewSize,0 );
 }
 
 int CSolidSBCCliResultSocket::SendHdTestResult(PSSBC_HD_TESTRESULT_PACKET pPacket)
@@ -288,7 +131,7 @@ int CSolidSBCCliResultSocket::SendHdTestResult(PSSBC_HD_TESTRESULT_PACKET pPacke
 	memcpy( pSendPacket, &resPacket, sizeof(SSBC_TEST_RESULT_PACKET) );
 	memcpy( &pSendPacket[sizeof(SSBC_TEST_RESULT_PACKET)], pPacket, sizeof(SSBC_HD_TESTRESULT_PACKET) );
 
-	send( m_hCliResSocket,(char*)pSendPacket, nNewSize,0 );
+	send( m_hSocket,(char*)pSendPacket, nNewSize,0 );
 
 	delete pSendPacket;
 	pSendPacket = NULL;
@@ -308,7 +151,7 @@ int CSolidSBCCliResultSocket::SendCpuMeasureTestResult(PSSBC_CPUMEASURE_TESTRESU
 	memcpy( pSendPacket, &resPacket, sizeof(SSBC_TEST_RESULT_PACKET) );
 	memcpy( &pSendPacket[sizeof(SSBC_TEST_RESULT_PACKET)], pResult, sizeof(SSBC_CPUMEASURE_TESTRESULT_PACKET) );
 
-	send( m_hCliResSocket,(char*)pSendPacket, nNewSize,0 );
+	send( m_hSocket,(char*)pSendPacket, nNewSize,0 );
 
 	delete pSendPacket;
 	pSendPacket = NULL;
@@ -328,7 +171,7 @@ int CSolidSBCCliResultSocket::SendMemTestResult(PSSBC_MEMORY_TESTRESULT_PACKET p
 	memcpy( pSendPacket, &resPacket, sizeof(SSBC_TEST_RESULT_PACKET) );
 	memcpy( &pSendPacket[sizeof(SSBC_TEST_RESULT_PACKET)], pResult, sizeof(SSBC_MEMORY_TESTRESULT_PACKET) );
 
-	send( m_hCliResSocket,(char*)pSendPacket, nNewSize,0 );
+	send( m_hSocket,(char*)pSendPacket, nNewSize,0 );
 
 	delete pSendPacket;
 	pSendPacket = NULL;
@@ -348,7 +191,7 @@ int CSolidSBCCliResultSocket::SendNetPingTestResult(PSSBC_NETWORK_PING_TESTRESUL
 	memcpy( pSendPacket, &resPacket, sizeof(SSBC_TEST_RESULT_PACKET) );
 	memcpy( &pSendPacket[sizeof(SSBC_TEST_RESULT_PACKET)], pResult, sizeof(SSBC_NETWORK_PING_TESTRESULT_PACKET) );
 
-	send( m_hCliResSocket,(char*)pSendPacket, nNewSize,0 );
+	send( m_hSocket,(char*)pSendPacket, nNewSize,0 );
 
 	delete pSendPacket;
 	pSendPacket = NULL;
@@ -369,7 +212,7 @@ int CSolidSBCCliResultSocket::SendNetTCPConTestResult(PSSBC_NETWORK_TCPCON_TESTR
 	memcpy( pSendPacket, &resPacket, sizeof(SSBC_TEST_RESULT_PACKET) );
 	memcpy( &pSendPacket[sizeof(SSBC_TEST_RESULT_PACKET)], pResult, sizeof(SSBC_NETWORK_TCPCON_TESTRESULT_PACKET) );
 
-	send( m_hCliResSocket,(char*)pSendPacket, nNewSize,0 );
+	send( m_hSocket,(char*)pSendPacket, nNewSize,0 );
 
 	delete pSendPacket;
 	pSendPacket = NULL;

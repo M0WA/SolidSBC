@@ -31,6 +31,8 @@
 
 #include <iostream>
 
+#include <SolidSBCNetLib.h>
+
 //reference additional headers your program requires here
 #include "SolidSBCClientConfigPackets.h"
 #include "SolidSBCClientResultPackets.h"

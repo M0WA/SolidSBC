@@ -49,6 +49,9 @@
     <None Include="res\SolidSBCTCPConResultView.ico">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="res\icon1.ico">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SolidSBCResultViewer.h">
@@ -129,6 +132,12 @@
     <ClInclude Include="SolidSBCConfigFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SolidSBCGraphPlotterView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidSBCGraphPlotterDoc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SolidSBCResultViewer.cpp">
@@ -201,6 +210,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SolidSBCConfigFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidSBCGraphPlotterView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidSBCGraphPlotterDoc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -43,8 +43,8 @@ int CSolidSBCClient::Stop(bool bLog)
 	m_bIsInitialized = FALSE;
 
 	StopTests();
-	m_cCliConfigSocket.Close(bLog);
-	m_cCliResultSocket.Close(bLog);
+	m_cCliConfigSocket.Close();
+	m_cCliResultSocket.Close();
 
 	delete [] m_pszUUID;
 	m_pszUUID = NULL;
@@ -77,17 +77,8 @@ int CSolidSBCClient::InitServerConfig(void)
 	target.sin_addr.s_addr = inet_addr(T2A(m_strDataSource));
 
 	m_cCliConfigSocket.SetProfileID(m_nProfileID);
-	bool bConnect = m_cCliConfigSocket.Connect( target );
-
-	if (!bConnect){
-		{
-			CString strMsg;
-			strMsg.Format(_T("m_cCliConfigSocket.Connect() returns %d."),bConnect);
-			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
-		}
-	}
-
-	return !bConnect;
+	m_cCliConfigSocket.Connect( target );
+	return true;
 }
 
 int CSolidSBCClient::StartResultConnection(SOCKADDR_IN target)

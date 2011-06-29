@@ -7,24 +7,34 @@
 #include "afxdialogex.h"
 #include "SolidSBCResultViewer.h"
 #include "MainFrm.h"
-
 #include "ChildFrm.h"
+
 #include "SolidSBCResultViewerDoc.h"
 #include "SolidSBCResultViewerView.h"
+
 #include "SolidSBCClientListDoc.h"
 #include "SolidSBCClientListView.h"
+
 #include "SolidSBCClientHistoryDoc.h"
 #include "SolidSBCClientHistoryView.h"
+
 #include "SolidSBCMemoryResultDoc.h"
 #include "SolidSBCMemoryResultView.h"
+
 #include "SolidSBCCPUMeasureResultDoc.h"
 #include "SolidSBCCPUMeasureResultView.h"
+
 #include "SolidSBCHDResultDoc.h"
 #include "SolidSBCHDResultView.h"
+
 #include "SolidSBCPingResultDoc.h"
 #include "SolidSBCPingResultView.h"
+
 #include "SolidSBCTCPConResultDoc.h"
 #include "SolidSBCTCPConResultView.h"
+
+#include "SolidSBCGraphPlotterView.h"
+#include "SolidSBCGraphPlotterDoc.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -72,8 +82,6 @@ CSolidSBCResultViewerApp theApp;
 
 BOOL CSolidSBCResultViewerApp::InitInstance()
 {
-
-
 	INITCOMMONCONTROLSEX InitCtrls;
 	InitCtrls.dwSize = sizeof(InitCtrls);
 	InitCtrls.dwICC = ICC_WIN95_CLASSES;
@@ -171,6 +179,15 @@ BOOL CSolidSBCResultViewerApp::InitInstance()
 			RUNTIME_CLASS(CSolidSBCPingResultDoc),
 			RUNTIME_CLASS(CChildFrame),
 			RUNTIME_CLASS(CSolidSBCPingResultView));
+		AddDocTemplate(pNewDocTemplate);
+	}
+
+	{
+		CMultiDocTemplate* pNewDocTemplate = new CMultiDocTemplate(
+			IDR_SOLIDSBCGRAPHPLOTTERVIEW_TMPL,
+			RUNTIME_CLASS(CSolidSBCGraphPlotterDoc),
+			RUNTIME_CLASS(CChildFrame),
+			RUNTIME_CLASS(CSolidSBCGraphPlotterView));
 		AddDocTemplate(pNewDocTemplate);
 	}
 
