@@ -2,7 +2,7 @@
 
 //version
 #define SSBC_SRVSVC_VERSION_MAJOR		_T("1")
-#define SSBC_SRVSVC_VERSION_MINOR		_T("3")
+#define SSBC_SRVSVC_VERSION_MINOR		_T("4")
 
 //windows service releated names
 #define SSBC_SRVSVC_NAME				_T("SolidSbcSrv")
