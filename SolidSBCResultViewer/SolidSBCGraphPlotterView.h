@@ -1,6 +1,6 @@
 #pragma once
 
-
+class CSolidSBCGraphPlotterDoc;
 
 // CSolidSBCGraphPlotterView view
 
@@ -25,6 +25,9 @@ protected:
 	virtual void OnInitialUpdate();     // first time after construct
 
 	DECLARE_MESSAGE_MAP()
+
+private:
+	void PaintCoordinateSystem(CDC* pDC, const CRect& rectData);
 };
 
 

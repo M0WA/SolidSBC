@@ -370,6 +370,22 @@ void CSolidSBCResultViewerApp::OnTCPResultView(CString strClientUUID, int nIdent
 	
 }
 
+void CSolidSBCResultViewerApp::OnGraphPlotterView(CString strClientUUID, int nIdentity)
+{
+	CDocument* pDoc = OpenView( _T("SolidSBCGraphPlotterView") );
+	
+	if (!pDoc)
+		return;
+
+	POSITION pos = pDoc->GetFirstViewPosition();
+	CView* pView = NULL;
+	if ( (pView = pDoc->GetNextView(pos)) )
+	{
+		//((CSolidSBCGraphPlotterView*)pView)->SetResults(strClientUUID,nIdentity);
+	}
+	
+}
+
 CDocument* CSolidSBCResultViewerApp::OpenView(CString strViewName)
 {
 	POSITION DocTmplPos = GetFirstDocTemplatePosition();

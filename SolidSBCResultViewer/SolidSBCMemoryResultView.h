@@ -43,6 +43,8 @@ private:
 	CString m_strUUID;
 	CStatic m_ctlAvgSpeedStatic;
 	int m_nIdentity;
+public:
+	afx_msg void OnExportresultsPlot();
 };
 
 

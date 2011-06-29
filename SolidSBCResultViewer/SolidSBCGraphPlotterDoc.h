@@ -1,6 +1,9 @@
 #pragma once
 
 // CSolidSBCGraphPlotterDoc document
+#include <map>
+
+class CSolidSBCGraphPlotterView;
 
 class CSolidSBCGraphPlotterDoc : public CDocument
 {
@@ -18,9 +21,14 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 #endif
+	void SetResults(const std::map<int, int>& mapResults);
+	std::map<int,int> GetResults() { return m_mapCoordinates; }
 
 protected:
 	virtual BOOL OnNewDocument();
 
 	DECLARE_MESSAGE_MAP()
+
+private:
+	std::map<int,int> m_mapCoordinates;
 };

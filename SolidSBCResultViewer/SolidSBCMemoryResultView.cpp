@@ -32,6 +32,7 @@ void CSolidSBCMemoryResultView::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CSolidSBCMemoryResultView, CFormView)
 	ON_WM_SIZE()
 	ON_NOTIFY(NM_RCLICK, IDC_MEM_RESULT_LIST, &CSolidSBCMemoryResultView::OnNMRClickMemResultList)
+	ON_COMMAND(ID_EXPORTRESULTS_PLOT, &CSolidSBCMemoryResultView::OnExportresultsPlot)
 END_MESSAGE_MAP()
 
 
@@ -204,6 +205,9 @@ void CSolidSBCMemoryResultView::OnNMRClickMemResultList(NMHDR *pNMHDR, LRESULT *
 			case ID_EXPORT_ALL:
 				OnExportAllResults();
 				break;
+			case ID_EXPORTRESULTS_PLOT:
+				OnExportresultsPlot();
+				break;
 			default:
 				//could not determine action
 				break;
@@ -338,4 +342,9 @@ void CSolidSBCMemoryResultView::ExportResults(CString strFileName,bool bSelected
 #endif
 	}
 	END_CATCH
+}
+
+void CSolidSBCMemoryResultView::OnExportresultsPlot()
+{
+	theApp.OnGraphPlotterView(m_strUUID,m_nIdentity);
 }

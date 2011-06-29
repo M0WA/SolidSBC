@@ -26,6 +26,7 @@ public:
 	void OnCPUMeasureResultView(CString strClientUUID, int nIdentity = -1);
 	void OnTCPResultView(CString strClientUUID, int nIdentity = -1);
 	void OnPingResultView(CString strClientUUID, int nIdentity = -1);
+	void OnGraphPlotterView(CString strClientUUID, int nIdentity = -1);
 
 	CString GetSettingsFileName(void);
 

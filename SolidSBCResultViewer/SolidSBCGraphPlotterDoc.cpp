@@ -64,3 +64,7 @@ void CSolidSBCGraphPlotterDoc::Serialize(CArchive& ar)
 
 
 // CSolidSBCGraphPlotterDoc commands
+void CSolidSBCGraphPlotterDoc::SetResults(const std::map<int, int>& mapResults)
+{
+	m_mapCoordinates = mapResults;
+}
