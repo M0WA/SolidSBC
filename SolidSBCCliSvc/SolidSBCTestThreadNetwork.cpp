@@ -140,16 +140,17 @@ UINT VMTestThreadNetworkTCPConnThread(LPVOID lParam)
 		closesocket(hConnectSocket);
 
 		if ( param.bTcpConnTransmitData ){
-			//send result
-			PSSBC_NETWORK_TCPCON_TESTRESULT_PACKET pResult = new SSBC_NETWORK_TCPCON_TESTRESULT_PACKET;
+			int nPacketSize = sizeof(SSBC_BASE_PACKET_HEADER) + sizeof(SSBC_NETWORK_TCPCON_TESTRESULT_PACKET);
+			PBYTE pPacket = new byte[nPacketSize];
+			ZeroMemory(pPacket,nPacketSize);
+
+			((PSSBC_BASE_PACKET_HEADER)pPacket)->type = SSBC_NETWORK_TCPCON_TESTRESULT_PACKET_TYPE;
+			((PSSBC_BASE_PACKET_HEADER)pPacket)->nPacketSize = nPacketSize;
+			
+			PSSBC_NETWORK_TCPCON_TESTRESULT_PACKET pResult = ((PSSBC_NETWORK_TCPCON_TESTRESULT_PACKET)&pPacket[sizeof(SSBC_BASE_PACKET_HEADER)]);
 			pResult->dDuration  = dDurationMS;
 
-			PSSBC_TEST_RESULT_PACKET pPacket = new SSBC_TEST_RESULT_PACKET;
-			pPacket->nParamSize = sizeof(SSBC_NETWORK_TCPCON_TESTRESULT_PACKET);
-			pPacket->hdr.type   = SSBC_NETWORK_TCPCON_TESTRESULT_PACKET_TYPE;
-			pPacket->pParam	    = pResult;
-
-			g_cClientService.SendTestResult(pPacket);
+			g_cClientService.SendTestResult((PSSBC_BASE_PACKET_HEADER)pPacket);
 		}
 
 		//check if we are faster than nTcpConnInterval
@@ -238,16 +239,17 @@ UINT VMTestThreadNetworkPingThread(LPVOID lParam)
 				PICMP_ECHO_REPLY pEchoReply = (PICMP_ECHO_REPLY)&(pReplyBuffer[dwPos]);
 
 				if ( param.bPingTransmitData ){
-					//send result
-					PSSBC_NETWORK_PING_TESTRESULT_PACKET pResult = new SSBC_NETWORK_PING_TESTRESULT_PACKET;
+					int nPacketSize = sizeof(SSBC_BASE_PACKET_HEADER) + sizeof(SSBC_NETWORK_PING_TESTRESULT_PACKET);
+					PBYTE pPacket = new byte[nPacketSize];
+					ZeroMemory(pPacket,nPacketSize);
+
+					((PSSBC_BASE_PACKET_HEADER)pPacket)->type = SSBC_NETWORK_PING_TESTRESULT_PACKET_TYPE;
+					((PSSBC_BASE_PACKET_HEADER)pPacket)->nPacketSize = nPacketSize;
+			
+					PSSBC_NETWORK_PING_TESTRESULT_PACKET pResult = ((PSSBC_NETWORK_PING_TESTRESULT_PACKET)&pPacket[sizeof(SSBC_BASE_PACKET_HEADER)]);
 					pResult->icmpReply = *pEchoReply;
 
-					PSSBC_TEST_RESULT_PACKET pPacket = new SSBC_TEST_RESULT_PACKET;
-					pPacket->nParamSize = sizeof(SSBC_NETWORK_PING_TESTRESULT_PACKET);
-					pPacket->hdr.type   = SSBC_NETWORK_PING_TESTRESULT_PACKET_TYPE;
-					pPacket->pParam	    = pResult;
-
-					g_cClientService.SendTestResult(pPacket);
+					g_cClientService.SendTestResult((PSSBC_BASE_PACKET_HEADER)pPacket);
 				}
 			}
 		}

@@ -37,18 +37,18 @@ UINT VMPerfTestThreadMemory(LPVOID lpParam)
 
 			//send result //TODO: !!!!!!!!!!!!!!! limit msg/seconds !!!!!!!!!!!!!!!!
 			if ( pThreadParam->bTransmitData ) {
+				int nPacketSize = sizeof(SSBC_BASE_PACKET_HEADER) + sizeof(SSBC_MEMORY_TESTRESULT_PACKET);
+				PBYTE pPacket = new byte[nPacketSize];
+				ZeroMemory(pPacket,nPacketSize);
 
-				PSSBC_MEMORY_TESTRESULT_PACKET pResult = new SSBC_MEMORY_TESTRESULT_PACKET;
+				((PSSBC_BASE_PACKET_HEADER)pPacket)->type = SSBC_MEMORY_TESTRESULT_PACKET_TYPE;
+				((PSSBC_BASE_PACKET_HEADER)pPacket)->nPacketSize = nPacketSize;
+			
+				PSSBC_MEMORY_TESTRESULT_PACKET pResult = ((PSSBC_MEMORY_TESTRESULT_PACKET)&pPacket[sizeof(SSBC_BASE_PACKET_HEADER)]);
 				pResult->dMallocZeroDuration = dMallocZeroDuration;
 				pResult->ulBytes			 = ulMallocZeroBytes;
 
-				
-				PSSBC_TEST_RESULT_PACKET pPacket = new SSBC_TEST_RESULT_PACKET;
-				pPacket->pParam	    = pResult;
-				pPacket->nParamSize = sizeof(SSBC_MEMORY_TESTRESULT_PACKET);
-				pPacket->hdr.type   = SSBC_MEMORY_TESTRESULT_PACKET_TYPE;
-
-				g_cClientService.SendTestResult(pPacket);
+				g_cClientService.SendTestResult((PSSBC_BASE_PACKET_HEADER)pPacket);
 			}
 
 			rand_s( &number );

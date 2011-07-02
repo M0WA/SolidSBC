@@ -19,7 +19,7 @@ public:
 	int StartResultConnection(void);
 	int StartTestFromProfilePacket(PSSBC_PROFILE_REPLY_PACKET pPacket);
 	int ChangeProfile(PSSBC_RESULT_PROFILE_CHANGE_REQUEST_PACKET pPacket);
-	void SendTestResult( PSSBC_TEST_RESULT_PACKET pPacket );
+	void SendTestResult( PSSBC_BASE_PACKET_HEADER pPacket );
 	void ConnectionClosed(void);
 
 	void SetImagePath(CString strImagePath){g_strImagePath = strImagePath;};

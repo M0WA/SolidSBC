@@ -18,7 +18,7 @@ public:
 	int Run( CString strDataSource, DWORD dwSrvConfPort, DWORD dwSrvDataPort, UINT nProfileID );
 	int Stop(bool bLog = true);
 	int StartResultConnection(SOCKADDR_IN target);
-	int SendTestResult(PSSBC_TEST_RESULT_PACKET pPacket);
+	int SendTestResult(PSSBC_BASE_PACKET_HEADER pPacket);
 	int StartTestFromProfilePacket(PSSBC_PROFILE_REPLY_PACKET pPacket);
 	void StopTests(void);
 

@@ -40,18 +40,21 @@ UINT VMPerfTestThreadHarddriveReader(LPVOID lpParam)
 
 		//tell result to dialog
 		if ( pThreadParam->bTransmitData ){
-			PSSBC_HD_TESTRESULT_PACKET pResult = new SSBC_HD_TESTRESULT_PACKET;
+			int nPacketSize = sizeof(SSBC_BASE_PACKET_HEADER) + sizeof(SSBC_HD_TESTRESULT_PACKET);
+			PBYTE pPacket = new byte[nPacketSize];
+			ZeroMemory(pPacket,nPacketSize);
+
+			((PSSBC_BASE_PACKET_HEADER)pPacket)->type = SSBC_HD_TESTRESULT_PACKET_TYPE;
+			((PSSBC_BASE_PACKET_HEADER)pPacket)->nPacketSize = nPacketSize;
+			
+			PSSBC_HD_TESTRESULT_PACKET pResult = ((PSSBC_HD_TESTRESULT_PACKET)&pPacket[sizeof(SSBC_BASE_PACKET_HEADER)]);
 			pResult->nType    = SSBC_TEST_HARDDRIVE_RESULT_TYPE_READ_INIT;
 			pResult->ulBytes  = ulReadBytes;
 			pResult->ulWait	  = pThreadParam->nReadWriteDelay;
 			pResult->dSeconds = dSeconds;
-			
-			PSSBC_TEST_RESULT_PACKET pPacket = new SSBC_TEST_RESULT_PACKET;
-			pPacket->pParam	    = pResult;
-			pPacket->nParamSize = sizeof(SSBC_HD_TESTRESULT_PACKET);
-			pPacket->hdr.type   = SSBC_HD_TESTRESULT_PACKET_TYPE;
-			
-			g_cClientService.SendTestResult(pPacket);
+
+			g_cClientService.SendTestResult((PSSBC_BASE_PACKET_HEADER)pPacket);
+
 		}
 	}
 	CATCH(CException, e)
@@ -95,18 +98,20 @@ UINT VMPerfTestThreadHarddriveReader(LPVOID lpParam)
 
 		//tell result to dialog
 		if ( pThreadParam->bTransmitData ){
-			PSSBC_HD_TESTRESULT_PACKET pResult = new SSBC_HD_TESTRESULT_PACKET;
+			int nPacketSize = sizeof(SSBC_BASE_PACKET_HEADER) + sizeof(SSBC_HD_TESTRESULT_PACKET);
+			PBYTE pPacket = new byte[nPacketSize];
+			ZeroMemory(pPacket,nPacketSize);
+
+			((PSSBC_BASE_PACKET_HEADER)pPacket)->type = SSBC_HD_TESTRESULT_PACKET_TYPE;
+			((PSSBC_BASE_PACKET_HEADER)pPacket)->nPacketSize = nPacketSize;
+			
+			PSSBC_HD_TESTRESULT_PACKET pResult = ((PSSBC_HD_TESTRESULT_PACKET)&pPacket[sizeof(SSBC_BASE_PACKET_HEADER)]);
 			pResult->nType    = SSBC_TEST_HARDDRIVE_RESULT_TYPE_READ;
 			pResult->ulBytes  = ulReadBytes;
 			pResult->ulWait	  = pThreadParam->nReadWriteDelay;
 			pResult->dSeconds = dSeconds;
-			
-			PSSBC_TEST_RESULT_PACKET pPacket = new SSBC_TEST_RESULT_PACKET;
-			pPacket->pParam	    = pResult;
-			pPacket->nParamSize = sizeof(SSBC_HD_TESTRESULT_PACKET);
-			pPacket->hdr.type   = SSBC_HD_TESTRESULT_PACKET_TYPE;
 
-			g_cClientService.SendTestResult(pPacket);
+			g_cClientService.SendTestResult((PSSBC_BASE_PACKET_HEADER)pPacket);
 		}
 		
 		//end thread?
@@ -180,18 +185,20 @@ UINT VMPerfTestThreadHarddriveWriter(LPVOID lpParam)
 	
 		//tell result to dialog
 		if ( pThreadParam->bTransmitData ){
-			PSSBC_HD_TESTRESULT_PACKET pResult = new SSBC_HD_TESTRESULT_PACKET;	
+			int nPacketSize = sizeof(SSBC_BASE_PACKET_HEADER) + sizeof(SSBC_HD_TESTRESULT_PACKET);
+			PBYTE pPacket = new byte[nPacketSize];
+			ZeroMemory(pPacket,nPacketSize);
+
+			((PSSBC_BASE_PACKET_HEADER)pPacket)->type = SSBC_HD_TESTRESULT_PACKET_TYPE;
+			((PSSBC_BASE_PACKET_HEADER)pPacket)->nPacketSize = nPacketSize;
+			
+			PSSBC_HD_TESTRESULT_PACKET pResult = ((PSSBC_HD_TESTRESULT_PACKET)&pPacket[sizeof(SSBC_BASE_PACKET_HEADER)]);
 			pResult->nType    = SSBC_TEST_HARDDRIVE_RESULT_TYPE_WRITE;
 			pResult->ulBytes  = ulBytesWritten;
 			pResult->ulWait	  = pThreadParam->nReadWriteDelay;
 			pResult->dSeconds = dSeconds;
-			
-			PSSBC_TEST_RESULT_PACKET pPacket = new SSBC_TEST_RESULT_PACKET;
-			pPacket->pParam	    = pResult;
-			pPacket->nParamSize = sizeof(SSBC_HD_TESTRESULT_PACKET);
-			pPacket->hdr.type   =  SSBC_HD_TESTRESULT_PACKET_TYPE;
-			
-			g_cClientService.SendTestResult(pPacket);
+
+			g_cClientService.SendTestResult((PSSBC_BASE_PACKET_HEADER)pPacket);
 		}
 
 		//end thread?

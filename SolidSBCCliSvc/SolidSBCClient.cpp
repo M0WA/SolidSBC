@@ -97,51 +97,17 @@ int CSolidSBCClient::StartResultConnection(SOCKADDR_IN target)
 	return 0;
 }
 
-int CSolidSBCClient::SendTestResult(PSSBC_TEST_RESULT_PACKET pPacket)
+int CSolidSBCClient::SendTestResult(PSSBC_BASE_PACKET_HEADER pPacket)
 {
 	int nReturn = 0;
 	if ( !m_bIsInitialized )
 		nReturn = 1;
 	
-	switch ( pPacket->hdr.type )
-	{
+	nReturn = m_cCliResultSocket.SendPacket(pPacket);
 
-	case SSBC_HD_TESTRESULT_PACKET_TYPE:
-		nReturn = m_cCliResultSocket.SendHdTestResult((PSSBC_HD_TESTRESULT_PACKET)pPacket->pParam);
-		delete (PSSBC_HD_TESTRESULT_PACKET)pPacket->pParam;
-		pPacket->pParam = NULL;
-		break;
-
-	case SSBC_CPUMEASURE_TESTRESULT_PACKET_TYPE:
-		nReturn = m_cCliResultSocket.SendCpuMeasureTestResult((PSSBC_CPUMEASURE_TESTRESULT_PACKET)pPacket->pParam);
-		delete (PSSBC_CPUMEASURE_TESTRESULT_PACKET)pPacket->pParam;
-		pPacket->pParam = NULL;
-		break;
-
-	case SSBC_MEMORY_TESTRESULT_PACKET_TYPE:
-		nReturn = m_cCliResultSocket.SendMemTestResult((PSSBC_MEMORY_TESTRESULT_PACKET)pPacket->pParam);
-		delete (PSSBC_MEMORY_TESTRESULT_PACKET)pPacket->pParam;
-		pPacket->pParam = NULL;
-		break;
-
-	case SSBC_NETWORK_PING_TESTRESULT_PACKET_TYPE:
-		nReturn = m_cCliResultSocket.SendNetPingTestResult( (PSSBC_NETWORK_PING_TESTRESULT_PACKET)pPacket->pParam );
-		delete (PSSBC_NETWORK_PING_TESTRESULT_PACKET)pPacket->pParam;
-		pPacket->pParam = NULL;
-		break;
-
-	case SSBC_NETWORK_TCPCON_TESTRESULT_PACKET_TYPE:
-		nReturn = m_cCliResultSocket.SendNetTCPConTestResult( (PSSBC_NETWORK_TCPCON_TESTRESULT_PACKET)pPacket->pParam );
-		delete (PSSBC_NETWORK_TCPCON_TESTRESULT_PACKET)pPacket->pParam;
-		pPacket->pParam = NULL;
-		break;
-
-	default:
-		nReturn = 1;
-		break;
-	}
-	
-	delete pPacket;
+	PBYTE orgPacket = (PBYTE)pPacket;
+	delete [] orgPacket;
+	pPacket = 0;
 	return nReturn;
 }
 

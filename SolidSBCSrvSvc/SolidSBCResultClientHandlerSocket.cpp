@@ -114,7 +114,7 @@ bool CSolidSBCResultClientHandlerSocket::OnRead(int nClientID)
 	CString strType = _T("error");
 
 	int	  nRead       = 0;
-	int   nHeaderSize = sizeof(SSBC_TEST_RESULT_PACKET);
+	int   nHeaderSize = sizeof(SSBC_BASE_PACKET_HEADER);
 	PBYTE pHeader     = (PBYTE)malloc( nHeaderSize );
 	ZeroMemory(pHeader,nHeaderSize);
 
@@ -123,7 +123,7 @@ bool CSolidSBCResultClientHandlerSocket::OnRead(int nClientID)
 	if (nRead == nHeaderSize){
 
 		//calculating size for complete packet
-		switch( ((PSSBC_TEST_RESULT_PACKET)pHeader)->hdr.type )
+		switch( ((PSSBC_BASE_PACKET_HEADER)pHeader)->type )
 		{
 		case SSBC_CONN_RES_REQUEST_PACKET_TYPE:
 			nRequiredSize = sizeof(SSBC_CONN_RES_REQUEST_PACKET);
@@ -170,7 +170,7 @@ bool CSolidSBCResultClientHandlerSocket::OnRead(int nClientID)
 		if ( nRead == nRequiredSize ){
 			//packet received
 			//everything is ok with the packet, do appropriate actions...
-			switch( ((PSSBC_TEST_RESULT_PACKET)pHeader)->hdr.type )
+			switch( ((PSSBC_BASE_PACKET_HEADER)pHeader)->type )
 			{
 			case SSBC_CONN_RES_REQUEST_PACKET_TYPE:
 				ReceiveResultConnRequest( (PSSBC_CONN_RES_REQUEST_PACKET) (&(pPacket[nHeaderSize])), nClientID );
@@ -250,12 +250,14 @@ int CSolidSBCResultClientHandlerSocket::ReceiveResultConnRequest( PSSBC_CONN_RES
 
 void CSolidSBCResultClientHandlerSocket::SendProfileChangeRequest(UINT nNewProfileID)
 {
-	//sending profile change request to client
-	SSBC_RESULT_PROFILE_CHANGE_REQUEST_PACKET packet;
-	packet.hdr.type = SSBC_PROFILE_CHANGE_REQUEST_PACKET_TYPE;
-	packet.nChangeToProfileID = nNewProfileID;
+	int nPacketSize = sizeof(SSBC_BASE_PACKET_HEADER) + sizeof(SSBC_RESULT_PROFILE_CHANGE_REQUEST_PACKET);
+	PBYTE pPacket = new byte[nPacketSize];
 
-	send(m_hSocket,(char*)&packet,sizeof(SSBC_RESULT_PROFILE_CHANGE_REQUEST_PACKET),0);
+	((PSSBC_BASE_PACKET_HEADER)pPacket)->type = SSBC_PROFILE_CHANGE_REQUEST_PACKET_TYPE;
+	((PSSBC_BASE_PACKET_HEADER)pPacket)->nPacketSize = nPacketSize;
+	((PSSBC_RESULT_PROFILE_CHANGE_REQUEST_PACKET)&pPacket[sizeof(SSBC_BASE_PACKET_HEADER)])->nChangeToProfileID = nNewProfileID;
+
+	send(m_hSocket,(char*)&pPacket,nPacketSize,0);
 }
 
 void CSolidSBCResultClientHandlerSocket::Close(void)

@@ -9,15 +9,9 @@ public:
 	virtual bool OnConnect(bool bSuccess);
 	virtual bool OnRead();
 
+	int SendPacket(PSSBC_BASE_PACKET_HEADER pPacket);
+
 	int		SendResultConnRequest	(void);
-	int     SendHdTestResult        (PSSBC_HD_TESTRESULT_PACKET pPacket);
-	int     SendMemTestResult       (PSSBC_MEMORY_TESTRESULT_PACKET pResult);
-	int     SendCpuMeasureTestResult(PSSBC_CPUMEASURE_TESTRESULT_PACKET pResult);
-	int     SendNetPingTestResult   (PSSBC_NETWORK_PING_TESTRESULT_PACKET pResult);
-	int     SendNetTCPConTestResult (PSSBC_NETWORK_TCPCON_TESTRESULT_PACKET pResult);
-
-	
-
 	void    SetProfileID            (UINT nProfileID) { m_nProfileID = nProfileID;   };
 	void	SetClientUUID			(char* pszClientUUID){m_pszClientUUID = pszClientUUID;};
 

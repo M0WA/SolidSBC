@@ -342,13 +342,13 @@ int CSolidSBCClientService::ChangeProfile(PSSBC_RESULT_PROFILE_CHANGE_REQUEST_PA
 	return 0;
 }
 
-void CSolidSBCClientService::SendTestResult( PSSBC_TEST_RESULT_PACKET pPacket )
+void CSolidSBCClientService::SendTestResult( PSSBC_BASE_PACKET_HEADER pPacket )
 {
 
 #ifdef _DEBUG
 	{
 		CString strMsg;
-		strMsg.Format(_T("CSolidSBCClientService::SendTestResult() pPacket->hdr.type = %d."),pPacket->hdr.type);
+		strMsg.Format(_T("CSolidSBCClientService::SendTestResult() pPacket->hdr.type = %d."),pPacket->type);
 		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
 	}
 #endif

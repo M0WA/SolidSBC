@@ -149,19 +149,21 @@ UINT VMPerfTestThreadCPUMeasure(LPVOID lParam)
 		//                maybe triggers DDOS ATTACK 
 		if ( pThreadParam->bTransmitData ) {
 
-			PSSBC_CPUMEASURE_TESTRESULT_PACKET pResult = new SSBC_CPUMEASURE_TESTRESULT_PACKET;
+			int nPacketSize = sizeof(SSBC_BASE_PACKET_HEADER) + sizeof(SSBC_CPUMEASURE_TESTRESULT_PACKET);
+			PBYTE pPacket = new byte[nPacketSize];
+			ZeroMemory(pPacket,nPacketSize);
+
+			((PSSBC_BASE_PACKET_HEADER)pPacket)->type = SSBC_CPUMEASURE_TESTRESULT_PACKET_TYPE;
+			((PSSBC_BASE_PACKET_HEADER)pPacket)->nPacketSize = nPacketSize;
+			
+			PSSBC_CPUMEASURE_TESTRESULT_PACKET pResult = ((PSSBC_CPUMEASURE_TESTRESULT_PACKET)&pPacket[sizeof(SSBC_BASE_PACKET_HEADER)]);
 			pResult->dAddDuration     = dAddCnt;
 			pResult->ullAddMultiplier = recentAddMultiplier;
 			pResult->dDivDuration     = dDivCnt;
 			pResult->ullDivMultiplier = recentDivMultiplier;
 			pResult->dOverallDuration = dOverallCnt;
-			
-			PSSBC_TEST_RESULT_PACKET pPacket = new SSBC_TEST_RESULT_PACKET;
-			pPacket->pParam	    = pResult;
-			pPacket->nParamSize = sizeof(SSBC_CPUMEASURE_TESTRESULT_PACKET);
-			pPacket->hdr.type   = SSBC_CPUMEASURE_TESTRESULT_PACKET_TYPE;
 
-			g_cClientService.SendTestResult(pPacket);
+			g_cClientService.SendTestResult((PSSBC_BASE_PACKET_HEADER)pPacket);
 		}
 		
 		//exit thread?
