@@ -154,6 +154,9 @@ void CSolidSBCCPUMeasureResultView::OnNMRClickCpumeasureResultList(NMHDR *pNMHDR
 			case ID_EXPORT_ALL:
 				OnExportAllResults();
 				break;
+			case ID_EXPORTRESULTS_PLOT:
+				OnExportresultsPlot();
+				break;
 			default:
 				//could not determine action
 				break;
@@ -295,4 +298,35 @@ void CSolidSBCCPUMeasureResultView::ExportResults(CString strFileName,bool bSele
 #endif
 	}
 	END_CATCH
+}
+
+void CSolidSBCCPUMeasureResultView::OnExportresultsPlot(void)
+{
+	USES_CONVERSION;
+	std::vector<SSBC_CLIENT_CPUMEASURE_RESULT> cpuResults = g_cDatabaseConnection.GetClientCPUMeasureResults(m_strUUID,m_nIdentity);
+	std::vector<SSBC_CLIENT_CPUMEASURE_RESULT>::iterator iIter;
+
+	std::map<int,std::map<int,int>> mapMapCoordinates;
+	std::map<int,COLORREF>			mapColors;
+	std::map<int,std::pair<CString,CString>>  mapPairUnits;
+
+	mapColors[0] = RGB(255,0,0);
+	mapColors[1] = RGB(0,0,255);
+	mapPairUnits[0] = std::pair<CString,CString>(_T("result"),_T("mult/s (addition)"));
+	mapPairUnits[1] = std::pair<CString,CString>(_T("result"),_T("mult/s (division)"));
+
+	unsigned int nPos  = 0;
+	std::map<int,int> addCoords, divCoords;
+	for ( iIter = cpuResults.begin(); iIter < cpuResults.end(); iIter++ )
+	{
+		int nAddSpeed = (int)((_ttof((*iIter).strAddMultiplier) / _ttof((*iIter).strAddDuration)));
+		addCoords[nPos] = nAddSpeed;
+		int nDivSpeed = (int)((_ttof((*iIter).strDivMultiplier) / _ttof((*iIter).strDivDuration)));
+		divCoords[nPos] = nDivSpeed;
+		nPos++;
+	}
+	mapMapCoordinates[0] = addCoords;
+	mapMapCoordinates[1] = divCoords;
+
+	theApp.OnGraphPlotterView(m_strUUID,m_nIdentity,mapMapCoordinates,mapColors,mapPairUnits);
 }

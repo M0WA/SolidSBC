@@ -21,8 +21,17 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 #endif
-	void SetResults(const std::map<int, int>& mapResults);
-	std::map<int,int> GetResults() { return m_mapCoordinates; }
+
+	void SetResults(
+		const std::map<int, std::map<int, int>>&			mapMapResults, 
+		const std::map<int, COLORREF>&						mapColors, 
+		const std::map<int, std::pair<CString, CString>>&	mapPairsUnits
+		);
+	void GetResults(
+		std::map<int, std::map<int, int>>&				mapMapResults, 
+		std::map<int, COLORREF>&						mapColors, 
+		std::map<int, std::pair<CString, CString>>&		mapPairsUnits
+		);
 
 protected:
 	virtual BOOL OnNewDocument();
@@ -30,5 +39,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	std::map<int,int> m_mapCoordinates;
+	std::map<int, std::map<int, int>>			m_mapMapCoordinates;
+	std::map<int, COLORREF>						m_mapColors;
+	std::map<int, std::pair<CString, CString>>  m_mapPairsUnits;
 };

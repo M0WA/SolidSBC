@@ -37,6 +37,7 @@ private:
 	void OnFilterDate(void);
 	void OnExportSelectedResults(void);
 	void OnExportAllResults(void);
+	void OnExportresultsPlot(void);
 	void ExportResults(CString strFileName,bool bSelectedOnly = false);
 
 	void RefreshList(void);

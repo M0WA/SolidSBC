@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "SolidSBCResultViewer.h"
 #include "SolidSBCMemoryResultView.h"
+#include <map>
 
 
 // CSolidSBCMemoryResultView
@@ -344,7 +345,35 @@ void CSolidSBCMemoryResultView::ExportResults(CString strFileName,bool bSelected
 	END_CATCH
 }
 
-void CSolidSBCMemoryResultView::OnExportresultsPlot()
+void CSolidSBCMemoryResultView::OnExportresultsPlot(void)
 {
-	theApp.OnGraphPlotterView(m_strUUID,m_nIdentity);
+	USES_CONVERSION;
+	
+	std::map<int,int> mapCoordinates;
+
+	std::vector<SSBC_CLIENT_MEM_RESULT> memResults = g_cDatabaseConnection.GetClientMemResults(m_strUUID,m_nIdentity);
+	std::vector<SSBC_CLIENT_MEM_RESULT>::iterator iIter;
+
+	unsigned int nPos = 0;	
+	for ( iIter = memResults.begin(); iIter < memResults.end(); iIter++ )
+	{
+		double dSpeed = -1.0f;
+		double dMallocZeroDuration = _ttof((*iIter).strMallocZeroDuration);
+		if ( dMallocZeroDuration != 0.0f )
+		{
+			dSpeed = (_ttof((*iIter).strBytes)/(1024.0f * 1024.0f)) / dMallocZeroDuration;
+		}
+		int nDuration = static_cast<int>(dSpeed);
+		mapCoordinates[nPos] = nDuration;
+		nPos++;
+	}
+	
+	std::map<int,std::map<int,int>>			  mapMapCoordinates;
+	std::map<int,COLORREF>					  mapColors;
+	std::map<int,std::pair<CString,CString>>  mapPairUnits;
+	mapMapCoordinates[0] = mapCoordinates;
+	mapColors[0]         = RGB( 0, 0, 255 );
+	mapPairUnits[0]      = std::pair<CString,CString>(_T("result"),_T("mb/s"));
+
+	theApp.OnGraphPlotterView(m_strUUID,m_nIdentity,mapMapCoordinates,mapColors,mapPairUnits);
 }

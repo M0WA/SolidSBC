@@ -1,5 +1,7 @@
 #pragma once
 
+#include <map>
+
 class CSolidSBCGraphPlotterDoc;
 
 // CSolidSBCGraphPlotterView view
@@ -27,7 +29,9 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	void PaintCoordinateSystem(CDC* pDC, const CRect& rectData);
+	void PaintCoordinateSystem(CDC* pDC);
+	void PaintGraph(CDC* pDC);
+	void PaintUnits(CDC* pDC, const std::pair<CString,CString>& pairUnits, const CRect& rectMinMax,int& nLabelYOffset, int& nYValueOffset, COLORREF colorGraph);
 };
 
 

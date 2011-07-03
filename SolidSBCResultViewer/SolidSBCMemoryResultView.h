@@ -38,13 +38,12 @@ private:
 	void OnExportSelectedResults(void);
 	void OnExportAllResults(void);
 	void ExportResults(CString strFileName,bool bSelectedOnly = false);
+	void OnExportresultsPlot(void);
 
 	CListCtrl m_ctlMemResultList;
 	CString m_strUUID;
 	CStatic m_ctlAvgSpeedStatic;
 	int m_nIdentity;
-public:
-	afx_msg void OnExportresultsPlot();
 };
 
 

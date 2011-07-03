@@ -8,6 +8,7 @@
 #endif
 
 #include "resource.h"       // main symbols
+#include <map>
 
 
 // CSolidSBCResultViewerApp:
@@ -26,7 +27,12 @@ public:
 	void OnCPUMeasureResultView(CString strClientUUID, int nIdentity = -1);
 	void OnTCPResultView(CString strClientUUID, int nIdentity = -1);
 	void OnPingResultView(CString strClientUUID, int nIdentity = -1);
-	void OnGraphPlotterView(CString strClientUUID, int nIdentity = -1);
+	void OnGraphPlotterView(
+		const CString& strClientUUID, 
+		const int& nIdentity, 
+		const std::map<int, std::map<int, int>>&      mapMapResults, 
+		const std::map<int, COLORREF>& mapColors, 
+		const std::map<int, std::pair<CString, CString>>&  mapPairsUnits);
 
 	CString GetSettingsFileName(void);
 

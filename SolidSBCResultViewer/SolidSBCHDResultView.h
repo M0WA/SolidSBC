@@ -38,6 +38,7 @@ private:
 	void OnExportSelectedResults(void);
 	void OnExportAllResults(void);
 	void ExportResults(CString strFileName,bool bSelectedOnly = false);
+	void OnExportresultsPlot(void);
 
 	CString m_strUUID;
 	CListCtrl m_ctlHDResultList;

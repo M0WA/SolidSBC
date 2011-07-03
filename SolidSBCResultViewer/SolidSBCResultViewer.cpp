@@ -370,7 +370,12 @@ void CSolidSBCResultViewerApp::OnTCPResultView(CString strClientUUID, int nIdent
 	
 }
 
-void CSolidSBCResultViewerApp::OnGraphPlotterView(CString strClientUUID, int nIdentity)
+void CSolidSBCResultViewerApp::OnGraphPlotterView(
+		const CString& strClientUUID, 
+		const int& nIdentity, 
+		const std::map<int, std::map<int, int>>&			mapMapResults, 
+		const std::map<int, COLORREF>&						mapColors, 
+		const std::map<int, std::pair<CString, CString>>&	mapPairsUnits)
 {
 	CDocument* pDoc = OpenView( _T("SolidSBCGraphPlotterView") );
 	
@@ -381,7 +386,7 @@ void CSolidSBCResultViewerApp::OnGraphPlotterView(CString strClientUUID, int nId
 	CView* pView = NULL;
 	if ( (pView = pDoc->GetNextView(pos)) )
 	{
-		//((CSolidSBCGraphPlotterView*)pView)->SetResults(strClientUUID,nIdentity);
+		((CSolidSBCGraphPlotterDoc*)pDoc)->SetResults(mapMapResults,mapColors,mapPairsUnits);
 	}
 	
 }

@@ -238,6 +238,9 @@ void CSolidSBCHDResultView::OnNMRClickHdResultList(NMHDR *pNMHDR, LRESULT *pResu
 			case ID_EXPORT_ALL:
 				OnExportAllResults();
 				break;
+			case ID_EXPORTRESULTS_PLOT:
+				OnExportresultsPlot();
+				break;
 			default:
 				//could not determine action
 				break;
@@ -376,4 +379,50 @@ void CSolidSBCHDResultView::ExportResults(CString strFileName,bool bSelectedOnly
 #endif
 	}
 	END_CATCH
+}
+
+void CSolidSBCHDResultView::OnExportresultsPlot(void)
+{
+	USES_CONVERSION;
+	std::map<int,int> mapCoordinates;
+	
+	std::vector<SSBC_CLIENT_HD_RESULT> hdResults = g_cDatabaseConnection.GetClientHDResults(m_strUUID, m_nIdentity);
+	std::vector<SSBC_CLIENT_HD_RESULT>::iterator iIter;
+
+	unsigned int nPos = 0;
+	
+	std::map<int,std::map<int,int>> mapMapCoordinates;
+	std::map<int,COLORREF>			mapColors;
+	std::map<int,std::pair<CString,CString>>  mapPairUnits;
+
+	mapColors[0] = RGB(255,0,0);
+	mapColors[1] = RGB(0,0,255);
+
+	mapPairUnits[0] = std::pair<CString,CString>(_T("result"),_T("kb/s (read)"));
+	mapPairUnits[1] = std::pair<CString,CString>(_T("result"),_T("kb/s (write)"));
+		
+	unsigned int nReadPos  = 0;
+	unsigned int nWritePos = 0;
+	std::map<int,int> readCoords, writeCoords;
+	for ( iIter = hdResults.begin(); iIter < hdResults.end(); iIter++ )
+	{
+		int nSpeed = (int)((_ttof((*iIter).strBytes) / ( 1024.0f ))/ _ttof((*iIter).strDuration));
+		switch(_ttoi((*iIter).strType))
+		{
+		case 0: //SSBC_TEST_HARDDRIVE_RESULT_TYPE_READ
+			readCoords[nReadPos] = nSpeed;
+			nReadPos++;
+			break;
+		case 1: //SSBC_TEST_HARDDRIVE_RESULT_TYPE_WRITE
+			writeCoords[nWritePos] = nSpeed;
+			nWritePos++;
+			break;
+		default:
+			break;
+		}
+	}
+	mapMapCoordinates[0] = readCoords;
+	mapMapCoordinates[1] = writeCoords;
+
+	theApp.OnGraphPlotterView(m_strUUID,m_nIdentity,mapMapCoordinates,mapColors,mapPairUnits);
 }

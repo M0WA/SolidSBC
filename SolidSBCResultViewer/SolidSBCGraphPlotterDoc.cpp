@@ -18,6 +18,9 @@ BOOL CSolidSBCGraphPlotterDoc::OnNewDocument()
 {
 	if (!CDocument::OnNewDocument())
 		return FALSE;
+
+	SetTitle(_T("SolidSBC Graph Viewer"));
+
 	return TRUE;
 }
 
@@ -62,9 +65,25 @@ void CSolidSBCGraphPlotterDoc::Serialize(CArchive& ar)
 }
 #endif
 
-
 // CSolidSBCGraphPlotterDoc commands
-void CSolidSBCGraphPlotterDoc::SetResults(const std::map<int, int>& mapResults)
+void CSolidSBCGraphPlotterDoc::SetResults(
+		const std::map<int, std::map<int, int>>&			mapMapResults, 
+		const std::map<int, COLORREF>&						mapColors, 
+		const std::map<int, std::pair<CString, CString>>&	mapPairsUnits
+		)
 {
-	m_mapCoordinates = mapResults;
+	m_mapMapCoordinates = mapMapResults;
+	m_mapColors         = mapColors;
+	m_mapPairsUnits     = mapPairsUnits;
+}
+
+void CSolidSBCGraphPlotterDoc::GetResults(
+		std::map<int, std::map<int, int>>&				mapMapResults, 
+		std::map<int, COLORREF>&						mapColors, 
+		std::map<int, std::pair<CString, CString>>&		mapPairsUnits
+		)
+{
+	mapMapResults = m_mapMapCoordinates;
+	mapColors     = m_mapColors;
+	mapPairsUnits = m_mapPairsUnits;
 }
