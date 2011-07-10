@@ -1,0 +1,53 @@
+// SolidSBCTestLib.cpp : Defines the exported functions for the DLL application.
+//
+
+#include "stdafx.h"
+#include "SolidSBCTestLib.h"
+#include "SolidSBCTestImpl.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#endif
+
+static CSolidSBCTestImpl g_cSolidTestInstance;
+
+// The one and only application object
+
+CWinApp theApp;
+
+using namespace std;
+
+int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
+{
+	int nRetCode = 0;
+
+	HMODULE hModule = ::GetModuleHandle(NULL);
+
+	if (hModule != NULL)
+	{
+		// initialize MFC and print and error on failure
+		if (!AfxWinInit(hModule, NULL, ::GetCommandLine(), 0))
+		{
+			// TODO: change error code to suit your needs
+			_tprintf(_T("Fatal Error: MFC initialization failed\n"));
+			nRetCode = 1;
+		}
+		else
+		{
+			// TODO: code your application's behavior here.
+		}
+	}
+	else
+	{
+		// TODO: change error code to suit your needs
+		_tprintf(_T("Fatal Error: GetModuleHandle failed\n"));
+		nRetCode = 1;
+	}
+
+	return nRetCode;
+}
+
+const void* GetSolidSBCTestInstance(void)
+{
+	return (void*)((CSolidSBCTestManager*)&g_cSolidTestInstance);
+}
