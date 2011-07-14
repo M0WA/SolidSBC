@@ -37,9 +37,6 @@
 #include <SolidSBCNetLib.h>
 
 #include "defines.h"
-#include "..\SolidSBCCliSvc\SolidSBCClientConfigPackets.h"
-#include "..\SolidSBCCliSvc\SolidSBCClientResultPackets.h"
-
 #include "SolidSBCSrvServiceWnd.h"
 
 #include "SolidSBCResultClientHandlerSocket.h"
