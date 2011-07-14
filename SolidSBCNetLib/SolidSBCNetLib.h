@@ -55,3 +55,5 @@ public:
 	bool WaitForConnect();
 	bool WaitForPacket();
 };
+
+#include "SolidSBCClientResultPackets.h"

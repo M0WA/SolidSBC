@@ -11,12 +11,12 @@
 //////////////////////////////////////////////////////////////////////
 //configuration channel packets
 //////////////////////////////////////////////////////////////////////
-typedef struct {
+typedef SOLIDSBCNETLIB_API struct {
 	UINT    nProfileID;
 	TCHAR	szClient[SSBC_PROFILE_MAX_CLIENT_NAME];
 } SSBC_PROFILE_REQUEST_PACKET, *PSSBC_PROFILE_REQUEST_PACKET;
 
-typedef struct {
+typedef SOLIDSBCNETLIB_API struct {
 	//profile settings
 	UINT    nProfileID;
 	TCHAR	szProfileName[SSBC_PROFILE_MAX_PROFILE_NAME];

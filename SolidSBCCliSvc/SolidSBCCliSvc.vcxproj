@@ -238,8 +238,6 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SolidSBCCliConfigSocket.h" />
     <ClInclude Include="SolidSBCClient.h" />
-    <ClInclude Include="SolidSBCClientConfigPackets.h" />
-    <ClInclude Include="SolidSBCClientResultPackets.h" />
     <ClInclude Include="SolidSBCClientService.h" />
     <ClInclude Include="SolidSBCCliResultSocket.h" />
     <ClInclude Include="SolidSBCCliServiceWnd.h" />
