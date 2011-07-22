@@ -21,49 +21,67 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_0DE524FF337148158AE8EF92D1DBB2C4"
-        "OwnerKey" = "8:_09A0D6F11C05439F80614DF10BC8585F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_0DE524FF337148158AE8EF92D1DBB2C4"
-        "OwnerKey" = "8:_F20EA67657D441178F1C7D1F326E29AD"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_0DE524FF337148158AE8EF92D1DBB2C4"
-        "OwnerKey" = "8:_20FCA4454BC3496D81CE9EBD891A7BE0"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_20FCA4454BC3496D81CE9EBD891A7BE0"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_2EE48FE23CE8406EA486582ED11D890D"
+        "MsmKey" = "8:_2190C25784324445B093B6FC2780B961"
         "OwnerKey" = "8:_09A0D6F11C05439F80614DF10BC8585F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_2EE48FE23CE8406EA486582ED11D890D"
+        "MsmKey" = "8:_2190C25784324445B093B6FC2780B961"
+        "OwnerKey" = "8:_B215DF4318704B36859347A9869AEA64"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2190C25784324445B093B6FC2780B961"
         "OwnerKey" = "8:_F20EA67657D441178F1C7D1F326E29AD"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_2EE48FE23CE8406EA486582ED11D890D"
+        "MsmKey" = "8:_2190C25784324445B093B6FC2780B961"
+        "OwnerKey" = "8:_20FCA4454BC3496D81CE9EBD891A7BE0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8C01C71A978C405CAB93C7A6D10B0CB0"
+        "OwnerKey" = "8:_09A0D6F11C05439F80614DF10BC8585F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8C01C71A978C405CAB93C7A6D10B0CB0"
+        "OwnerKey" = "8:_B215DF4318704B36859347A9869AEA64"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8C01C71A978C405CAB93C7A6D10B0CB0"
+        "OwnerKey" = "8:_F20EA67657D441178F1C7D1F326E29AD"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8C01C71A978C405CAB93C7A6D10B0CB0"
         "OwnerKey" = "8:_20FCA4454BC3496D81CE9EBD891A7BE0"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_A3C16BAD53BD4B6DA958101E977F5FFA"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B215DF4318704B36859347A9869AEA64"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -332,7 +350,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SolidSBC Client"
         "ProductCode" = "8:{AF951925-48E0-4AAD-9131-0D6F11627187}"
-        "PackageCode" = "8:{6928FE93-A11A-488F-A44C-BCB07043E180}"
+        "PackageCode" = "8:{76D4306D-AA65-4F09-90E6-2836BABF3077}"
         "UpgradeCode" = "8:{7D8D1857-14C9-4AE2-990D-A25A24FEFFD3}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -956,11 +974,11 @@
         }
         "MergeModule"
         {
-            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_0DE524FF337148158AE8EF92D1DBB2C4"
+            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_2190C25784324445B093B6FC2780B961"
             {
             "UseDynamicProperties" = "11:TRUE"
             "IsDependency" = "11:TRUE"
-            "SourcePath" = "8:Microsoft_VC100_MFC_x86.msm"
+            "SourcePath" = "8:Microsoft_VC100_CRT_x86.msm"
                 "Properties"
                 {
                 }
@@ -970,11 +988,11 @@
             "Feature" = "8:"
             "IsolateTo" = "8:"
             }
-            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_2EE48FE23CE8406EA486582ED11D890D"
+            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_8C01C71A978C405CAB93C7A6D10B0CB0"
             {
             "UseDynamicProperties" = "11:TRUE"
             "IsDependency" = "11:TRUE"
-            "SourcePath" = "8:Microsoft_VC100_CRT_x86.msm"
+            "SourcePath" = "8:Microsoft_VC100_MFC_x86.msm"
                 "Properties"
                 {
                 }
@@ -1038,6 +1056,34 @@
             "OutputConfiguration" = "8:Release|Win32"
             "OutputGroupCanonicalName" = "8:Built"
             "OutputProjectGuid" = "8:{41A351E1-F305-4D88-A068-D57D30BEBA01}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_B215DF4318704B36859347A9869AEA64"
+            {
+            "SourcePath" = "8:..\\Win32\\Release\\SolidSBCTestLib.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_BD9E6D42195F4CE5AEE947C8612A3968"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:Release|Win32"
+            "OutputGroupCanonicalName" = "8:Built"
+            "OutputProjectGuid" = "8:{AF62176A-88A0-44D3-905F-416BF20756D7}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
                 {

@@ -27,8 +27,38 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_2C975A78B6D2B9F5B62386D1E0620DA2"
-        "OwnerKey" = "8:_C2E5413D7C414558B97F35F4A36E621F"
+        "MsmKey" = "8:_60FB5D9511FC40DFA752DFE98B78713E"
+        "OwnerKey" = "8:_DAA9DE9D0CF44F9D882EFA34718D7505"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_60FB5D9511FC40DFA752DFE98B78713E"
+        "OwnerKey" = "8:_0D7B452024204A8995F45F1204592710"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_60FB5D9511FC40DFA752DFE98B78713E"
+        "OwnerKey" = "8:_F61896B817474764966C8C0748DA66BC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_92F3E1B6023A45B4A7ECB4B9E7461094"
+        "OwnerKey" = "8:_0D7B452024204A8995F45F1204592710"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_92F3E1B6023A45B4A7ECB4B9E7461094"
+        "OwnerKey" = "8:_F61896B817474764966C8C0748DA66BC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_92F3E1B6023A45B4A7ECB4B9E7461094"
+        "OwnerKey" = "8:_DAA9DE9D0CF44F9D882EFA34718D7505"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -39,8 +69,20 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_DAA9DE9D0CF44F9D882EFA34718D7505"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_F61896B817474764966C8C0748DA66BC"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_C2E5413D7C414558B97F35F4A36E621F"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -872,6 +914,34 @@
         }
         "MergeModule"
         {
+            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_60FB5D9511FC40DFA752DFE98B78713E"
+            {
+            "UseDynamicProperties" = "11:TRUE"
+            "IsDependency" = "11:TRUE"
+            "SourcePath" = "8:Microsoft_VC100_CRT_x64.msm"
+                "Properties"
+                {
+                }
+            "LanguageId" = "3:0"
+            "Exclude" = "11:FALSE"
+            "Folder" = "8:"
+            "Feature" = "8:"
+            "IsolateTo" = "8:"
+            }
+            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_92F3E1B6023A45B4A7ECB4B9E7461094"
+            {
+            "UseDynamicProperties" = "11:TRUE"
+            "IsDependency" = "11:TRUE"
+            "SourcePath" = "8:Microsoft_VC100_MFC_x64.msm"
+                "Properties"
+                {
+                }
+            "LanguageId" = "3:0"
+            "Exclude" = "11:FALSE"
+            "Folder" = "8:"
+            "Feature" = "8:"
+            "IsolateTo" = "8:"
+            }
         }
         "ProjectOutput"
         {
@@ -926,6 +996,34 @@
             "OutputConfiguration" = "8:Release|x64"
             "OutputGroupCanonicalName" = "8:Built"
             "OutputProjectGuid" = "8:{1EACC6F0-AE76-4149-961B-035B8389A869}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_DAA9DE9D0CF44F9D882EFA34718D7505"
+            {
+            "SourcePath" = "8:..\\x64\\Release\\SolidSBCTestLib.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_834BA61C32F9493BBFDBEF0E16AD2537"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:Release|x64"
+            "OutputGroupCanonicalName" = "8:Built"
+            "OutputProjectGuid" = "8:{AF62176A-88A0-44D3-905F-416BF20756D7}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
                 {
