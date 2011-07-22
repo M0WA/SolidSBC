@@ -2,4 +2,4 @@
 
 #include "../SolidSBCTestSDK/SolidSBCTestSDK.h"
 
-UINT SolidSBCTestThreadCPU(LPVOID lpParam);
+UINT SolidSBCTestCPUMeasure( LPVOID lpParam );

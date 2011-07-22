@@ -42,6 +42,12 @@
     <ClInclude Include="SolidSBCTestManagerImpl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SolidSBCTestCPUMeasure.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidSBCCPUMeasureResult.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -60,6 +66,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SolidSBCTestManagerImpl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidSBCTestCPUMeasure.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidSBCCPUMeasureResult.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
