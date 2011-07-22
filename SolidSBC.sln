@@ -3,6 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SolidSBCCliSvc", "SolidSBCCliSvc\SolidSBCCliSvc.vcxproj", "{1EACC6F0-AE76-4149-961B-035B8389A869}"
 	ProjectSection(ProjectDependencies) = postProject
+		{AF62176A-88A0-44D3-905F-416BF20756D7} = {AF62176A-88A0-44D3-905F-416BF20756D7}
 		{674415A8-03B4-4774-8D11-F0DEFEC706AF} = {674415A8-03B4-4774-8D11-F0DEFEC706AF}
 	EndProjectSection
 EndProject

@@ -31,7 +31,7 @@
 
 #include <iostream>
 
-//#include <SolidSBCTestLib.h>
+#include <SolidSBCTestLib.h>
 #include <SolidSBCNetLib.h>
 
 #include "defines.h"
