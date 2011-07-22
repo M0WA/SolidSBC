@@ -148,13 +148,20 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="defines.h" />
+    <ClInclude Include="PerformanceCounter.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SolidSBCTestManager.h" />
+    <ClInclude Include="SolidSBCTestResult.h" />
     <ClInclude Include="SolidSBCTestSDK.h" />
     <ClInclude Include="SolidSBCTestThread.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="PerformanceCounter.cpp" />
+    <ClCompile Include="SolidSBCTestManager.cpp" />
+    <ClCompile Include="SolidSBCTestResult.cpp" />
     <ClCompile Include="SolidSBCTestSDK.cpp" />
     <ClCompile Include="SolidSBCTestThread.cpp" />
     <ClCompile Include="stdafx.cpp">

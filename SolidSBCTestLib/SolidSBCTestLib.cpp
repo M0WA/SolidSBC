@@ -3,13 +3,13 @@
 
 #include "stdafx.h"
 #include "SolidSBCTestLib.h"
-#include "SolidSBCTestImpl.h"
+#include "SolidSBCTestManagerImpl.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
-static CSolidSBCTestImpl g_cSolidTestInstance;
+static CSolidSBCTestManagerImpl g_cSolidTestInstance;
 
 // The one and only application object
 
