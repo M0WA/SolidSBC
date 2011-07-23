@@ -9,15 +9,6 @@ typedef enum SSBC_TEST_HARDDRIVE_RESULT_TYPE {
 	SSBC_TEST_HARDDRIVE_RESULT_TYPE_READ_INIT   = 2
 };
 
-/*
-typedef SOLIDSBCNETLIB_API struct {
-	DOUBLE dSeconds;
-	ULONG  ulBytes;
-	ULONG  ulWait;
-	SSBC_TEST_HARDDRIVE_RESULT_TYPE nType;
-} SSBC_HD_TESTRESULT_PACKET,*PSSBC_HD_TESTRESULT_PACKET ;
-*/
-
 class CSolidSBCHarddriveResult : CSolidSBCTestResult
 {
 public:
