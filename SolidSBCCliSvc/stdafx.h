@@ -31,12 +31,10 @@
 
 #include <iostream>
 
-#include <SolidSBCTestLib.h>
+#include <SolidSBCTestSDK.h>
 #include <SolidSBCNetLib.h>
 
 #include "defines.h"
-#include "defines_tests.h"
 
 #include "SolidSBCCliServiceWnd.h"
 #include "SolidSBCClientService.h"
-

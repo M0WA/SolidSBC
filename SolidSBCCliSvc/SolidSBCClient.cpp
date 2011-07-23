@@ -275,7 +275,7 @@ void CSolidSBCClient::DumpProfileReplyPacket(PSSBC_PROFILE_REPLY_PACKET pPacket)
 int CSolidSBCClient::StartTestFromProfilePacket(PSSBC_PROFILE_REPLY_PACKET pPacket)
 {
 	DumpProfileReplyPacket(pPacket);
-
+	/*
 	HWND hMsgWnd = NULL;
 	if ( pPacket->bHDCfgEnable  ){
 		
@@ -378,15 +378,18 @@ int CSolidSBCClient::StartTestFromProfilePacket(PSSBC_PROFILE_REPLY_PACKET pPack
 			tcpconParam
 		);
 	}
+	*/
 
 	return 0;
 }
 
 void CSolidSBCClient::StopTests(void)
 {
+	/*
 	m_cVMPerfTestCPUMeasure	.StopCPUMeasure();
 	m_cVMPerfTestCPU		.StopCPU();
 	m_cVMPerfTestHarddrive	.StopHarddrive();
 	m_cVMPerfTestMemory		.StopMemory();
 	m_cVMPerfTestNetwork	.StopNetwork();
+	*/
 }

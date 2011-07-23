@@ -102,9 +102,9 @@
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Template|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Template|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Template|x64'" />
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)SolidSBCTestLib;$(SolutionDir)SolidSBCNetLib;C:\Program Files\MySQL\MySQL Server 5.1\include;$(IncludePath)</IncludePath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)SolidSBCTestLib;$(SolutionDir)SolidSBCNetLib;C:\Program Files\MySQL\MySQL Server 5.1\include;$(IncludePath)</IncludePath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">$(SolutionDir)SolidSBCTestLib;$(SolutionDir)SolidSBCNetLib;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)SolidSBCTestSDK;$(SolutionDir)SolidSBCTestSDK;$(SolutionDir)SolidSBCNetLib;C:\Program Files\MySQL\MySQL Server 5.1\include;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)SolidSBCTestSDK;$(SolutionDir)SolidSBCTestLib;$(SolutionDir)SolidSBCNetLib;C:\Program Files\MySQL\MySQL Server 5.1\include;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">$(SolutionDir)SolidSBCTestSDK;$(SolutionDir)SolidSBCTestLib;$(SolutionDir)SolidSBCNetLib;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)SolidSBCTestLib;$(SolutionDir)SolidSBCNetLib;$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)SolidSBCTestLib;$(SolutionDir)SolidSBCNetLib;$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Template|x64'">$(SolutionDir)SolidSBCTestLib;$(SolutionDir)SolidSBCNetLib;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;</IncludePath>
@@ -132,7 +132,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SolidSBCTestLib.lib;SolidSBCNetLib.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SolidSBCTestSDK.lib;SolidSBCNetLib.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
@@ -151,7 +151,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SolidSBCTestLib.lib;SolidSBCNetLib.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SolidSBCTestSDK.lib;SolidSBCNetLib.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
@@ -170,7 +170,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SolidSBCTestLib.lib;SolidSBCNetLib.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SolidSBCTestSDK.lib;SolidSBCNetLib.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
@@ -192,7 +192,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SolidSBCTestLib.lib;SolidSBCNetLib.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SolidSBCTestSDK.lib;SolidSBCNetLib.lib;iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
@@ -202,12 +202,12 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
     <Link>
-      <AdditionalDependencies>SolidSBCTestLib.lib;SolidSBCNetLib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SolidSBCTestSDK.lib;SolidSBCNetLib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|x64'">
     <Link>
-      <AdditionalDependencies>SolidSBCTestLib.lib;SolidSBCNetLib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SolidSBCTestSDK.lib;SolidSBCNetLib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -217,24 +217,11 @@
     <ClCompile Include="SolidSBCCliResultSocket.cpp" />
     <ClCompile Include="SolidSBCCliServiceWnd.cpp" />
     <ClCompile Include="SolidSBCCliSvc.cpp" />
-    <ClCompile Include="SolidSBCPerformanceCounter.cpp" />
-    <ClCompile Include="SolidSBCTestBase.cpp" />
-    <ClCompile Include="SolidSBCTestCPU.cpp" />
-    <ClCompile Include="SolidSBCTestCPUMeasure.cpp" />
-    <ClCompile Include="SolidSBCTestHarddrive.cpp" />
-    <ClCompile Include="SolidSBCTestMemory.cpp" />
-    <ClCompile Include="SolidSBCTestNetwork.cpp" />
-    <ClCompile Include="SolidSBCTestThreadCPU.cpp" />
-    <ClCompile Include="SolidSBCTestThreadCPUMeasure.cpp" />
-    <ClCompile Include="SolidSBCTestThreadHarddrive.cpp" />
-    <ClCompile Include="SolidSBCTestThreadMemory.cpp" />
-    <ClCompile Include="SolidSBCTestThreadNetwork.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="uuid_gen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="defines.h" />
-    <ClInclude Include="defines_tests.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SolidSBCCliConfigSocket.h" />
     <ClInclude Include="SolidSBCClient.h" />
@@ -242,18 +229,6 @@
     <ClInclude Include="SolidSBCCliResultSocket.h" />
     <ClInclude Include="SolidSBCCliServiceWnd.h" />
     <ClInclude Include="SolidSBCCliSvc.h" />
-    <ClInclude Include="SolidSBCPerformanceCounter.h" />
-    <ClInclude Include="SolidSBCTestBase.h" />
-    <ClInclude Include="SolidSBCTestCPU.h" />
-    <ClInclude Include="SolidSBCTestCPUMeasure.h" />
-    <ClInclude Include="SolidSBCTestHarddrive.h" />
-    <ClInclude Include="SolidSBCTestMemory.h" />
-    <ClInclude Include="SolidSBCTestNetwork.h" />
-    <ClInclude Include="SolidSBCTestThreadCPU.h" />
-    <ClInclude Include="SolidSBCTestThreadCPUMeasure.h" />
-    <ClInclude Include="SolidSBCTestThreadHarddrive.h" />
-    <ClInclude Include="SolidSBCTestThreadMemory.h" />
-    <ClInclude Include="SolidSBCTestThreadNetwork.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="uuid_gen.h" />

@@ -2,11 +2,6 @@
 
 #include "Resource.h"
 #include "uuid_gen.h"
-#include "SolidSBCTestNetwork.h"
-#include "SolidSBCTestMemory.h"
-#include "SolidSBCTestHarddrive.h"
-#include "SolidSBCTestCPU.h"
-#include "SolidSBCTestCPUMeasure.h"
 #include "SolidSBCCliConfigSocket.h"
 #include "SolidSBCCliResultSocket.h"
 
@@ -36,9 +31,4 @@ private:
 	char*					m_pszUUID;
 	CSolidSBCCliConfigSocket m_cCliConfigSocket;
 	CSolidSBCCliResultSocket m_cCliResultSocket;
-	CVMPerfTestNetwork		m_cVMPerfTestNetwork;
-	CVMPerfTestMemory		m_cVMPerfTestMemory;
-	CVMPerfTestHarddrive	m_cVMPerfTestHarddrive;
-	CVMPerfTestCPU			m_cVMPerfTestCPU;
-	CVMPerfTestCPUMeasure   m_cVMPerfTestCPUMeasure;
 };
