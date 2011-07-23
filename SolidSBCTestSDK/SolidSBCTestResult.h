@@ -12,7 +12,9 @@ class SOLIDSBCTESTSDK_API CSolidSBCTestResult
 {
 protected:
 	CSolidSBCTestResult(char* sTableName) : m_sTableName(sTableName) {};
-	~CSolidSBCTestResult(void) {};
+
+public:
+	virtual ~CSolidSBCTestResult(void) {};
 
 	//setter
 	template <class Tvalue> 

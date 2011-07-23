@@ -2,14 +2,16 @@
 #include "SolidSBCTestSDK.h"
 #include "SolidSBCTestThread.h"
 
-CSolidSBCTestThread::CSolidSBCTestThread(const std::string& sTestName, const PSSBC_TEST_THREAD_FUNC pThreadFunc, std::vector<CSolidSBCTestResult*>* pResults)
+CSolidSBCTestThread::CSolidSBCTestThread(const std::string& sTestName, const PSSBC_TEST_THREAD_FUNC pThreadFunc, const SSBC_RESULTS_CONTAINER& resultContainer)
 : m_pThread(NULL)
 , m_sTestName(sTestName)
 , m_pThreadFunc(pThreadFunc)
 {
-	m_testThreadParam.pnState  = &m_nState;
-	m_testThreadParam.pMutex   = &m_Mutex;
-	m_testThreadParam.pResults = pResults;
+
+	m_testThreadParam.stateContainer.pnState     = &m_nState;
+	m_testThreadParam.stateContainer.pStateMutex = &m_StateMutex;
+
+	m_testThreadParam.resultContainer = resultContainer;
 }
 
 CSolidSBCTestThread::~CSolidSBCTestThread(void)
@@ -26,9 +28,9 @@ int CSolidSBCTestThread::StartThread(LPVOID pTestParam, HWND hWnd)
 		return 0;
 	m_pThread->m_bAutoDelete = FALSE;
 	
-	m_Mutex.Lock();
+	m_StateMutex.Lock();
 	m_nState = SSBC_TEST_STATE_ACTIVE;
-	m_Mutex.Unlock();
+	m_StateMutex.Unlock();
 
 	return m_pThread->ResumeThread();
 }
@@ -52,24 +54,31 @@ int CSolidSBCTestThread::StopThread(void)
 		return 1;
 	}
 	
-	m_Mutex.Lock();
+	m_StateMutex.Lock();
 	m_nState = SSBC_TEST_STATE_STOPPING;
-	m_Mutex.Unlock();
+	m_StateMutex.Unlock();
 
 	dwErr = WaitForSingleObject(m_pThread->m_hThread,INFINITE);
 	delete m_pThread;
 	m_pThread = NULL;
 
-	m_Mutex.Lock();
+	m_StateMutex.Lock();
 	m_nState = SSBC_TEST_STATE_INACTIVE;
-	m_Mutex.Unlock();
+	m_StateMutex.Unlock();
 	return 0;
+}
+
+void CSolidSBCTestThread::AddResult(PSSBC_TEST_THREAD_PARAM pParam, CSolidSBCTestResult* pResult)
+{
+	pParam->resultContainer.pResultMutex->Lock();
+	pParam->resultContainer.pResults->push_back(pResult);
+	pParam->resultContainer.pResultMutex->Unlock();
 }
 
 BOOL CSolidSBCTestThread::ShallThreadEnd(PSSBC_TEST_THREAD_PARAM pParam)
 {
-	pParam->pMutex->Lock();
-	BOOL bReturn = ((*(pParam->pnState)) == SSBC_TEST_STATE_ACTIVE) ? TRUE : FALSE;
-	pParam->pMutex->Unlock();
+	pParam->stateContainer.pStateMutex->Lock();
+	BOOL bReturn = ((*(pParam->stateContainer.pnState)) == SSBC_TEST_STATE_ACTIVE) ? TRUE : FALSE;
+	pParam->stateContainer.pStateMutex->Unlock();
 	return bReturn;
 }

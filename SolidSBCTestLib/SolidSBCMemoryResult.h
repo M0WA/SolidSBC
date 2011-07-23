@@ -7,7 +7,6 @@ class SOLIDSBCTESTLIB_API CSolidSBCMemoryResult : CSolidSBCTestResult
 {
 public:
 	CSolidSBCMemoryResult(void) : CSolidSBCTestResult("memResults") {};
-	~CSolidSBCMemoryResult(void) {};
 
 	DOUBLE GetMallocZeroDuration(void);
 	inline void SetMallocZeroDuration(DOUBLE dMallocZeroDuration) { SetKeyValue( "malloczeroduration", dMallocZeroDuration); };

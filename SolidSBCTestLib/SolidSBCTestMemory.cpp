@@ -40,7 +40,7 @@ UINT SolidSBCTestMemory(LPVOID lpParam)
 				pResult->SetMallocZeroDuration(dMallocZeroDuration);
 				pResult->SetByteCount(ulMallocZeroBytes);
 
-				pParam->pResults->push_back((CSolidSBCTestResult*)pResult);
+				CSolidSBCTestThread::AddResult(pParam,(CSolidSBCTestResult*)pResult);
 			}
 
 			rand_s( &number );

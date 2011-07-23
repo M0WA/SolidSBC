@@ -11,14 +11,15 @@ typedef AFX_THREADPROC PSSBC_TEST_THREAD_FUNC;
 class SOLIDSBCTESTSDK_API CSolidSBCTestThread
 {
 public:
-	CSolidSBCTestThread(const std::string& sTestName, const PSSBC_TEST_THREAD_FUNC pThreadFunc, std::vector<CSolidSBCTestResult*>* pResults);
+	CSolidSBCTestThread(const std::string& sTestName, const PSSBC_TEST_THREAD_FUNC pThreadFunc, const SSBC_RESULTS_CONTAINER& resultContainer);
 	~CSolidSBCTestThread(void);
 
 	int  StartThread( LPVOID pTestParam, HWND hWnd = NULL );
 	int  StopThread ( void );
 	inline std::string GetTestName(void) { return m_sTestName; };
-
+	
 	static BOOL ShallThreadEnd(PSSBC_TEST_THREAD_PARAM pParam);
+	static void AddResult(PSSBC_TEST_THREAD_PARAM pParam, CSolidSBCTestResult* pResult);
 
 private:
 	std::string             m_sTestName;
@@ -29,6 +30,6 @@ private:
 	PSSBC_TEST_THREAD_FUNC  m_pThreadFunc;
 
 	SSBC_TEST_STATE m_nState;
-	CMutex          m_Mutex;
+	CMutex          m_StateMutex;
 };
 

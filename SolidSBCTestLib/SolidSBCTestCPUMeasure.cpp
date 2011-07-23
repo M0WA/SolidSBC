@@ -114,7 +114,7 @@ UINT SolidSBCTestCPUMeasure(LPVOID lpParam)
 			pResult->SetDivMultiplier(recentDivMultiplier);
 			pResult->SetOverallDuration(dOverallCnt);
 
-			pParam->pResults->push_back((CSolidSBCTestResult*)pResult);
+			CSolidSBCTestThread::AddResult(pParam,(CSolidSBCTestResult*)pResult);
 		}
 		
 		//exit thread?

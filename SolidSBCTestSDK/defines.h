@@ -5,9 +5,6 @@
 class CSolidSBCTestThread;
 class CSolidSBCTestResult;
 
-typedef std::pair< CSolidSBCTestThread*, std::vector<CSolidSBCTestResult*>* > SSBC_TEST_PAIR_TYPE;
-typedef std::map < std::string, SSBC_TEST_PAIR_TYPE >                         SSBC_TEST_MAP_TYPE;
-
 typedef enum {
 	SSBC_TEST_STATE_INVALID  = 0,
 	SSBC_TEST_STATE_INACTIVE = 1,
@@ -17,7 +14,19 @@ typedef enum {
 
 typedef struct {
 	PSSBC_TEST_STATE pnState;
-	CMutex* pMutex;
-	LPVOID  pThreadParam;
+	CMutex*          pStateMutex;
+} SSBC_STATE_CONTAINER, *PSSBC_STATE_CONTAINER;
+
+typedef struct {
 	std::vector<CSolidSBCTestResult*>* pResults;
+	CMutex*                            pResultMutex;
+} SSBC_RESULTS_CONTAINER, *PSSBC_RESULTS_CONTAINER;
+
+typedef std::pair< CSolidSBCTestThread*, SSBC_RESULTS_CONTAINER > SSBC_TEST_PAIR_TYPE;
+typedef std::map < std::string, SSBC_TEST_PAIR_TYPE >             SSBC_TEST_MAP_TYPE;
+
+typedef struct {
+	SSBC_STATE_CONTAINER   stateContainer;
+	SSBC_RESULTS_CONTAINER resultContainer;
+	LPVOID  pThreadParam;
 } SSBC_TEST_THREAD_PARAM,*PSSBC_TEST_THREAD_PARAM;
