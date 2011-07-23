@@ -160,9 +160,11 @@
   <ItemGroup>
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SolidSBCCPUMeasureResult.h" />
+    <ClInclude Include="SolidSBCHarddriveResult.h" />
     <ClInclude Include="SolidSBCMemoryResult.h" />
     <ClInclude Include="SolidSBCTestCPU.h" />
     <ClInclude Include="SolidSBCTestCPUMeasure.h" />
+    <ClInclude Include="SolidSBCTestHarddrive.h" />
     <ClInclude Include="SolidSBCTestManagerImpl.h" />
     <ClInclude Include="SolidSBCTestLib.h" />
     <ClInclude Include="SolidSBCTestMemory.h" />
@@ -171,9 +173,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SolidSBCCPUMeasureResult.cpp" />
+    <ClCompile Include="SolidSBCHarddriveResult.cpp" />
     <ClCompile Include="SolidSBCMemoryResult.cpp" />
     <ClCompile Include="SolidSBCTestCPU.cpp" />
     <ClCompile Include="SolidSBCTestCPUMeasure.cpp" />
+    <ClCompile Include="SolidSBCTestHarddrive.cpp" />
     <ClCompile Include="SolidSBCTestManagerImpl.cpp" />
     <ClCompile Include="SolidSBCTestLib.cpp" />
     <ClCompile Include="SolidSBCTestMemory.cpp" />

@@ -4,6 +4,7 @@
 #include "SolidSBCTestCPU.h"
 #include "SolidSBCTestCPUMeasure.h"
 #include "SolidSBCTestMemory.h"
+#include "SolidSBCTestHarddrive.h"
 
 CSolidSBCTestManagerImpl::CSolidSBCTestManagerImpl(void)
 : CSolidSBCTestManager()
@@ -12,4 +13,5 @@ CSolidSBCTestManagerImpl::CSolidSBCTestManagerImpl(void)
 	AddTest( "CPU-Test"        , &SolidSBCTestThreadCPU  );
 	AddTest( "CPU-Measure-Test", &SolidSBCTestCPUMeasure );
 	AddTest( "Memory-Test"     , &SolidSBCTestMemory     );
+	AddTest( "Harddrive-Test"  , &SolidSBCTestHarddrive  );
 }

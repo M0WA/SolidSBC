@@ -48,6 +48,12 @@
     <ClInclude Include="SolidSBCCPUMeasureResult.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SolidSBCHarddriveResult.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidSBCTestHarddrive.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -72,6 +78,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SolidSBCCPUMeasureResult.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidSBCHarddriveResult.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidSBCTestHarddrive.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -18,8 +18,10 @@ public:
 	int  StopThread ( void );
 	inline std::string GetTestName(void) { return m_sTestName; };
 	
+	//static helper functions
+	//useable in test thread functions
 	static BOOL ShallThreadEnd(PSSBC_TEST_THREAD_PARAM pParam);
-	static void AddResult(PSSBC_TEST_THREAD_PARAM pParam, CSolidSBCTestResult* pResult);
+	static void AddResult     (PSSBC_TEST_THREAD_PARAM pParam, CSolidSBCTestResult* pResult);
 
 private:
 	std::string             m_sTestName;
