@@ -9,7 +9,7 @@ protected:
 	~CSolidSBCTestManager(void);
 
 public:
-	int StartTest     (const std::string& sTestName, LPVOID pszParam, bool bIsCallback = false, unsigned int nCallbackInterval = 0);
+	int StartTest     (const std::string& sTestName, LPVOID pszParam);
 	int StopTest      (const std::string& sTestName);
 
 	int GetTestNames  (std::vector<std::string>& vecTestnames);

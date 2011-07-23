@@ -67,7 +67,7 @@ void CSolidSBCTestManager::AddTest(const std::string& sTestName, const AFX_THREA
 	);
 }
 
-int CSolidSBCTestManager::StartTest(const std::string& sTestName, LPVOID pszParam, bool bIsCallback, unsigned int nCallbackInterval)
+int CSolidSBCTestManager::StartTest(const std::string& sTestName, LPVOID pszParam)
 {
 	CSolidSBCTestThread* pThread = GetThreadByName(sTestName);
 	if( !pThread )
