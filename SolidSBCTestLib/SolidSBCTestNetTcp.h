@@ -2,4 +2,4 @@
 
 #include <SolidSBCTestSDK.h>
 
-UINT SolidSBCTestHarddrive(LPVOID lpParam);
+UINT SolidSBCTestNetTcp(LPVOID lpParam);

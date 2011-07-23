@@ -1,9 +1,8 @@
 #pragma once
 
-#include "SolidSBCTestLib.h"
-#include "../SolidSBCTestSDK/SolidSBCTestSDK.h"
+#include <SolidSBCTestSDK.h>
 
-class SOLIDSBCTESTLIB_API CSolidSBCCPUMeasureResult : CSolidSBCTestResult
+class CSolidSBCCPUMeasureResult : CSolidSBCTestResult
 {
 public:
 	CSolidSBCCPUMeasureResult(void) : CSolidSBCTestResult("cpumeasureResults") {};

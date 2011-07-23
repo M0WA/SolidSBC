@@ -1,7 +1,6 @@
 #pragma once
 
-#include "SolidSBCTestLib.h"
-#include "../SolidSBCTestSDK/SolidSBCTestSDK.h"
+#include <SolidSBCTestSDK.h>
 
 typedef enum SSBC_TEST_HARDDRIVE_RESULT_TYPE { 
 	SSBC_TEST_HARDDRIVE_RESULT_TYPE_READ	    = 0,

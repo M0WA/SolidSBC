@@ -70,7 +70,7 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>$(SolutionDir)SolidSBCTestSDKLib\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)SolidSBCTestSDK\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -78,13 +78,13 @@
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)SolidSBCTestSDKLib\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)SolidSBCTestSDK\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>$(SolutionDir)SolidSBCTestSDKLib\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)SolidSBCTestSDK\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -92,7 +92,7 @@
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)SolidSBCTestSDKLib\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)SolidSBCTestSDK\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -104,7 +104,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SolidSBCTestSDK.lib</AdditionalDependencies>
+      <AdditionalDependencies>SolidSBCTestSDK.lib;iphlpapi.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -117,7 +117,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SolidSBCTestSDK.lib</AdditionalDependencies>
+      <AdditionalDependencies>SolidSBCTestSDK.lib;iphlpapi.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -134,7 +134,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SolidSBCTestSDK.lib</AdditionalDependencies>
+      <AdditionalDependencies>SolidSBCTestSDK.lib;iphlpapi.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -151,7 +151,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SolidSBCTestSDK.lib</AdditionalDependencies>
+      <AdditionalDependencies>SolidSBCTestSDK.lib;iphlpapi.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -162,12 +162,16 @@
     <ClInclude Include="SolidSBCCPUMeasureResult.h" />
     <ClInclude Include="SolidSBCHarddriveResult.h" />
     <ClInclude Include="SolidSBCMemoryResult.h" />
+    <ClInclude Include="SolidSBCNetPingResult.h" />
+    <ClInclude Include="SolidSBCNetTcpResult.h" />
     <ClInclude Include="SolidSBCTestCPU.h" />
     <ClInclude Include="SolidSBCTestCPUMeasure.h" />
     <ClInclude Include="SolidSBCTestHarddrive.h" />
     <ClInclude Include="SolidSBCTestManagerImpl.h" />
     <ClInclude Include="SolidSBCTestLib.h" />
     <ClInclude Include="SolidSBCTestMemory.h" />
+    <ClInclude Include="SolidSBCTestNetPing.h" />
+    <ClInclude Include="SolidSBCTestNetTcp.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -175,12 +179,16 @@
     <ClCompile Include="SolidSBCCPUMeasureResult.cpp" />
     <ClCompile Include="SolidSBCHarddriveResult.cpp" />
     <ClCompile Include="SolidSBCMemoryResult.cpp" />
+    <ClCompile Include="SolidSBCNetPingResult.cpp" />
+    <ClCompile Include="SolidSBCNetTcpResult.cpp" />
     <ClCompile Include="SolidSBCTestCPU.cpp" />
     <ClCompile Include="SolidSBCTestCPUMeasure.cpp" />
     <ClCompile Include="SolidSBCTestHarddrive.cpp" />
     <ClCompile Include="SolidSBCTestManagerImpl.cpp" />
     <ClCompile Include="SolidSBCTestLib.cpp" />
     <ClCompile Include="SolidSBCTestMemory.cpp" />
+    <ClCompile Include="SolidSBCTestNetPing.cpp" />
+    <ClCompile Include="SolidSBCTestNetTcp.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

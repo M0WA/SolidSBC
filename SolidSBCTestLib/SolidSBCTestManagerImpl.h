@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../SolidSBCTestSDK/SolidSBCTestSDK.h"
+#include <SolidSBCTestSDK.h>
 
 class CSolidSBCTestManagerImpl : CSolidSBCTestManager 
 {

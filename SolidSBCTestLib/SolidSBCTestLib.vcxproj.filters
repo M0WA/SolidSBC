@@ -54,6 +54,18 @@
     <ClInclude Include="SolidSBCTestHarddrive.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SolidSBCNetTcpResult.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidSBCNetPingResult.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidSBCTestNetTcp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidSBCTestNetPing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -84,6 +96,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SolidSBCTestHarddrive.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidSBCNetTcpResult.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidSBCNetPingResult.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidSBCTestNetTcp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidSBCTestNetPing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

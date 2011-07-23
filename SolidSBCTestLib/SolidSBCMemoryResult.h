@@ -1,9 +1,8 @@
 #pragma once
 
-#include "SolidSBCTestLib.h"
-#include "../SolidSBCTestSDK/SolidSBCTestSDK.h"
+#include <SolidSBCTestSDK.h>
 
-class SOLIDSBCTESTLIB_API CSolidSBCMemoryResult : CSolidSBCTestResult
+class CSolidSBCMemoryResult : CSolidSBCTestResult
 {
 public:
 	CSolidSBCMemoryResult(void) : CSolidSBCTestResult("memResults") {};

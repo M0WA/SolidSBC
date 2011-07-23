@@ -1,5 +1,5 @@
 #pragma once
 
-#include "../SolidSBCTestSDK/SolidSBCTestSDK.h"
+#include <SolidSBCTestSDK.h>
 
 UINT SolidSBCTestCPU(LPVOID lpParam);
