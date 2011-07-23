@@ -10,7 +10,7 @@ CSolidSBCTestManagerImpl::CSolidSBCTestManagerImpl(void)
 : CSolidSBCTestManager()
 {
 	//add tests that are available in this library
-	AddTest( "CPU-Test"        , &SolidSBCTestThreadCPU  );
+	AddTest( "CPU-Test"        , &SolidSBCTestCPU        );
 	AddTest( "CPU-Measure-Test", &SolidSBCTestCPUMeasure );
 	AddTest( "Memory-Test"     , &SolidSBCTestMemory     );
 	AddTest( "Harddrive-Test"  , &SolidSBCTestHarddrive  );
