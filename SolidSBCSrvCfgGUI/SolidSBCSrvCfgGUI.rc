@@ -91,7 +91,7 @@ CAPTION "About SolidSBC Server Configurator"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,14,14,20,20
-    LTEXT           "SolidSBC Server Configurator, Version 1.4",IDC_STATIC,42,14,137,8,SS_NOPREFIX
+    LTEXT           "SolidSBC Server Configurator, Version 1.5",IDC_STATIC,42,14,137,8,SS_NOPREFIX
     LTEXT           "Copyright (C) 2011, Moritz Wagner",IDC_STATIC,42,26,114,8
     DEFPUSHBUTTON   "OK",IDOK,134,41,50,14,WS_GROUP
 END
@@ -144,8 +144,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,4,0,0
- PRODUCTVERSION 1,4,0,0
+ FILEVERSION 1,5,0,0
+ PRODUCTVERSION 1,5,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -162,12 +162,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "mo-sys"
             VALUE "FileDescription", "SolidSBC Server Configurator"
-            VALUE "FileVersion", "1.4.0.0"
+            VALUE "FileVersion", "1.5.0.0"
             VALUE "InternalName", "SolidSBCSrvCfgGUI.exe"
             VALUE "LegalCopyright", "Copyright (C) 2011 Moritz Wagner"
             VALUE "OriginalFilename", "SolidSBCSrvCfgGUI.exe"
             VALUE "ProductName", "SolidSBC Server Configurator"
-            VALUE "ProductVersion", "1.4.0.0"
+            VALUE "ProductVersion", "1.5.0.0"
         END
     END
     BLOCK "VarFileInfo"

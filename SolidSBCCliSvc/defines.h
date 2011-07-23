@@ -1,7 +1,7 @@
 #pragma once
 
 #define SSBC_CLISVC_VERSION_MAJOR		_T("1")
-#define SSBC_CLISVC_VERSION_MINOR		_T("4")
+#define SSBC_CLISVC_VERSION_MINOR		_T("5")
 
 #define SSBC_CLISVC_NAME				_T("SolidSbcCli")
 #define SSBC_CLISVC_DISPLAY				_T("SolidSBC Client")

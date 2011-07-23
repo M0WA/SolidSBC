@@ -1,20 +1,20 @@
 #include "StdAfx.h"
 #include "SolidSBCMemoryResult.h"
 
-#include <sstream>
-
-std::map<std::string,std::string> CSolidSBCMemoryResult::GetColumnsValues(void)
+DOUBLE CSolidSBCMemoryResult::GetMallocZeroDuration(void)
 {
-	std::map<std::string,std::string> mapColumnsValues;
+	std::string sKey = "malloczeroduration";
 
-	std::stringstream sStream;
-	sStream << GetMallocZeroDuration();
-	mapColumnsValues["malloczeroduration"] = sStream.str();
-
-	sStream.clear();
-	sStream << GetByteCount();
-	mapColumnsValues["bytes"] = sStream.str();
-
-	return mapColumnsValues;
+	DOUBLE dValue = 0.0;
+	GetKeyValue(sKey, dValue, (DOUBLE) 0.0);
+	return dValue;
 }
 
+ULONG CSolidSBCMemoryResult::GetByteCount(void)
+{
+	std::string sKey = "bytes";
+
+	ULONG ulValue = 0;
+	GetKeyValue(sKey, ulValue, (ULONG) 0);
+	return ulValue;
+}

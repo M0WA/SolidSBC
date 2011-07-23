@@ -14,20 +14,20 @@ byte* CSolidSBCTestResult::GetPacketFromHeader(PSSBC_BASE_PACKET_HEADER pHeader)
 
 std::string CSolidSBCTestResult::ToSQL(void)
 {
-	std::stringstream sStream;
-	sStream << std::string("INSERT INTO ") << GetTableName() << " ";
+	//check if result has values
+	if ( m_sTableName.empty() || !m_mapColumnsValues.size() ) 
+		return std::string();
 
-	std::map<std::string,std::string> mapColumnsValues = GetColumnsValues();
+	//loop over result values
 	std::map<std::string,std::string>::iterator iterColumnValues;
-
 	std::string sColumnsSQL = "( ";
 	std::string sValuesSQL  = "( ";
-	for( iterColumnValues = mapColumnsValues.begin(); 
-		 iterColumnValues != mapColumnsValues.end();
+	for( iterColumnValues  = m_mapColumnsValues.begin(); 
+		 iterColumnValues != m_mapColumnsValues.end();
 		 iterColumnValues++ )
 	{
 		
-		if (iterColumnValues != mapColumnsValues.begin()){
+		if (iterColumnValues != m_mapColumnsValues.begin()){
 			sColumnsSQL += ", ";
 			sValuesSQL  += ", ";
 		}
@@ -37,7 +37,10 @@ std::string CSolidSBCTestResult::ToSQL(void)
 	}
 	sColumnsSQL += " )";
 	sValuesSQL  += " )";
-
+	
+	//assemble sql string
+	std::stringstream sStream;
+	sStream << "INSERT INTO " << m_sTableName << " ";
 	sStream << sColumnsSQL << " VALUES ";
 	sStream << sValuesSQL  << " ;";
 
