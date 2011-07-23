@@ -4,9 +4,11 @@
 
 #include <sstream>
 
+/*
 typedef struct {
 	UINT   nPacketSize;
 } SSBC_BASE_PACKET_HEADER, *PSSBC_BASE_PACKET_HEADER;
+*/
 
 class SOLIDSBCTESTSDK_API CSolidSBCTestResult
 {
@@ -16,6 +18,10 @@ protected:
 public:
 	virtual ~CSolidSBCTestResult(void) {};
 
+	std::string ToSQL  (void);
+	byte*       ToBytes(void);
+
+protected:
 	//setter
 	template <class Tvalue> 
 	void SetKeyValue(const std::string& sKey, const Tvalue& value)
@@ -37,14 +43,8 @@ public:
 		std::istringstream in( m_mapColumnsValues[sKey]);
 		return (in >> Value && in.eof());
 	}
-
-	//helper stuff
-	byte* GetPacketFromHeader(PSSBC_BASE_PACKET_HEADER pHeader);
-
+	
+private:
 	std::string                       m_sTableName;
 	std::map<std::string,std::string> m_mapColumnsValues;
-
-public:
-	std::string ToSQL  (void);
-	byte*       ToBytes(void);
 };

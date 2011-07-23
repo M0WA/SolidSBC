@@ -3,15 +3,6 @@
 
 #include <sstream>
 
-byte* CSolidSBCTestResult::GetPacketFromHeader(PSSBC_BASE_PACKET_HEADER pHeader)
-{
-	byte* pPacket = new byte[pHeader->nPacketSize];
-	ZeroMemory(pPacket,pHeader->nPacketSize);
-	memcpy(pPacket,pHeader,pHeader->nPacketSize);
-
-	return pPacket;
-}
-
 std::string CSolidSBCTestResult::ToSQL(void)
 {
 	//check if result has values
