@@ -3,16 +3,6 @@
 #include "SolidSBCTestLib.h"
 #include "../SolidSBCTestSDK/SolidSBCTestSDK.h"
 
-/*
-typedef struct : SSBC_BASE_PACKET_HEADER {
-	DOUBLE		dAddDuration;
-	DOUBLE		dDivDuration;
-	DOUBLE		dOverallDuration;
-	ULONGLONG	ullAddMultiplier;
-	ULONGLONG	ullDivMultiplier;
-} SSBC_CPUMEASURE_TESTRESULT_PACKET, *PSSBC_CPUMEASURE_TESTRESULT_PACKET;
-*/
-
 class SOLIDSBCTESTLIB_API CSolidSBCCPUMeasureResult : CSolidSBCTestResult
 {
 public:
