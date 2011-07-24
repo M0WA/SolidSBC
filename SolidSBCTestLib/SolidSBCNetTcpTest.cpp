@@ -14,6 +14,7 @@ typedef struct {
 
 UINT SolidSBCNetTcpTest(LPVOID lpParam)
 {
+	/*
 	USES_CONVERSION;
 	
 	PSSBC_TEST_THREAD_PARAM pParam              = (PSSBC_TEST_THREAD_PARAM)lpParam;
@@ -161,6 +162,6 @@ UINT SolidSBCNetTcpTest(LPVOID lpParam)
 			}
 		}
 	}
-
+	*/
 	return 0;
 }

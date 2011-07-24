@@ -14,7 +14,7 @@ public:
 	CSolidSBCTestThread(const std::string& sTestName, const PSSBC_TEST_THREAD_FUNC pThreadFunc, const SSBC_RESULTS_CONTAINER& resultContainer);
 	~CSolidSBCTestThread(void);
 
-	int  StartThread( LPVOID pTestParam, HWND hWnd = NULL );
+	int  StartThread( CSolidSBCTestConfig* pTestConfig, HWND hWnd = NULL );
 	int  StopThread ( void );
 	inline std::string GetTestName(void) { return m_sTestName; };
 	

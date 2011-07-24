@@ -159,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SolidSBCCPUConfig.h" />
     <ClInclude Include="SolidSBCCPUMeasureConfig.h" />
     <ClInclude Include="SolidSBCCPUMeasureResult.h" />
     <ClInclude Include="SolidSBCHarddriveConfig.h" />
@@ -180,6 +181,7 @@
     <ClInclude Include="testnames.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="SolidSBCCPUConfig.cpp" />
     <ClCompile Include="SolidSBCCPUMeasureConfig.cpp" />
     <ClCompile Include="SolidSBCCPUMeasureResult.cpp" />
     <ClCompile Include="SolidSBCHarddriveConfig.cpp" />

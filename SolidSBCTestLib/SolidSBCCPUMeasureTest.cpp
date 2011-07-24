@@ -1,45 +1,18 @@
 #include "StdAfx.h"
 #include "SolidSBCCPUMeasureTest.h"
 #include "SolidSBCCPUMeasureResult.h"
+#include "SolidSBCCPUMeasureConfig.h"
 
 #include <math.h>
 
 #pragma optimize( "", off )
 
-typedef struct {
-	UINT   nDivisionCnt;
-	UINT   nAdditionCnt;
-	BOOL   bTransmitData;
-	UINT   nAutoFixMultiplier;
-	double dFixMultiplierTreshold;
-} SSBC_CPUMEASURE_TEST_THREAD_PARAM, *PSSBC_CPUMEASURE_TEST_THREAD_PARAM;
-
-
 UINT SolidSBCTestThreadCPUMeasureFixMultipliers( double dCnt, UINT nStepCnt, ULONGLONG* pullMtpl, double dFixMultiplierThreshold, UINT nMaxSecs );
-
-UINT SolidSBCTestThreadCPUMeasureFixMultipliers( double dCnt, UINT nStepCnt, ULONGLONG* pullMtpl, double dFixMultiplierThreshold, UINT nMaxSecs )
-{
-	// Zeit (soll)	   Multi(soll) 
-	// ----------   =  -----------
-	// Zeit (ist)      Multi(ist) 
-
-	double dMaxSecs  = (double)nMaxSecs;
-
-	if (  ( nMaxSecs != 0 )										//may and should not be zero 
-	   && ( abs(dMaxSecs - dCnt) > dFixMultiplierThreshold )	//time out of threshold? 
-	   ){
-		double dNewMtlp  = ( dMaxSecs / dCnt ) * ((double)*pullMtpl);
-		*pullMtpl = (ULONGLONG)dNewMtlp;
-		if ( (*pullMtpl) == 0 )
-			*pullMtpl = 1; //zero multiplier, no good, set at least to one
-	}	
-	return 0;
-}
 
 UINT SolidSBCCPUMeasureTest(LPVOID lpParam)
 {
-	PSSBC_TEST_THREAD_PARAM            pParam       = (PSSBC_TEST_THREAD_PARAM)lpParam;
-	PSSBC_CPUMEASURE_TEST_THREAD_PARAM pThreadParam = (PSSBC_CPUMEASURE_TEST_THREAD_PARAM)pParam->pThreadParam;
+	PSSBC_TEST_THREAD_PARAM    pParam  = (PSSBC_TEST_THREAD_PARAM)lpParam;
+	CSolidSBCCPUMeasureConfig* pConfig = (CSolidSBCCPUMeasureConfig*)pParam->pTestConfig;
 
 	CPerformanceCounter cnt, cntOverAll;
 	double              dAddCnt = 0, dDivCnt = 0, dOverallCnt, dAddLoop = 0, dDivLoop = 0;
@@ -58,8 +31,8 @@ UINT SolidSBCCPUMeasureTest(LPVOID lpParam)
 		cntOverAll.Start();
 
 		//calculate needed steps
-		ullAddTotalSteps = ( ((ULONGLONG)pThreadParam->nAdditionCnt) * ullAdditionMtlp );
-		ullDivTotalSteps = ( ((ULONGLONG)pThreadParam->nDivisionCnt) * ullDivisionMtlp );
+		ullAddTotalSteps = ( ((ULONGLONG)pConfig->GetAdditionCnt()) * ullAdditionMtlp );
+		ullDivTotalSteps = ( ((ULONGLONG)pConfig->GetDivisionCnt()) * ullDivisionMtlp );
 
 		/*
 		//measure empty add loop
@@ -77,7 +50,7 @@ UINT SolidSBCCPUMeasureTest(LPVOID lpParam)
 
 		//measure add
 		cnt.Start();
-		if ( pThreadParam->nAdditionCnt ) {
+		if ( pConfig->GetAdditionCnt() ) {
 			for (ULONGLONG i = 0; i < ullAddTotalSteps; i++){
 				lCounter++;}
 		}
@@ -85,7 +58,7 @@ UINT SolidSBCCPUMeasureTest(LPVOID lpParam)
 
 		//measure division
 		cnt.Start();
-		if ( pThreadParam->nDivisionCnt ) {
+		if ( pConfig->GetDivisionCnt() ) {
 			for (ULONGLONG i = 0; i < ullDivTotalSteps; i++){
 				lCounter = lCounter/2;}
 		}
@@ -96,16 +69,16 @@ UINT SolidSBCCPUMeasureTest(LPVOID lpParam)
 		ULONGLONG recentDivMultiplier = ullDivisionMtlp;
 
 		//fix multipliers
-		if ( pThreadParam->nAutoFixMultiplier ) {
-			SolidSBCTestThreadCPUMeasureFixMultipliers(dAddCnt, pThreadParam->nAdditionCnt, &ullAdditionMtlp, pThreadParam->dFixMultiplierTreshold, pThreadParam->nAutoFixMultiplier );
-			SolidSBCTestThreadCPUMeasureFixMultipliers(dDivCnt, pThreadParam->nDivisionCnt, &ullDivisionMtlp, pThreadParam->dFixMultiplierTreshold, pThreadParam->nAutoFixMultiplier );
+		if ( pConfig->GetAutoFixMultiplier() ) {
+			SolidSBCTestThreadCPUMeasureFixMultipliers(dAddCnt, pConfig->GetAdditionCnt(), &ullAdditionMtlp, pConfig->GetFixMultiplierTreshold(), pConfig->GetAutoFixMultiplier() );
+			SolidSBCTestThreadCPUMeasureFixMultipliers(dDivCnt, pConfig->GetDivisionCnt(), &ullDivisionMtlp, pConfig->GetFixMultiplierTreshold(), pConfig->GetAutoFixMultiplier() );
 		}
 		dOverallCnt = cntOverAll.Stop();
 
 		//send result 
 		//TODO: !!!!!!!!!!!!!!! limit msg/seconds !!!!!!!!!!!!!!!! 
 		//                maybe triggers DDOS ATTACK 
-		if ( pThreadParam->bTransmitData ) {
+		if ( pConfig->GetTransmitData() ) {
 
 			CSolidSBCCPUMeasureResult* pResult = new CSolidSBCCPUMeasureResult();
 			pResult->SetAddDuration  (dAddCnt);
@@ -125,8 +98,27 @@ UINT SolidSBCCPUMeasureTest(LPVOID lpParam)
 	delete pParam;
 	pParam = NULL;
 
-	delete pThreadParam;
-	pThreadParam = NULL;
+	delete pConfig;
+	pConfig = NULL;
+	return 0;
+}
+
+UINT SolidSBCTestThreadCPUMeasureFixMultipliers( double dCnt, UINT nStepCnt, ULONGLONG* pullMtpl, double dFixMultiplierThreshold, UINT nMaxSecs )
+{
+	// Zeit (soll)	   Multi(soll) 
+	// ----------   =  -----------
+	// Zeit (ist)      Multi(ist) 
+
+	double dMaxSecs  = (double)nMaxSecs;
+
+	if (  ( nMaxSecs != 0 )										//may and should not be zero 
+	   && ( abs(dMaxSecs - dCnt) > dFixMultiplierThreshold )	//time out of threshold? 
+	   ){
+		double dNewMtlp  = ( dMaxSecs / dCnt ) * ((double)*pullMtpl);
+		*pullMtpl = (ULONGLONG)dNewMtlp;
+		if ( (*pullMtpl) == 0 )
+			*pullMtpl = 1; //zero multiplier, no good, set at least to one
+	}	
 	return 0;
 }
 

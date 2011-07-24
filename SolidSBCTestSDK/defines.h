@@ -4,6 +4,7 @@
 
 class CSolidSBCTestThread;
 class CSolidSBCTestResult;
+class CSolidSBCTestConfig;
 
 typedef enum {
 	SSBC_TEST_STATE_INVALID  = 0,
@@ -28,5 +29,5 @@ typedef std::map < std::string, SSBC_TEST_PAIR_TYPE >             SSBC_TEST_MAP_
 typedef struct {
 	SSBC_STATE_CONTAINER   stateContainer;
 	SSBC_RESULTS_CONTAINER resultContainer;
-	LPVOID  pThreadParam;
+	CSolidSBCTestConfig*   pTestConfig;
 } SSBC_TEST_THREAD_PARAM,*PSSBC_TEST_THREAD_PARAM;

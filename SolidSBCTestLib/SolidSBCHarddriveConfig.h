@@ -2,6 +2,12 @@
 
 #include <SolidSBCTestSDK.h>
 
+#define SSBC_TEST_HARDDRIVE_TMP_WRITE_FILE	_T("C:\\tmpwrite.dat")
+#define SSBC_TEST_HARDDRIVE_TMP_READ_FILE	_T("C:\\tmpread.dat")
+
+#define SSBC_TEST_HARDDRIVE_THREAD_BLOCKSIZE_WRITE	1024 //4MB
+#define SSBC_TEST_HARDDRIVE_THREAD_BLOCKSIZE_READ	1024 //4MB
+
 class CSolidSBCHarddriveConfig : CSolidSBCTestConfig
 {
 public:

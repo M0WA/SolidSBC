@@ -67,13 +67,13 @@ void CSolidSBCTestManager::AddTest(const std::string& sTestName, const AFX_THREA
 	);
 }
 
-int CSolidSBCTestManager::StartTest(const std::string& sTestName, LPVOID pszParam)
+int CSolidSBCTestManager::StartTest(const std::string& sTestName, CSolidSBCTestConfig* pTestConfig)
 {
 	CSolidSBCTestThread* pThread = GetThreadByName(sTestName);
 	if( !pThread )
 		return 1;
 
-	return pThread->StartThread(pszParam);
+	return pThread->StartThread(pTestConfig);
 }
 
 int CSolidSBCTestManager::StopTest(const std::string& sTestName)

@@ -9,7 +9,8 @@ protected:
 	~CSolidSBCTestManager(void);
 
 public:
-	int StartTest     (const std::string& sTestName, LPVOID pszParam);
+	int StartTest     (const std::string& sTestName, CSolidSBCTestConfig* pTestConfig);
+	int StartTestByXML(const std::string& sXML);
 	int StopTest      (const std::string& sTestName);
 
 	int GetTestNames  (std::vector<std::string>& vecTestnames);

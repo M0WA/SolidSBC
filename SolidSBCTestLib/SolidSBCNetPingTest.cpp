@@ -16,6 +16,7 @@ typedef struct {
 
 UINT SolidSBCNetPingTest(LPVOID lpParam)
 {
+	/*
 	USES_CONVERSION;
 	
 	PSSBC_TEST_THREAD_PARAM pParam          = (PSSBC_TEST_THREAD_PARAM)lpParam;
@@ -121,6 +122,6 @@ UINT SolidSBCNetPingTest(LPVOID lpParam)
 	//delete and null local buffers
 	delete pSendData;       pSendData = NULL;
 	delete pReplyBuffer; pReplyBuffer = NULL;
-
+	*/
 	return 0;
 }

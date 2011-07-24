@@ -1,29 +1,23 @@
 #include "StdAfx.h"
 #include "SolidSBCMemoryTest.h"
 #include "SolidSBCMemoryResult.h"
-
-typedef struct {
-	BOOL  bRandomize;
-	ULONG nMinMemory;
-	ULONG nMaxMemory;
-	BOOL  bTransmitData;
-} SSBC_MEMORY_TEST_THREAD_PARAM, *PSSBC_MEMORY_TEST_THREAD_PARAM;
+#include "SolidSBCMemoryConfig.h"
 
 #pragma optimize( "", off )
 
 UINT SolidSBCMemoryTest(LPVOID lpParam)
 {	
-	PSSBC_TEST_THREAD_PARAM pParam              = (PSSBC_TEST_THREAD_PARAM)lpParam;
-	PSSBC_MEMORY_TEST_THREAD_PARAM pThreadParam = (PSSBC_MEMORY_TEST_THREAD_PARAM)pParam->pThreadParam;
+	PSSBC_TEST_THREAD_PARAM pParam = (PSSBC_TEST_THREAD_PARAM)lpParam;
+	CSolidSBCMemoryConfig* pConfig = (CSolidSBCMemoryConfig*)pParam->pTestConfig;
 
-	if ( pThreadParam->bRandomize ){
-		UINT nDiff = (UINT)pThreadParam->nMaxMemory - (UINT)pThreadParam->nMinMemory;
+	if ( pConfig->GetRandomize() ){
+		UINT nDiff = (UINT)pConfig->GetMaxMem() - (UINT)pConfig->GetMinMem();
 		UINT number,nRandomNumber;
 	
 		while ( 1 ){
 			rand_s( &number );
 			nRandomNumber =  number % (nDiff + 1);
-			nRandomNumber += pThreadParam->nMinMemory;
+			nRandomNumber += pConfig->GetMinMem();
 
 			CPerformanceCounter cMallocZeroCnt;
 			
@@ -34,7 +28,7 @@ UINT SolidSBCMemoryTest(LPVOID lpParam)
 			double dMallocZeroDuration = cMallocZeroCnt.Stop();
 
 			//send result //TODO: !!!!!!!!!!!!!!! limit msg/seconds !!!!!!!!!!!!!!!!
-			if ( pThreadParam->bTransmitData ) {
+			if ( pConfig->GetTransmitData() ) {
 
 				CSolidSBCMemoryResult* pResult = new CSolidSBCMemoryResult();
 				pResult->SetMallocZeroDuration(dMallocZeroDuration);
@@ -62,18 +56,18 @@ UINT SolidSBCMemoryTest(LPVOID lpParam)
 		}
 	}
 	else{
-		PBYTE pMem = new BYTE[pThreadParam->nMaxMemory];
+		PBYTE pMem = new BYTE[pConfig->GetMaxMem()];
 
 		while( !CSolidSBCTestThread::ShallThreadEnd(pParam) ){
-			ZeroMemory(pMem,pThreadParam->nMaxMemory);
+			ZeroMemory(pMem,pConfig->GetMaxMem());
 			Sleep(100);}
 
 		delete [] pMem;
 		pMem = NULL;
 	}
 
-	delete pThreadParam;
-	pThreadParam = NULL;
+	delete pConfig;
+	pConfig = NULL;
 	
 	delete pParam;
 	pParam = NULL;

@@ -19,11 +19,11 @@ CSolidSBCTestThread::~CSolidSBCTestThread(void)
 	StopThread();
 }
 
-int CSolidSBCTestThread::StartThread(LPVOID pTestParam, HWND hWnd)
+int CSolidSBCTestThread::StartThread(CSolidSBCTestConfig* pTestConfig, HWND hWnd)
 {
 	StopThread();
 
-	m_testThreadParam.pThreadParam = pTestParam;
+	m_testThreadParam.pTestConfig = pTestConfig;
 	if ( !(m_pThread = AfxBeginThread(m_pThreadFunc,(LPVOID)&m_testThreadParam,0,0,CREATE_SUSPENDED)) )
 		return 0;
 	m_pThread->m_bAutoDelete = FALSE;

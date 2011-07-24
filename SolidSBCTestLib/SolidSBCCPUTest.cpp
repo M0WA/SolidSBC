@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "SolidSBCCPUTest.h"
+#include "SolidSBCCPUConfig.h"
 
 #pragma optimize( "", off )
 
@@ -15,21 +16,21 @@ BOOL WaitForChildCPUThreads(UINT nCnt, CWinThread** pWinThreads);
 
 UINT SolidSBCCPUTest(LPVOID lpParam)
 {
-	PSSBC_TEST_THREAD_PARAM     pParam       = (PSSBC_TEST_THREAD_PARAM)lpParam;
-	PSSBC_CPU_TEST_THREAD_PARAM pThreadParam = (PSSBC_CPU_TEST_THREAD_PARAM)pParam->pThreadParam;
+	PSSBC_TEST_THREAD_PARAM pParam  = (PSSBC_TEST_THREAD_PARAM)lpParam;
+	CSolidSBCCPUConfig*     pConfig = (CSolidSBCCPUConfig*)pParam->pTestConfig;
 
-	CWinThread** pThreads = (CWinThread**)new CWinThread*[pThreadParam->nThreadCnt];
+	CWinThread** pThreads = (CWinThread**)new CWinThread*[pConfig->GetThreadCnt()];
 
-	for (UINT i = 0; i < pThreadParam->nThreadCnt; i++) {
+	for (UINT i = 0; i < pConfig->GetThreadCnt(); i++) {
 		pThreads[i] = AfxBeginThread(SolidSBCTestThreadCPUChildThread,lpParam,0,0,CREATE_SUSPENDED);
 		if ( pThreads[i] ){
 			pThreads[i]->m_bAutoDelete = FALSE;
 			pThreads[i]->ResumeThread();}
 	}
 	
-	BOOL bWaitChild = WaitForChildCPUThreads(pThreadParam->nThreadCnt, pThreads);
+	BOOL bWaitChild = WaitForChildCPUThreads(pConfig->GetThreadCnt(), pThreads);
 
-	for (UINT i = 0; i < pThreadParam->nThreadCnt; i++) {
+	for (UINT i = 0; i < pConfig->GetThreadCnt(); i++) {
 		delete pThreads[i];}
 	delete [] pThreads;
 	pThreads = NULL;
@@ -37,8 +38,9 @@ UINT SolidSBCCPUTest(LPVOID lpParam)
 	delete pParam;
 	pParam = NULL;
 
-	delete pThreadParam;
-	pThreadParam = NULL;
+	delete pConfig;
+	pConfig = NULL;
+
 	return 0;
 }
 
@@ -60,10 +62,10 @@ BOOL WaitForChildCPUThreads(UINT nCnt, CWinThread** pWinThreads)
 UINT SolidSBCTestThreadCPUChildThread(LPVOID lpParam)
 {
 	PSSBC_TEST_THREAD_PARAM     pParam       = (PSSBC_TEST_THREAD_PARAM)lpParam;
-	PSSBC_CPU_TEST_THREAD_PARAM pThreadParam = (PSSBC_CPU_TEST_THREAD_PARAM)pParam->pThreadParam;
+	CSolidSBCCPUConfig*     pConfig = (CSolidSBCCPUConfig*)pParam->pTestConfig;
 
 	//randomize cpu usage
-	if (pThreadParam->bRandomize){
+	if (pConfig->GetRandomize()){
 		unsigned int number = 0, nRandomNumber = 0;
 
 		while(1){
@@ -72,7 +74,7 @@ UINT SolidSBCTestThreadCPUChildThread(LPVOID lpParam)
 
 			//how long should the pause interval last?
 			rand_s( &number );
-			nRandomNumber = number % (pThreadParam->nMaxRand+1);
+			nRandomNumber = number % (pConfig->GetMaxRand()+1);
 
 			//make some pause before using cpu power, check for exit every second
 			for ( UINT i = 0; i < nRandomNumber; i++ ){
@@ -84,7 +86,7 @@ UINT SolidSBCTestThreadCPUChildThread(LPVOID lpParam)
 			//how long shall cpu-intensive interval last?
 			DWORD dwStart = GetTickCount();
 			rand_s( &number );
-			nRandomNumber = number % (pThreadParam->nMaxRand+1);
+			nRandomNumber = number % (pConfig->GetMaxRand()+1);
 			nRandomNumber *= 1000;
 
 			//use some cpu power
@@ -100,8 +102,8 @@ UINT SolidSBCTestThreadCPUChildThread(LPVOID lpParam)
 	else {
 		int i = 0;
 		struct timeval waitstruct;
-		long double fDecimalPlaces  = (long double)pThreadParam->fSleepTime - (long double)((long)pThreadParam->fSleepTime);
-		waitstruct.tv_sec           = (long) pThreadParam->fSleepTime/1000;
+		long double fDecimalPlaces  = (long double)pConfig->GetSleepMS() - (long double)((long)pConfig->GetSleepMS());
+		waitstruct.tv_sec           = (long) pConfig->GetSleepMS()/1000;
 		waitstruct.tv_usec          = (long) ((long double)(fDecimalPlaces * 1000.0f * 1000.0f));
 
 		while(1){

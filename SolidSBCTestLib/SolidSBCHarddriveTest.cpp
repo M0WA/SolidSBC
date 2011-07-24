@@ -1,21 +1,7 @@
 #include "StdAfx.h"
 #include "SolidSBCHarddriveTest.h"
 #include "SolidSBCHarddriveResult.h"
-
-typedef struct {
-	BOOL  bRandomRead;
-	BOOL  bRandomWrite;
-	ULONG ulReadMax;
-	ULONG ulWriteMax;
-	UINT  nReadWriteDelay;
-	BOOL  bTransmitData;
-} SSBC_HARDDRIVE_TEST_THREAD_PARAM, *PSSBC_HARDDRIVE_TEST_THREAD_PARAM;
-
-#define SSBC_TEST_HARDDRIVE_TMP_WRITE_FILE	_T("C:\\tmpwrite.dat")
-#define SSBC_TEST_HARDDRIVE_TMP_READ_FILE	_T("C:\\tmpread.dat")
-
-#define SSBC_TEST_HARDDRIVE_THREAD_BLOCKSIZE_WRITE	1024 //4MB
-#define SSBC_TEST_HARDDRIVE_THREAD_BLOCKSIZE_READ	1024 //4MB
+#include "SolidSBCHarddriveConfig.h"
 
 #pragma optimize( "", off )
 
@@ -26,14 +12,14 @@ void WaitForChildHarddriveThreads(CWinThread* pReaderThread, CWinThread*  pWrite
 UINT SolidSBCTestThreadHarddriveReader(LPVOID lpParam)
 {
 	PSSBC_TEST_THREAD_PARAM pParam = (PSSBC_TEST_THREAD_PARAM)lpParam;
-	PSSBC_HARDDRIVE_TEST_THREAD_PARAM pThreadParam = (PSSBC_HARDDRIVE_TEST_THREAD_PARAM)pParam->pThreadParam;
+	CSolidSBCHarddriveConfig* pConfig = (CSolidSBCHarddriveConfig*)pParam->pTestConfig;
 
-	ULONG ulReadBytes = pThreadParam->ulReadMax;
+	ULONG ulReadBytes = pConfig->GetReadMax();
 	unsigned int number = 0, nRandomNumber = 0;
 	BYTE pBytes[SSBC_TEST_HARDDRIVE_THREAD_BLOCKSIZE_READ] = {0};
 	memset(pBytes,0xFE,SSBC_TEST_HARDDRIVE_THREAD_BLOCKSIZE_READ);
 
-	//create tmp file with size of pThreadParam->ulReadMax to read from
+	//create tmp file with size of pConfig->GetReadMax() to read from
 	TRY 
 	{
 		CFile cTmpFile;
@@ -58,11 +44,11 @@ UINT SolidSBCTestThreadHarddriveReader(LPVOID lpParam)
 		dSeconds = cntTime.Stop();
 
 		//tell result to dialog
-		if ( pThreadParam->bTransmitData ){
+		if ( pConfig->GetTransmitData() ){
 			CSolidSBCHarddriveResult* pResult = new CSolidSBCHarddriveResult();
 			pResult->SetResultType(SSBC_TEST_HARDDRIVE_RESULT_TYPE_READ_INIT);
 			pResult->SetByteCount(ulReadBytes);
-			pResult->SetWaitCount(pThreadParam->nReadWriteDelay);
+			pResult->SetWaitCount(pConfig->GetReadWriteDelay());
 			pResult->SetDuration(dSeconds);
 
 			CSolidSBCTestThread::AddResult(pParam, (CSolidSBCTestResult*)pResult);
@@ -79,9 +65,9 @@ UINT SolidSBCTestThreadHarddriveReader(LPVOID lpParam)
 		double dSeconds = 0;
 		CPerformanceCounter cntTime;
 
-		if ( pThreadParam->bRandomRead ) {
+		if ( pConfig->GetRandomRead() ) {
 			rand_s( &number );
-			ulReadBytes = number % (pThreadParam->ulReadMax+1);}
+			ulReadBytes = number % (pConfig->GetReadMax()+1);}
 
 		//read from file
 		TRY 
@@ -108,12 +94,12 @@ UINT SolidSBCTestThreadHarddriveReader(LPVOID lpParam)
 		END_CATCH
 
 		//tell result to dialog
-		if ( pThreadParam->bTransmitData ){
+		if ( pConfig->GetTransmitData() ){
 
 			CSolidSBCHarddriveResult* pResult = new CSolidSBCHarddriveResult();
 			pResult->SetResultType(SSBC_TEST_HARDDRIVE_RESULT_TYPE_READ);
 			pResult->SetByteCount(ulReadBytes);
-			pResult->SetWaitCount(pThreadParam->nReadWriteDelay);
+			pResult->SetWaitCount(pConfig->GetReadWriteDelay());
 			pResult->SetDuration(dSeconds);
 
 			CSolidSBCTestThread::AddResult(pParam, (CSolidSBCTestResult*)pResult);
@@ -124,7 +110,7 @@ UINT SolidSBCTestThreadHarddriveReader(LPVOID lpParam)
 			break;
 		
 		//sleep for given interval and check every second if we should end...
-		for (ULONG i = 0; i < pThreadParam->nReadWriteDelay; i++){
+		for (ULONG i = 0; i < pConfig->GetReadWriteDelay(); i++){
 			Sleep(950);
 			i++;
 			if ( CSolidSBCTestThread::ShallThreadEnd( pParam ) )
@@ -145,18 +131,18 @@ UINT SolidSBCTestThreadHarddriveReader(LPVOID lpParam)
 UINT SolidSBCTestThreadHarddriveWriter(LPVOID lpParam)
 {
 	PSSBC_TEST_THREAD_PARAM pParam = (PSSBC_TEST_THREAD_PARAM)lpParam;
-	PSSBC_HARDDRIVE_TEST_THREAD_PARAM pThreadParam = (PSSBC_HARDDRIVE_TEST_THREAD_PARAM)pParam->pThreadParam;
+	CSolidSBCHarddriveConfig* pConfig = (CSolidSBCHarddriveConfig*)pParam->pTestConfig;
 
-	ULONG ulWriteBytes = pThreadParam->ulWriteMax;
+	ULONG ulWriteBytes = pConfig->GetWriteMax();
 	unsigned int number = 0, nRandomNumber = 0;
 	BYTE pBytes[SSBC_TEST_HARDDRIVE_THREAD_BLOCKSIZE_WRITE] = {0};
 	memset(pBytes,0xFE,SSBC_TEST_HARDDRIVE_THREAD_BLOCKSIZE_WRITE);
 
 	while ( !CSolidSBCTestThread::ShallThreadEnd(pParam) )
 	{
-		if ( pThreadParam->bRandomWrite ) {
+		if ( pConfig->GetRandomWrite() ) {
 			rand_s( &number );
-			ulWriteBytes = number % (pThreadParam->ulWriteMax+1);}
+			ulWriteBytes = number % (pConfig->GetWriteMax()+1);}
 		
 		CPerformanceCounter cntTime;
 		ULONG ulBytesWritten = 0, ulWriteBytesStep = SSBC_TEST_HARDDRIVE_THREAD_BLOCKSIZE_WRITE;
@@ -190,12 +176,12 @@ UINT SolidSBCTestThreadHarddriveWriter(LPVOID lpParam)
 		END_CATCH
 	
 		//tell result to dialog
-		if ( pThreadParam->bTransmitData ){
+		if ( pConfig->GetTransmitData() ){
 
 			CSolidSBCHarddriveResult* pResult = new CSolidSBCHarddriveResult();
 			pResult->SetResultType(SSBC_TEST_HARDDRIVE_RESULT_TYPE_WRITE);
 			pResult->SetByteCount(ulBytesWritten);
-			pResult->SetWaitCount(pThreadParam->nReadWriteDelay);
+			pResult->SetWaitCount(pConfig->GetReadWriteDelay());
 			pResult->SetDuration(dSeconds);
 
 			CSolidSBCTestThread::AddResult(pParam, (CSolidSBCTestResult*)pResult);
@@ -206,7 +192,7 @@ UINT SolidSBCTestThreadHarddriveWriter(LPVOID lpParam)
 			break;
 
 		//sleep for given interval and check every second if we should end...
-		for (ULONG i = 0; i < pThreadParam->nReadWriteDelay; i++){
+		for (ULONG i = 0; i < pConfig->GetReadWriteDelay(); i++){
 
 			Sleep(900);
 			i++;
@@ -239,19 +225,19 @@ void WaitForChildHarddriveThreads(CWinThread* pReaderThread, CWinThread*  pWrite
 UINT SolidSBCHarddriveTest(LPVOID lpParam)
 {
 	PSSBC_TEST_THREAD_PARAM pParam = (PSSBC_TEST_THREAD_PARAM)lpParam;
-	PSSBC_HARDDRIVE_TEST_THREAD_PARAM pThreadParam = (PSSBC_HARDDRIVE_TEST_THREAD_PARAM)pParam->pThreadParam;
+	CSolidSBCHarddriveConfig* pConfig = (CSolidSBCHarddriveConfig*)pParam->pTestConfig;
 
 	CWinThread *pReaderThread = NULL, *pWriterThread = NULL;
 
 	//start reader thread
-	if (pThreadParam->ulReadMax > 0){
+	if (pConfig->GetReadMax() > 0){
 		pReaderThread = AfxBeginThread(	SolidSBCTestThreadHarddriveReader, lpParam, 0, 0, CREATE_SUSPENDED);
 		pReaderThread->m_bAutoDelete = FALSE;
 		pReaderThread->ResumeThread();
 	}
 
 	//start writer thread
-	if (pThreadParam->ulWriteMax > 0){
+	if (pConfig->GetWriteMax() > 0){
 		pWriterThread = AfxBeginThread(	SolidSBCTestThreadHarddriveWriter, lpParam, 0, 0, CREATE_SUSPENDED);
 		pWriterThread->m_bAutoDelete = FALSE;
 		pWriterThread->ResumeThread();
@@ -274,8 +260,8 @@ UINT SolidSBCHarddriveTest(LPVOID lpParam)
 	delete pWriterThread;
 	pWriterThread = NULL;
 
-	delete pThreadParam;
-	pThreadParam = NULL;
+	delete pConfig;
+	pConfig = NULL;
 
 	return 0; 
 }
