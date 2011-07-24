@@ -1,37 +1,27 @@
 #include "StdAfx.h"
 #include "SolidSBCNetTcpTest.h"
 #include "SolidSBCNetTcpResult.h"
-
-#define SSBC_PROFILE_MAX_SERVER_NAME	512
-
-typedef struct {
-	UINT	nTcpConnInterval;
-	TCHAR	szTcpConnHost[SSBC_PROFILE_MAX_SERVER_NAME];
-	USHORT  nTcpConnPort;
-	UINT	nTcpConnTTL;
-	BOOL	bTcpConnTransmitData;
-} SSBC_TEST_NETWORK_TCPCONN_PARAM, *PSSBC_TEST_NETWORK_TCPCONN_PARAM;
+#include "SolidSBCNetTcpConfig.h"
 
 UINT SolidSBCNetTcpTest(LPVOID lpParam)
 {
-	/*
 	USES_CONVERSION;
 	
-	PSSBC_TEST_THREAD_PARAM pParam              = (PSSBC_TEST_THREAD_PARAM)lpParam;
-	PSSBC_TEST_NETWORK_TCPCONN_PARAM pNetParam	= (PSSBC_TEST_NETWORK_TCPCONN_PARAM)pParam->pThreadParam;
-	DWORD                            dwTimeout	= pNetParam->nTcpConnTTL;
+	PSSBC_TEST_THREAD_PARAM pParam  = (PSSBC_TEST_THREAD_PARAM)lpParam;
+	CSolidSBCNetTcpConfig*  pConfig	= (CSolidSBCNetTcpConfig*)pParam->pTestConfig;
+	DWORD                            dwTimeout	= pConfig->GetTTL();
 	CPerformanceCounter cCnt;
 	
 	//preparing sockaddr for target
 	struct sockaddr_in target;
 	ZeroMemory(&target,sizeof(target));
 	target.sin_family = AF_INET;
-	target.sin_port   = htons(pNetParam->nTcpConnPort);
+	target.sin_port   = htons(pConfig->GetPort() );
 
 	//find ip of target host
-	target.sin_addr.s_addr = inet_addr( T2A( pNetParam->szTcpConnHost ) );
+	target.sin_addr.s_addr = inet_addr( T2A( pConfig->GetHost() ) );
 	if ( target.sin_addr.s_addr == INADDR_NONE ){ //must be a hostname
-		struct hostent* pHost = gethostbyname( T2A( pNetParam->szTcpConnHost ) );
+		struct hostent* pHost = gethostbyname( T2A( pConfig->GetHost() ) );
 		if (   ( pHost )
 			&& ( pHost->h_addrtype == 2 )
 			&& ( pHost->h_length   == 4 )
@@ -68,17 +58,17 @@ UINT SolidSBCNetTcpTest(LPVOID lpParam)
 		ioctlsocket(hConnectSocket, FIONBIO, &iNonBlockMode); // put socket in non-blocking state
 
 		//convert ttl to timeval struct
-		if ( pNetParam->nTcpConnTTL > 1000 ) {
-			selecttimeout.tv_sec  = static_cast<LONG>( ( static_cast<double>(pNetParam->nTcpConnTTL) / static_cast<double>(1000.0f) ) );
-			selecttimeout.tv_usec = static_cast<LONG>( ( pNetParam->nTcpConnTTL - (selecttimeout.tv_sec * 1000) ) * 1000 );
+		if ( pConfig->GetTTL() > 1000 ) {
+			selecttimeout.tv_sec  = static_cast<LONG>( ( static_cast<double>(pConfig->GetTTL()) / static_cast<double>(1000.0f) ) );
+			selecttimeout.tv_usec = static_cast<LONG>( ( pConfig->GetTTL() - (selecttimeout.tv_sec * 1000) ) * 1000 );
 		} 
-		else if ( pNetParam->nTcpConnTTL == 1000 ) {
+		else if ( pConfig->GetTTL() == 1000 ) {
 			selecttimeout.tv_sec  = 1;
 			selecttimeout.tv_usec = 0;
 		}
 		else {
 			selecttimeout.tv_sec  = 0;
-			selecttimeout.tv_usec = static_cast<LONG>(pNetParam->nTcpConnTTL * 1000); //milli -> micro
+			selecttimeout.tv_usec = static_cast<LONG>(pConfig->GetTTL() * 1000); //milli -> micro
 		}
 
 		cCnt.Start();
@@ -140,7 +130,7 @@ UINT SolidSBCNetTcpTest(LPVOID lpParam)
 		}
 		closesocket(hConnectSocket);
 
-		if ( pNetParam->bTcpConnTransmitData ){
+		if ( pConfig->GetTransmitData() ){
 
 			CSolidSBCNetTcpResult* pResult = new CSolidSBCNetTcpResult();
 			pResult->SetDuration(dDurationMS);
@@ -149,12 +139,12 @@ UINT SolidSBCNetTcpTest(LPVOID lpParam)
 		}
 
 		//check if we are faster than nTcpConnInterval
-		if (  (pNetParam->nTcpConnInterval > 0)
-		   && (pNetParam->nTcpConnInterval > dwTimeout)
+		if (  (pConfig->GetInterval() > 0)
+		   && (pConfig->GetInterval() > dwTimeout)
 		   ) {
 			UINT nDurationMS = static_cast<UINT>(dDurationMS);
-			if ( nDurationMS < pNetParam->nTcpConnInterval ) {
-				UINT nSleepMS = pNetParam->nTcpConnInterval - nDurationMS;
+			if ( nDurationMS < pConfig->GetInterval() ) {
+				UINT nSleepMS = pConfig->GetInterval() - nDurationMS;
 				//TODO: dont sleep too long here in once piece, 
 				//      recheck regularly (every 25-50ms) if thread should end
 				//      hangs on shutdown if "nSleepMS" is set too long
@@ -162,6 +152,5 @@ UINT SolidSBCNetTcpTest(LPVOID lpParam)
 			}
 		}
 	}
-	*/
 	return 0;
 }

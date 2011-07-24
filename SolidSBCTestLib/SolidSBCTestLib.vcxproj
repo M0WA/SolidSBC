@@ -166,7 +166,9 @@
     <ClInclude Include="SolidSBCHarddriveResult.h" />
     <ClInclude Include="SolidSBCMemoryConfig.h" />
     <ClInclude Include="SolidSBCMemoryResult.h" />
+    <ClInclude Include="SolidSBCNetPingConfig.h" />
     <ClInclude Include="SolidSBCNetPingResult.h" />
+    <ClInclude Include="SolidSBCNetTcpConfig.h" />
     <ClInclude Include="SolidSBCNetTcpResult.h" />
     <ClInclude Include="SolidSBCCPUTest.h" />
     <ClInclude Include="SolidSBCCPUMeasureTest.h" />
@@ -188,7 +190,9 @@
     <ClCompile Include="SolidSBCHarddriveResult.cpp" />
     <ClCompile Include="SolidSBCMemoryConfig.cpp" />
     <ClCompile Include="SolidSBCMemoryResult.cpp" />
+    <ClCompile Include="SolidSBCNetPingConfig.cpp" />
     <ClCompile Include="SolidSBCNetPingResult.cpp" />
+    <ClCompile Include="SolidSBCNetTcpConfig.cpp" />
     <ClCompile Include="SolidSBCNetTcpResult.cpp" />
     <ClCompile Include="SolidSBCCPUTest.cpp" />
     <ClCompile Include="SolidSBCCPUMeasureTest.cpp" />

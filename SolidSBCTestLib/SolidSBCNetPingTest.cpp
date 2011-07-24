@@ -1,34 +1,24 @@
 #include "StdAfx.h"
 #include "SolidSBCNetPingTest.h"
 #include "SolidSBCNetPingResult.h"
+#include "SolidSBCNetPingConfig.h"
 
 #include <Icmpapi.h>
 
-#define SSBC_PROFILE_MAX_SERVER_NAME	512
-
-typedef struct {
-	UINT	nPingInterval;
-	TCHAR	szPingHost[SSBC_PROFILE_MAX_SERVER_NAME];
-	UINT	nPingTTL;
-	UINT    nPingPayloadSize;
-	BOOL	bPingTransmitData;
-} SSBC_TEST_NETWORK_PING_PARAM, *PSSBC_TEST_NETWORK_PING_PARAM;
-
 UINT SolidSBCNetPingTest(LPVOID lpParam)
 {
-	/*
 	USES_CONVERSION;
 	
 	PSSBC_TEST_THREAD_PARAM pParam          = (PSSBC_TEST_THREAD_PARAM)lpParam;
-	PSSBC_TEST_NETWORK_PING_PARAM pNetParam	= (PSSBC_TEST_NETWORK_PING_PARAM)pParam->pThreadParam;
+	CSolidSBCNetPingConfig* pConfig	= (CSolidSBCNetPingConfig*)pParam->pTestConfig;
 
-	DWORD                             dwTimeout		= pNetParam->nPingTTL;
+	DWORD                             dwTimeout		= pConfig->GetTTL();
     HANDLE                            hIcmpFile		= INVALID_HANDLE_VALUE;
 
 	//find ip of target host
-	unsigned long ipaddr = inet_addr( T2A( pNetParam->szPingHost ) );
+	unsigned long ipaddr = inet_addr( T2A( pConfig->GetHost() ) );
 	if ( ipaddr == INADDR_NONE ){ //must be a hostname
-		struct hostent* pHost = gethostbyname( T2A( pNetParam->szPingHost ) );
+		struct hostent* pHost = gethostbyname( T2A( pConfig->GetHost() ) );
 		if (   ( pHost )
 			&& ( pHost->h_addrtype == 2 )
 			&& ( pHost->h_length   == 4 )
@@ -51,10 +41,10 @@ UINT SolidSBCNetPingTest(LPVOID lpParam)
 	}
 
 	//calculate sizes and allocate buffer space
-    DWORD nReplySize     = sizeof( ICMP_ECHO_REPLY ) + pNetParam->nPingPayloadSize;
+    DWORD nReplySize     = sizeof( ICMP_ECHO_REPLY ) + pConfig->GetPayloadSize();
     PBYTE pReplyBuffer   = new BYTE[nReplySize];
-	PBYTE pSendData      = new BYTE[pNetParam->nPingPayloadSize];
-	memset(pSendData, 0xFC, pNetParam->nPingPayloadSize);
+	PBYTE pSendData      = new BYTE[pConfig->GetPayloadSize()];
+	memset(pSendData, 0xFC, pConfig->GetPayloadSize());
 	
 	if ( (hIcmpFile = IcmpCreateFile()) == INVALID_HANDLE_VALUE ) {
 		delete pSendData;       pSendData = NULL;
@@ -82,7 +72,7 @@ UINT SolidSBCNetPingTest(LPVOID lpParam)
 			for ( DWORD dwPos = 0; dwPos < dwRetVal; dwPos++ ) {
 				PICMP_ECHO_REPLY pEchoReply = (PICMP_ECHO_REPLY)&(pReplyBuffer[dwPos]);
 
-				if ( pNetParam->bPingTransmitData ){
+				if ( pConfig->GetTransmitData() ){
 
 					CSolidSBCNetPingResult* pResult = new CSolidSBCNetPingResult();
 					pResult->SetDuration( pEchoReply->RoundTripTime );
@@ -104,12 +94,12 @@ UINT SolidSBCNetPingTest(LPVOID lpParam)
 		}
 
 		//check if we are faster than nPingInterval
-		if (  (pNetParam->nPingInterval > 0)
-		   && (pNetParam->nPingInterval > dwTimeout)
+		if (  (pConfig->GetInterval() > 0)
+		   && (pConfig->GetInterval() > dwTimeout)
 		   ) {
 			UINT nDurationMS = static_cast<UINT>(cCnt.Stop() * 1000.0f);
-			if ( nDurationMS < pNetParam->nPingInterval ) {
-				UINT nSleepMS = pNetParam->nPingInterval - nDurationMS;
+			if ( nDurationMS < pConfig->GetInterval() ) {
+				UINT nSleepMS = pConfig->GetInterval() - nDurationMS;
 				//TODO: dont sleep too long here in once piece, 
 				//      recheck regularly (every 25-50ms) if thread should end
 				//      hangs on shutdown if "nSleepMS" is set too long
@@ -122,6 +112,6 @@ UINT SolidSBCNetPingTest(LPVOID lpParam)
 	//delete and null local buffers
 	delete pSendData;       pSendData = NULL;
 	delete pReplyBuffer; pReplyBuffer = NULL;
-	*/
+
 	return 0;
 }
