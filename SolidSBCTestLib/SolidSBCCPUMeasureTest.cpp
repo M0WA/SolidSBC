@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "SolidSBCTestCPUMeasure.h"
+#include "SolidSBCCPUMeasureTest.h"
 #include "SolidSBCCPUMeasureResult.h"
 
 #include <math.h>
@@ -36,7 +36,7 @@ UINT SolidSBCTestThreadCPUMeasureFixMultipliers( double dCnt, UINT nStepCnt, ULO
 	return 0;
 }
 
-UINT SolidSBCTestCPUMeasure(LPVOID lpParam)
+UINT SolidSBCCPUMeasureTest(LPVOID lpParam)
 {
 	PSSBC_TEST_THREAD_PARAM            pParam       = (PSSBC_TEST_THREAD_PARAM)lpParam;
 	PSSBC_CPUMEASURE_TEST_THREAD_PARAM pThreadParam = (PSSBC_CPUMEASURE_TEST_THREAD_PARAM)pParam->pThreadParam;

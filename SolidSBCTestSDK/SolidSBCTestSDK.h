@@ -8,11 +8,17 @@
 
 //common predefined stuff
 #include "defines.h"
+#include "SolidSBCXMLFile.h"
+
 
 //needed by test dlls
 #include "PerformanceCounter.h"
+
 #include "SolidSBCTestResult.h"
 #include "SolidSBCTestThread.h"
+#include "SolidSBCTestConfig.h"
+
 
 //needed by client
 #include "SolidSBCTestManager.h"
+#include "SolidSBCTestConfig.h"

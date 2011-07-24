@@ -15,13 +15,16 @@ public:
 	int StartResultConnection(SOCKADDR_IN target);
 	int SendTestResult(PSSBC_BASE_PACKET_HEADER pPacket);
 	int StartTestFromProfilePacket(PSSBC_PROFILE_REPLY_PACKET pPacket);
-	void StopTests(void);
+	void StopTests(bool bUnloadLibraries = false);
 
 private:
 	int Init( void );
 	int InitServerConfig(void);
 	BOOL GetClientUUID(void);
 	void DumpProfileReplyPacket(PSSBC_PROFILE_REPLY_PACKET pPacket);
+
+	void InitTests(void);
+	std::vector<std::pair<HMODULE, CSolidSBCTestManager*> > m_vecTestLibs;
 
 	BOOL					m_bIsInitialized;
 	CString					m_strDataSource;

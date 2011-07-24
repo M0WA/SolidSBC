@@ -14,6 +14,7 @@ class CXMLFile
 public:
 	CXMLFile(void);
 	~CXMLFile(void);
+
 	int Init(CString strFileName);
 	int Save(CString strFileName);
 	int SetNodeString(CString strXPath, CString strValue);

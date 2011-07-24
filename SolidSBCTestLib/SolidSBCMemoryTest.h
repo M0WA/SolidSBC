@@ -2,4 +2,4 @@
 
 #include <SolidSBCTestSDK.h>
 
-UINT SolidSBCTestNetTcp(LPVOID lpParam);
+UINT SolidSBCMemoryTest(LPVOID lpParam);

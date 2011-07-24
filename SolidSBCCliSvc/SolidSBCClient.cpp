@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "SolidSBCClient.h"
 
+#include <string>
 
 CSolidSBCClient::CSolidSBCClient(void)
 : m_bIsInitialized(FALSE)
@@ -383,13 +384,65 @@ int CSolidSBCClient::StartTestFromProfilePacket(PSSBC_PROFILE_REPLY_PACKET pPack
 	return 0;
 }
 
-void CSolidSBCClient::StopTests(void)
+void CSolidSBCClient::StopTests(bool bUnloadLibraries)
 {
-	/*
-	m_cVMPerfTestCPUMeasure	.StopCPUMeasure();
-	m_cVMPerfTestCPU		.StopCPU();
-	m_cVMPerfTestHarddrive	.StopHarddrive();
-	m_cVMPerfTestMemory		.StopMemory();
-	m_cVMPerfTestNetwork	.StopNetwork();
-	*/
+	std::vector<std::pair<HMODULE,CSolidSBCTestManager*>>::iterator iter = m_vecTestLibs.begin();
+
+	for(; iter != m_vecTestLibs.end(); iter++)
+	{
+		std::vector<std::string> vecTestNames;
+		(*iter).second->GetTestNames(vecTestNames);
+
+		std::vector<std::string>::iterator iterName = vecTestNames.begin();
+		for(; iterName != vecTestNames.end(); iterName++)
+			(*iter).second->StopTest( (*iterName) );
+
+		if ( bUnloadLibraries )
+			FreeLibrary((*iter).first);
+	}
+}
+
+void CSolidSBCClient::InitTests(void)
+{
+	TCHAR szPath[1025];
+	memset(szPath,0,1025 * sizeof(TCHAR));
+	GetModuleFileName(NULL,szPath,1024);
+
+	CString fileName = szPath;
+	CString dllDir   = fileName.Left( fileName.ReverseFind(_T('\\')) ).TrimRight('\\') + CString(_T("\\tests\\*.dll"));
+	WIN32_FIND_DATA ffd;
+	HANDLE hFind;
+
+	if( (hFind = FindFirstFile(dllDir,&ffd)) == INVALID_HANDLE_VALUE)
+		return;
+
+	typedef const void* (*PINSTANCE_GETTER_FUNC) (void);
+	PINSTANCE_GETTER_FUNC GetSolidSBCTestInstance = 0;
+	
+	CSolidSBCTestManager* pTestManager = 0;
+	std::pair<HMODULE,CSolidSBCTestManager*> pairLibManager;
+
+	StopTests();
+	m_vecTestLibs.clear();
+
+	do
+	{
+		HMODULE hLib = LoadLibrary(ffd.cFileName);
+		if( hLib == NULL ) continue;
+
+		GetSolidSBCTestInstance = (PINSTANCE_GETTER_FUNC)GetProcAddress(hLib,"GetSolidSBCTestInstance");
+
+		if(GetSolidSBCTestInstance)
+			pTestManager = (CSolidSBCTestManager*)GetSolidSBCTestInstance();
+		else {FreeLibrary(hLib); continue;}
+		
+		if (!pTestManager) {FreeLibrary(hLib); continue;}
+
+		pairLibManager.first  = hLib;
+		pairLibManager.second = pTestManager;
+		m_vecTestLibs.push_back(pairLibManager);
+	}
+	while(FindNextFile(hFind,&ffd) != 0);
+
+	FindClose(hFind);
 }

@@ -2,4 +2,4 @@
 
 #include <SolidSBCTestSDK.h>
 
-UINT SolidSBCTestCPUMeasure( LPVOID lpParam );
+UINT SolidSBCCPUMeasureTest( LPVOID lpParam );

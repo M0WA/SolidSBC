@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "SolidSBCTestMemory.h"
+#include "SolidSBCMemoryTest.h"
 #include "SolidSBCMemoryResult.h"
 
 typedef struct {
@@ -11,7 +11,7 @@ typedef struct {
 
 #pragma optimize( "", off )
 
-UINT SolidSBCTestMemory(LPVOID lpParam)
+UINT SolidSBCMemoryTest(LPVOID lpParam)
 {	
 	PSSBC_TEST_THREAD_PARAM pParam              = (PSSBC_TEST_THREAD_PARAM)lpParam;
 	PSSBC_MEMORY_TEST_THREAD_PARAM pThreadParam = (PSSBC_MEMORY_TEST_THREAD_PARAM)pParam->pThreadParam;

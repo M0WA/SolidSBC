@@ -2,4 +2,4 @@
 
 #include <SolidSBCTestSDK.h>
 
-UINT SolidSBCTestHarddrive(LPVOID lpParam);
+UINT SolidSBCCPUTest(LPVOID lpParam);

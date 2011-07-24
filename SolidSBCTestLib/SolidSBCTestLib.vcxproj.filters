@@ -30,19 +30,10 @@
     <ClInclude Include="SolidSBCTestLib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SolidSBCTestCPU.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SolidSBCTestMemory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SolidSBCMemoryResult.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SolidSBCTestManagerImpl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SolidSBCTestCPUMeasure.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SolidSBCCPUMeasureResult.h">
@@ -51,19 +42,31 @@
     <ClInclude Include="SolidSBCHarddriveResult.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SolidSBCTestHarddrive.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SolidSBCNetTcpResult.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SolidSBCNetPingResult.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SolidSBCTestNetTcp.h">
+    <ClInclude Include="SolidSBCCPUMeasureConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SolidSBCTestNetPing.h">
+    <ClInclude Include="SolidSBCNetTcpTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidSBCNetPingTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidSBCMemoryTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidSBCHarddriveTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidSBCCPUMeasureTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidSBCCPUTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -74,19 +77,10 @@
     <ClCompile Include="SolidSBCTestLib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SolidSBCTestCPU.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SolidSBCTestMemory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SolidSBCMemoryResult.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SolidSBCTestManagerImpl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SolidSBCTestCPUMeasure.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SolidSBCCPUMeasureResult.cpp">
@@ -95,19 +89,31 @@
     <ClCompile Include="SolidSBCHarddriveResult.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SolidSBCTestHarddrive.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SolidSBCNetTcpResult.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SolidSBCNetPingResult.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SolidSBCTestNetTcp.cpp">
+    <ClCompile Include="SolidSBCCPUMeasureConfig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SolidSBCTestNetPing.cpp">
+    <ClCompile Include="SolidSBCCPUTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidSBCCPUMeasureTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidSBCHarddriveTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidSBCMemoryTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidSBCNetPingTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidSBCNetTcpTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -151,19 +151,23 @@
     <ClInclude Include="defines.h" />
     <ClInclude Include="PerformanceCounter.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SolidSBCTestConfig.h" />
     <ClInclude Include="SolidSBCTestManager.h" />
     <ClInclude Include="SolidSBCTestResult.h" />
     <ClInclude Include="SolidSBCTestSDK.h" />
     <ClInclude Include="SolidSBCTestThread.h" />
+    <ClInclude Include="SolidSBCXMLFile.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PerformanceCounter.cpp" />
+    <ClCompile Include="SolidSBCTestConfig.cpp" />
     <ClCompile Include="SolidSBCTestManager.cpp" />
     <ClCompile Include="SolidSBCTestResult.cpp" />
     <ClCompile Include="SolidSBCTestSDK.cpp" />
     <ClCompile Include="SolidSBCTestThread.cpp" />
+    <ClCompile Include="SolidSBCXMLFile.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

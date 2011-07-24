@@ -2,4 +2,4 @@
 
 #include <SolidSBCTestSDK.h>
 
-UINT SolidSBCTestMemory(LPVOID lpParam);
+UINT SolidSBCHarddriveTest(LPVOID lpParam);

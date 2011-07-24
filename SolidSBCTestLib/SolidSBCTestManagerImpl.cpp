@@ -1,21 +1,21 @@
 #include "StdAfx.h"
 #include "SolidSBCTestManagerImpl.h"
 
-#include "SolidSBCTestCPU.h"
-#include "SolidSBCTestCPUMeasure.h"
-#include "SolidSBCTestMemory.h"
-#include "SolidSBCTestHarddrive.h"
-#include "SolidSBCTestNetTcp.h"
-#include "SolidSBCTestNetPing.h"
+#include "SolidSBCCPUTest.h"
+#include "SolidSBCCPUMeasureTest.h"
+#include "SolidSBCMemoryTest.h"
+#include "SolidSBCHarddriveTest.h"
+#include "SolidSBCNetTcpTest.h"
+#include "SolidSBCNetPingTest.h"
 
 CSolidSBCTestManagerImpl::CSolidSBCTestManagerImpl(void)
 : CSolidSBCTestManager()
 {
 	//add tests that are available in this library
-	AddTest( "CPU-Test"        , &SolidSBCTestCPU        );
-	AddTest( "CPU-Measure-Test", &SolidSBCTestCPUMeasure );
-	AddTest( "Memory-Test"     , &SolidSBCTestMemory     );
-	AddTest( "Harddrive-Test"  , &SolidSBCTestHarddrive  );
-	AddTest( "Net-TCP-Test"    , &SolidSBCTestNetTcp     );
-	AddTest( "Net-Ping-Test"   , &SolidSBCTestNetPing    );
+	AddTest( "CPU-Test"        , &SolidSBCCPUTest        );
+	AddTest( "CPU-Measure-Test", &SolidSBCCPUMeasureTest );
+	AddTest( "Memory-Test"     , &SolidSBCMemoryTest     );
+	AddTest( "Harddrive-Test"  , &SolidSBCHarddriveTest  );
+	AddTest( "Net-TCP-Test"    , &SolidSBCNetTcpTest     );
+	AddTest( "Net-Ping-Test"   , &SolidSBCNetPingTest    );
 }

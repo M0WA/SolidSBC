@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "SolidSBCTestNetTcp.h"
+#include "SolidSBCNetTcpTest.h"
 #include "SolidSBCNetTcpResult.h"
 
 #define SSBC_PROFILE_MAX_SERVER_NAME	512
@@ -12,7 +12,7 @@ typedef struct {
 	BOOL	bTcpConnTransmitData;
 } SSBC_TEST_NETWORK_TCPCONN_PARAM, *PSSBC_TEST_NETWORK_TCPCONN_PARAM;
 
-UINT SolidSBCTestNetTcp(LPVOID lpParam)
+UINT SolidSBCNetTcpTest(LPVOID lpParam)
 {
 	USES_CONVERSION;
 	

@@ -27,54 +27,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_2190C25784324445B093B6FC2780B961"
-        "OwnerKey" = "8:_09A0D6F11C05439F80614DF10BC8585F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_2190C25784324445B093B6FC2780B961"
-        "OwnerKey" = "8:_B215DF4318704B36859347A9869AEA64"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_2190C25784324445B093B6FC2780B961"
-        "OwnerKey" = "8:_F20EA67657D441178F1C7D1F326E29AD"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_2190C25784324445B093B6FC2780B961"
-        "OwnerKey" = "8:_20FCA4454BC3496D81CE9EBD891A7BE0"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_8C01C71A978C405CAB93C7A6D10B0CB0"
-        "OwnerKey" = "8:_09A0D6F11C05439F80614DF10BC8585F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_8C01C71A978C405CAB93C7A6D10B0CB0"
-        "OwnerKey" = "8:_B215DF4318704B36859347A9869AEA64"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_8C01C71A978C405CAB93C7A6D10B0CB0"
-        "OwnerKey" = "8:_F20EA67657D441178F1C7D1F326E29AD"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_8C01C71A978C405CAB93C7A6D10B0CB0"
-        "OwnerKey" = "8:_20FCA4454BC3496D81CE9EBD891A7BE0"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_A3C16BAD53BD4B6DA958101E977F5FFA"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -331,6 +283,17 @@
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_077E4DDC4B6B4685B7DE790DD77EFA66"
+                    {
+                    "Name" = "8:tests"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_E18D34BFD13E41B09AB209CD033AF60F"
+                        "Folders"
+                        {
+                        }
+                    }
                 }
             }
         }
@@ -974,34 +937,6 @@
         }
         "MergeModule"
         {
-            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_2190C25784324445B093B6FC2780B961"
-            {
-            "UseDynamicProperties" = "11:TRUE"
-            "IsDependency" = "11:TRUE"
-            "SourcePath" = "8:Microsoft_VC100_CRT_x86.msm"
-                "Properties"
-                {
-                }
-            "LanguageId" = "3:0"
-            "Exclude" = "11:FALSE"
-            "Folder" = "8:"
-            "Feature" = "8:"
-            "IsolateTo" = "8:"
-            }
-            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_8C01C71A978C405CAB93C7A6D10B0CB0"
-            {
-            "UseDynamicProperties" = "11:TRUE"
-            "IsDependency" = "11:TRUE"
-            "SourcePath" = "8:Microsoft_VC100_MFC_x86.msm"
-                "Properties"
-                {
-                }
-            "LanguageId" = "3:0"
-            "Exclude" = "11:FALSE"
-            "Folder" = "8:"
-            "Feature" = "8:"
-            "IsolateTo" = "8:"
-            }
         }
         "ProjectOutput"
         {
@@ -1066,7 +1001,7 @@
             "SourcePath" = "8:..\\Win32\\Release\\SolidSBCTestLib.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_BD9E6D42195F4CE5AEE947C8612A3968"
+            "Folder" = "8:_077E4DDC4B6B4685B7DE790DD77EFA66"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"

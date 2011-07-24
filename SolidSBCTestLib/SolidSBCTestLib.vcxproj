@@ -159,36 +159,38 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SolidSBCCPUMeasureConfig.h" />
     <ClInclude Include="SolidSBCCPUMeasureResult.h" />
     <ClInclude Include="SolidSBCHarddriveResult.h" />
     <ClInclude Include="SolidSBCMemoryResult.h" />
     <ClInclude Include="SolidSBCNetPingResult.h" />
     <ClInclude Include="SolidSBCNetTcpResult.h" />
-    <ClInclude Include="SolidSBCTestCPU.h" />
-    <ClInclude Include="SolidSBCTestCPUMeasure.h" />
-    <ClInclude Include="SolidSBCTestHarddrive.h" />
+    <ClInclude Include="SolidSBCCPUTest.h" />
+    <ClInclude Include="SolidSBCCPUMeasureTest.h" />
+    <ClInclude Include="SolidSBCHarddriveTest.h" />
     <ClInclude Include="SolidSBCTestManagerImpl.h" />
     <ClInclude Include="SolidSBCTestLib.h" />
-    <ClInclude Include="SolidSBCTestMemory.h" />
-    <ClInclude Include="SolidSBCTestNetPing.h" />
-    <ClInclude Include="SolidSBCTestNetTcp.h" />
+    <ClInclude Include="SolidSBCMemoryTest.h" />
+    <ClInclude Include="SolidSBCNetPingTest.h" />
+    <ClInclude Include="SolidSBCNetTcpTest.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="SolidSBCCPUMeasureConfig.cpp" />
     <ClCompile Include="SolidSBCCPUMeasureResult.cpp" />
     <ClCompile Include="SolidSBCHarddriveResult.cpp" />
     <ClCompile Include="SolidSBCMemoryResult.cpp" />
     <ClCompile Include="SolidSBCNetPingResult.cpp" />
     <ClCompile Include="SolidSBCNetTcpResult.cpp" />
-    <ClCompile Include="SolidSBCTestCPU.cpp" />
-    <ClCompile Include="SolidSBCTestCPUMeasure.cpp" />
-    <ClCompile Include="SolidSBCTestHarddrive.cpp" />
+    <ClCompile Include="SolidSBCCPUTest.cpp" />
+    <ClCompile Include="SolidSBCCPUMeasureTest.cpp" />
+    <ClCompile Include="SolidSBCHarddriveTest.cpp" />
     <ClCompile Include="SolidSBCTestManagerImpl.cpp" />
     <ClCompile Include="SolidSBCTestLib.cpp" />
-    <ClCompile Include="SolidSBCTestMemory.cpp" />
-    <ClCompile Include="SolidSBCTestNetPing.cpp" />
-    <ClCompile Include="SolidSBCTestNetTcp.cpp" />
+    <ClCompile Include="SolidSBCMemoryTest.cpp" />
+    <ClCompile Include="SolidSBCNetPingTest.cpp" />
+    <ClCompile Include="SolidSBCNetTcpTest.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

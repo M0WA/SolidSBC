@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "SolidSBCTestNetPing.h"
+#include "SolidSBCNetPingTest.h"
 #include "SolidSBCNetPingResult.h"
 
 #include <Icmpapi.h>
@@ -14,7 +14,7 @@ typedef struct {
 	BOOL	bPingTransmitData;
 } SSBC_TEST_NETWORK_PING_PARAM, *PSSBC_TEST_NETWORK_PING_PARAM;
 
-UINT SolidSBCTestNetPing(LPVOID lpParam)
+UINT SolidSBCNetPingTest(LPVOID lpParam)
 {
 	USES_CONVERSION;
 	

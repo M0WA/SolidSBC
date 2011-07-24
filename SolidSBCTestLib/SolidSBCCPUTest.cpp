@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "SolidSBCTestCPU.h"
+#include "SolidSBCCPUTest.h"
 
 #pragma optimize( "", off )
 
@@ -13,7 +13,7 @@ typedef struct {
 UINT SolidSBCTestThreadCPUChildThread(LPVOID lpParam);
 BOOL WaitForChildCPUThreads(UINT nCnt, CWinThread** pWinThreads);
 
-UINT SolidSBCTestCPU(LPVOID lpParam)
+UINT SolidSBCCPUTest(LPVOID lpParam)
 {
 	PSSBC_TEST_THREAD_PARAM     pParam       = (PSSBC_TEST_THREAD_PARAM)lpParam;
 	PSSBC_CPU_TEST_THREAD_PARAM pThreadParam = (PSSBC_CPU_TEST_THREAD_PARAM)pParam->pThreadParam;

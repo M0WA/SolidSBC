@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "SolidSBCTestHarddrive.h"
+#include "SolidSBCHarddriveTest.h"
 #include "SolidSBCHarddriveResult.h"
 
 typedef struct {
@@ -236,7 +236,7 @@ void WaitForChildHarddriveThreads(CWinThread* pReaderThread, CWinThread*  pWrite
 		WaitForSingleObject(pWriterThread->m_hThread, INFINITE);}
 }
 
-UINT SolidSBCTestHarddrive(LPVOID lpParam)
+UINT SolidSBCHarddriveTest(LPVOID lpParam)
 {
 	PSSBC_TEST_THREAD_PARAM pParam = (PSSBC_TEST_THREAD_PARAM)lpParam;
 	PSSBC_HARDDRIVE_TEST_THREAD_PARAM pThreadParam = (PSSBC_HARDDRIVE_TEST_THREAD_PARAM)pParam->pThreadParam;
