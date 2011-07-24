@@ -6,10 +6,10 @@ CSolidSBCTestConfig::CSolidSBCTestConfig(const CString& strTestname, const CStri
 	m_pXmlFile = new CSolidSBCXMLFile(strXmlFile);
 
 	m_strTestname = strTestname;
-	RegisterAttributes(m_mapAttributeXPaths);
+	RegisterAttributes();
 
 	//add standard attributes
-	m_mapAttributeXPaths[_T("TestName")] = GetXPathFromNodeName(_T("TestName"));
+	RegisterXPathByAttributeName(_T("TestName"));
 }
 
 CSolidSBCTestConfig::~CSolidSBCTestConfig(void)
@@ -18,7 +18,8 @@ CSolidSBCTestConfig::~CSolidSBCTestConfig(void)
 	m_pXmlFile = NULL;
 }
 
-CString CSolidSBCTestConfig::GetXPathFromNodeName(const CString& strNodeName)
+void CSolidSBCTestConfig::RegisterXPathByAttributeName(const CString& strAttributeName)
 {
-	return m_strTestname + _T("/") + strNodeName +_T("[1]");
+	CString sXPath = m_strTestname + _T("/") + strAttributeName +_T("[1]");
+	m_mapAttributeXPaths[strAttributeName] = sXPath;
 }

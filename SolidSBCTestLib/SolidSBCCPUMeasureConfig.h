@@ -32,6 +32,6 @@ public:
 		{ return SetAttributeByName<double>(_T("FixMultiplierTreshold"), dFixMultiplierTreshold); }
 
 protected:
-	virtual void RegisterAttributes(std::map<CString,CString>& mapAttributeXPaths);
+	virtual void RegisterAttributes(void);
 };
 

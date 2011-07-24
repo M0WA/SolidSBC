@@ -2,7 +2,7 @@
 #include "SolidSBCCPUMeasureConfig.h"
 
 CSolidSBCCPUMeasureConfig::CSolidSBCCPUMeasureConfig(void)
-: CSolidSBCTestConfig(_T("CPU-Measure-Test"),_T("cpumeasure.xml"))
+: CSolidSBCTestConfig(_T(SSBC_CPUMEASURE_TEST_NAME),_T("cpumeasure.xml"))
 {
 }
 
@@ -10,13 +10,13 @@ CSolidSBCCPUMeasureConfig::~CSolidSBCCPUMeasureConfig(void)
 {
 }
 
-void CSolidSBCCPUMeasureConfig::RegisterAttributes(std::map<CString,CString>& mapAttributeXPaths)
+void CSolidSBCCPUMeasureConfig::RegisterAttributes(void)
 {
-	mapAttributeXPaths[_T("DivisionCnt")]           = GetXPathFromNodeName(_T("DivisionCnt"));
-	mapAttributeXPaths[_T("AdditionCnt")]           = GetXPathFromNodeName(_T("AdditionCnt"));
-	mapAttributeXPaths[_T("TransmitData")]          = GetXPathFromNodeName(_T("TransmitData"));
-	mapAttributeXPaths[_T("AutoFixMultiplier")]     = GetXPathFromNodeName(_T("AutoFixMultiplier"));
-	mapAttributeXPaths[_T("FixMultiplierTreshold")] = GetXPathFromNodeName(_T("FixMultiplierTreshold"));
+	RegisterXPathByAttributeName(_T("DivisionCnt"));
+	RegisterXPathByAttributeName(_T("AdditionCnt"));
+	RegisterXPathByAttributeName(_T("AutoFixMultiplier"));
+	RegisterXPathByAttributeName(_T("FixMultiplierTreshold"));
+	RegisterXPathByAttributeName(_T("TransmitData"));
 }
 
 UINT CSolidSBCCPUMeasureConfig::GetDivisionCnt(void)

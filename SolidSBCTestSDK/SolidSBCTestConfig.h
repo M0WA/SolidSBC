@@ -22,9 +22,9 @@ public:
 
 protected:
 	//override this function to register your attributes
-	virtual void RegisterAttributes(std::map<CString,CString>& mapAttributeXPaths) {};
-
-	CString      GetXPathFromNodeName(const CString& strNodeName);
+	//by calling RegisterXPathByAttributeName for each attribute
+	virtual void RegisterAttributes(void) {};
+	void RegisterXPathByAttributeName(const CString& strAttributeName);
 
 private:
 	CSolidSBCXMLFile* m_pXmlFile;
