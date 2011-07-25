@@ -5,6 +5,7 @@
 CSolidSBCNetPingConfig::CSolidSBCNetPingConfig(void)
 : CSolidSBCTestConfig(_T(SSBC_NETPING_TEST_NAME),_T("netping.xml"))
 {
+	RegisterAttributes();
 }
 
 

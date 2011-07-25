@@ -63,6 +63,7 @@ void CSolidSBCXMLFile::loadDOM(void)
 	COleVariant strVar(m_strFileName);
 	varFileName=strVar.Detach();
 	m_pXMLDom->load(varFileName, &varStatus);
+	
 	if (varStatus != VARIANT_TRUE) {
 		CHK_HR(m_pXMLDom->get_parseError(&pXMLErr));
 		CHK_HR(pXMLErr->get_reason(&bstrErr));

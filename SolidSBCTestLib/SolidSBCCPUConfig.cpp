@@ -4,6 +4,7 @@
 CSolidSBCCPUConfig::CSolidSBCCPUConfig(void)
 : CSolidSBCTestConfig(_T(SSBC_CPU_TEST_NAME),_T("cpu.xml"))
 {
+	RegisterAttributes();
 }
 
 CSolidSBCCPUConfig::~CSolidSBCCPUConfig(void)

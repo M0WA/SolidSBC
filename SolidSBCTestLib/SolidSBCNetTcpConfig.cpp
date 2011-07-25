@@ -5,6 +5,7 @@
 CSolidSBCNetTcpConfig::CSolidSBCNetTcpConfig(void)
 : CSolidSBCTestConfig(_T(SSBC_NETTCP_TEST_NAME),_T("nettcp.xml"))
 {
+	RegisterAttributes();
 }
 
 

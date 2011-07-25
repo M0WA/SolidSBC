@@ -6,11 +6,11 @@
 #include "SolidSBCTestSDKTools.h"
 #include "SolidSBCTestSDKToolsDlg.h"
 #include "afxdialogex.h"
+#include "XMLDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
 
 // CAboutDlg dialog used for App About
 
@@ -50,19 +50,36 @@ END_MESSAGE_MAP()
 
 CSolidSBCTestSDKToolsDlg::CSolidSBCTestSDKToolsDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CSolidSBCTestSDKToolsDlg::IDD, pParent)
+	, m_hTestLibrary(NULL)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+}
+
+CSolidSBCTestSDKToolsDlg::~CSolidSBCTestSDKToolsDlg()
+{
+	if (m_hTestLibrary)
+		FreeLibrary(m_hTestLibrary);
+	m_hTestLibrary = NULL;
 }
 
 void CSolidSBCTestSDKToolsDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_DLLFILE_EDIT, m_cDllFileName);
+	DDX_Control(pDX, IDC_TEST_LIST, m_ctlTestList);
+	DDX_Control(pDX, IDC_GENERATE_EMPTY_CONFIG_XML_BUTTON, m_ctlGenerateConfigButton);
+	DDX_Control(pDX, IDC_START_STOP_BUTTON, m_ctlStartStopButton);
 }
 
 BEGIN_MESSAGE_MAP(CSolidSBCTestSDKToolsDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_BROWSE_DLLFILE_BUTTON, &CSolidSBCTestSDKToolsDlg::OnBnClickedBrowseDllfileButton)
+	ON_BN_CLICKED(IDC_LOAD_DLLFILE_BUTTON, &CSolidSBCTestSDKToolsDlg::OnBnClickedLoadDllfileButton)
+	ON_BN_CLICKED(IDC_GENERATE_EMPTY_CONFIG_XML_BUTTON, &CSolidSBCTestSDKToolsDlg::OnBnClickedGenerateEmptyConfigXmlButton)
+	ON_BN_CLICKED(IDC_START_STOP_BUTTON, &CSolidSBCTestSDKToolsDlg::OnBnClickedStartStopButton)
+	ON_LBN_SELCHANGE(IDC_TEST_LIST, &CSolidSBCTestSDKToolsDlg::OnLbnSelchangeTestList)
 END_MESSAGE_MAP()
 
 
@@ -97,7 +114,8 @@ BOOL CSolidSBCTestSDKToolsDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
-	// TODO: Add extra initialization here
+	m_ctlGenerateConfigButton.EnableWindow(FALSE);
+	m_ctlStartStopButton.EnableWindow(FALSE);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -151,3 +169,135 @@ HCURSOR CSolidSBCTestSDKToolsDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+void CSolidSBCTestSDKToolsDlg::OnBnClickedBrowseDllfileButton()
+{
+	CFileDialog cOpenFileDlg( TRUE, _T("dll"), _T( "*.dll"), OFN_FILEMUSTEXIST);
+	if ( cOpenFileDlg.DoModal() == IDOK )
+	{
+		UpdateData(false);
+		m_cDllFileName.SetWindowText(cOpenFileDlg.GetPathName());
+		UpdateData();
+		OnBnClickedLoadDllfileButton();
+	}
+}
+
+void CSolidSBCTestSDKToolsDlg::OnBnClickedLoadDllfileButton()
+{
+	UnloadTestLibrary();
+
+	std::vector<std::string> vecTestNames;
+	CSolidSBCTestManager* pManager = GetTestManager();
+	if ( pManager )
+		pManager->GetTestNames(vecTestNames);
+	
+	//refill list
+	m_ctlTestList.ResetContent();
+	std::vector<std::string>::iterator iIter = vecTestNames.begin();
+	for(; iIter != vecTestNames.end(); iIter++)
+		m_ctlTestList.AddString(CString((*iIter).c_str()));
+
+	m_ctlTestList.SetSel(0);
+}
+
+void CSolidSBCTestSDKToolsDlg::OnBnClickedGenerateEmptyConfigXmlButton()
+{
+	USES_CONVERSION;
+
+	//get filename to be saved to
+	CString strTestName = _T("");
+	m_ctlTestList.GetText(m_ctlTestList.GetCurSel(),strTestName);
+
+	//get the xml
+	CSolidSBCTestManager* pManager = GetTestManager();
+	if (!pManager)
+		return;
+	CSolidSBCTestConfig* pConfig = pManager->GetTestDefaultConfigByName(T2A(strTestName));
+	if ( !pConfig )
+		return;
+
+	CString strXML = pConfig->GenerateEmptyXML();	
+	CXMLDlg xmlDlg(strXML);
+	xmlDlg.DoModal();
+}
+
+void CSolidSBCTestSDKToolsDlg::OnBnClickedStartStopButton()
+{
+	CSolidSBCTestManager* pManager = GetTestManager();
+	//pManager->StartTest();
+}
+
+void CSolidSBCTestSDKToolsDlg::OnLbnSelchangeTestList()
+{
+	m_ctlGenerateConfigButton.EnableWindow(TRUE);
+	m_ctlStartStopButton.EnableWindow(TRUE);
+}
+
+CSolidSBCTestManager* CSolidSBCTestSDKToolsDlg::GetTestManager()
+{
+	if ( !m_hTestLibrary && !LoadTestLibrary() )
+		return NULL;
+
+	typedef const void* (*PINSTANCE_GETTER_FUNC) (void);
+	PINSTANCE_GETTER_FUNC GetSolidSBCTestInstanceFunc = (PINSTANCE_GETTER_FUNC)
+		GetProcAddress(m_hTestLibrary,"GetSolidSBCTestInstance");
+
+	if ( !GetSolidSBCTestInstanceFunc )
+	{
+		CString strMessage;
+		strMessage.Format(_T("Could not load test library: %d"),GetLastError());
+		AfxMessageBox(strMessage);
+		
+		UnloadTestLibrary();
+		return NULL;
+	}
+
+	try
+	{
+		return (CSolidSBCTestManager*)GetSolidSBCTestInstanceFunc();
+	}
+	catch(...)
+	{
+		AfxMessageBox(_T("Test library does not export a valid CSolidSBCTestInstance"));
+		UnloadTestLibrary();
+		return NULL;
+	}
+}
+
+bool CSolidSBCTestSDKToolsDlg::GetTestNames(std::vector<CString>& vecNames)
+{
+	if(!m_hTestLibrary)
+		return false;
+
+	std::vector<std::string> vecTestNames;
+	CSolidSBCTestManager* pManager = GetTestManager();
+	if( !pManager )
+		return false;
+
+	pManager->GetTestNames(vecTestNames);
+
+	if( !vecTestNames.size() ) {
+		AfxMessageBox(_T("Test library does not export tests"));
+		return false; }
+
+	return true;
+}
+
+bool CSolidSBCTestSDKToolsDlg::LoadTestLibrary()
+{
+	CString sDllFilename;
+	m_cDllFileName.GetWindowText(sDllFilename);
+	m_hTestLibrary = LoadLibrary(sDllFilename);
+
+	if(!m_hTestLibrary)
+		return false;
+	return true;
+}
+
+bool CSolidSBCTestSDKToolsDlg::UnloadTestLibrary()
+{
+	if(!m_hTestLibrary)
+		return false;
+	FreeLibrary(m_hTestLibrary);
+	m_hTestLibrary = NULL;
+	return true;
+}

@@ -25,9 +25,11 @@ typedef struct {
 
 typedef std::pair< CSolidSBCTestThread*, SSBC_RESULTS_CONTAINER > SSBC_TEST_PAIR_TYPE;
 typedef std::map < std::string, SSBC_TEST_PAIR_TYPE >             SSBC_TEST_MAP_TYPE;
+typedef std::map<std::string,CSolidSBCTestConfig*>				  SSBC_CONF_MAP_TYPE;
 
 typedef struct {
 	SSBC_STATE_CONTAINER   stateContainer;
 	SSBC_RESULTS_CONTAINER resultContainer;
 	CSolidSBCTestConfig*   pTestConfig;
 } SSBC_TEST_THREAD_PARAM,*PSSBC_TEST_THREAD_PARAM;
+

@@ -49,5 +49,5 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 
 const void* GetSolidSBCTestInstance(void)
 {
-	return (void*)((CSolidSBCTestManager*)&g_cSolidTestInstance);
+	return (void*)(&g_cSolidTestInstance);
 }

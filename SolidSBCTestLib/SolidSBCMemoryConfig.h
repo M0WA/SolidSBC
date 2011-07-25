@@ -2,7 +2,7 @@
 
 #include <SolidSBCTestSDK.h>
 
-class CSolidSBCMemoryConfig : CSolidSBCTestConfig
+class CSolidSBCMemoryConfig : public CSolidSBCTestConfig
 {
 public:
 	CSolidSBCMemoryConfig(void);
@@ -28,6 +28,6 @@ public:
 		{ return SetAttributeByName<BOOL>(_T("TransmitData"), bTransmitData); }
 
 protected:
-	virtual void RegisterAttributes(void);
+	void RegisterAttributes(void);
 };
 

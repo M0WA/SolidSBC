@@ -415,9 +415,6 @@ void CSolidSBCClient::InitTests(void)
 
 	if( (hFind = FindFirstFile(dllDir,&ffd)) == INVALID_HANDLE_VALUE)
 		return;
-
-	typedef const void* (*PINSTANCE_GETTER_FUNC) (void);
-	PINSTANCE_GETTER_FUNC GetSolidSBCTestInstance = 0;
 	
 	CSolidSBCTestManager* pTestManager = 0;
 	std::pair<HMODULE,CSolidSBCTestManager*> pairLibManager;
@@ -429,11 +426,13 @@ void CSolidSBCClient::InitTests(void)
 	{
 		HMODULE hLib = LoadLibrary(ffd.cFileName);
 		if( hLib == NULL ) continue;
+		
+		typedef const void* (*PINSTANCE_GETTER_FUNC) (void);
+		PINSTANCE_GETTER_FUNC GetSolidSBCTestInstanceFunc = 0;
+		GetSolidSBCTestInstanceFunc = (PINSTANCE_GETTER_FUNC)GetProcAddress(hLib,"GetSolidSBCTestInstance");
 
-		GetSolidSBCTestInstance = (PINSTANCE_GETTER_FUNC)GetProcAddress(hLib,"GetSolidSBCTestInstance");
-
-		if(GetSolidSBCTestInstance)
-			pTestManager = (CSolidSBCTestManager*)GetSolidSBCTestInstance();
+		if(GetSolidSBCTestInstanceFunc)
+			pTestManager = (CSolidSBCTestManager*)GetSolidSBCTestInstanceFunc();
 		else {FreeLibrary(hLib); continue;}
 		
 		if (!pTestManager) {FreeLibrary(hLib); continue;}

@@ -5,6 +5,7 @@
 CSolidSBCMemoryConfig::CSolidSBCMemoryConfig(void)
 : CSolidSBCTestConfig(_T(SSBC_MEMORY_TEST_NAME),_T("memory.xml"))
 {
+	RegisterAttributes();
 }
 
 CSolidSBCMemoryConfig::~CSolidSBCMemoryConfig(void)

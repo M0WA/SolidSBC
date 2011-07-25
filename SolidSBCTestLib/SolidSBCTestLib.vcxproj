@@ -105,6 +105,8 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SolidSBCTestSDK.lib;iphlpapi.lib;</AdditionalDependencies>
+      <ModuleDefinitionFile>SolidSBCTestLibDef.def</ModuleDefinitionFile>
+      <ShowProgress>NotSet</ShowProgress>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -118,6 +120,8 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>SolidSBCTestSDK.lib;iphlpapi.lib;</AdditionalDependencies>
+      <ModuleDefinitionFile>SolidSBCTestLibDef.def</ModuleDefinitionFile>
+      <ShowProgress>NotSet</ShowProgress>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -135,6 +139,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>SolidSBCTestSDK.lib;iphlpapi.lib;</AdditionalDependencies>
+      <ModuleDefinitionFile>SolidSBCTestLibDef.def</ModuleDefinitionFile>
+      <ShowProgress>NotSet</ShowProgress>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -152,10 +158,13 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>SolidSBCTestSDK.lib;iphlpapi.lib;</AdditionalDependencies>
+      <ModuleDefinitionFile>SolidSBCTestLibDef.def</ModuleDefinitionFile>
+      <ShowProgress>NotSet</ShowProgress>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
+    <None Include="SolidSBCTestLibDef.def" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h" />

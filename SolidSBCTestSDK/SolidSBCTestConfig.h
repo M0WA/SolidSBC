@@ -7,9 +7,9 @@ class SOLIDSBCTESTSDK_API CSolidSBCTestConfig
 {
 protected:
 	CSolidSBCTestConfig(const CString& strTestname, const CString& strXmlFile);
+public:
 	~CSolidSBCTestConfig(void);
 
-public:
 	template<class T> bool GetAttributeByName(const CString& strAttributeName, T& value)
 	{
 		return m_pXmlFile->GetNodeValue<T>( m_mapAttributeXPaths[strAttributeName], value );
@@ -20,10 +20,12 @@ public:
 		return m_pXmlFile->SetNodeValue<T>( m_mapAttributeXPaths[strAttributeName], value );
 	}
 
+	inline CString GetTestName(void) { return m_strTestname; };
+	CString GenerateEmptyXML(void);
+
 protected:
-	//override this function to register your attributes
+	//register your attributes
 	//by calling RegisterXPathByAttributeName for each attribute
-	virtual void RegisterAttributes(void) {};
 	void RegisterXPathByAttributeName(const CString& strAttributeName);
 
 private:

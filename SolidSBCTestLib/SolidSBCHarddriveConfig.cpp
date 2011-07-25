@@ -5,6 +5,7 @@
 CSolidSBCHarddriveConfig::CSolidSBCHarddriveConfig(void)
 : CSolidSBCTestConfig(_T(SSBC_HARDDRIVE_TEST_NAME),_T("harddrive.xml"))
 {
+	RegisterAttributes();
 }
 
 

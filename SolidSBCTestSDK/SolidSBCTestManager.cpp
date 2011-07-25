@@ -37,6 +37,9 @@ CSolidSBCTestManager::~CSolidSBCTestManager(void)
 
 		delete (*iIter).second.second.pResultMutex;
 	}
+
+	for( SSBC_CONF_MAP_TYPE::iterator iIter = m_mapDefaultConfigs.begin(); iIter != m_mapDefaultConfigs.end(); iIter++)	{
+		delete (*iIter).second;	}
 }
 
 int CSolidSBCTestManager::GetTestNames(std::vector<std::string>& vecTestnames)
@@ -55,7 +58,7 @@ int CSolidSBCTestManager::GetTestNames(std::vector<std::string>& vecTestnames)
 	return nSize;
 }
 
-void CSolidSBCTestManager::AddTest(const std::string& sTestName, const AFX_THREADPROC pThreadFunc)
+void CSolidSBCTestManager::AddTest(const std::string& sTestName, const AFX_THREADPROC pThreadFunc, CSolidSBCTestConfig* pDefaultConfig)
 {
 	SSBC_RESULTS_CONTAINER resultContainer;
 	resultContainer.pResultMutex = new CMutex();
@@ -65,6 +68,8 @@ void CSolidSBCTestManager::AddTest(const std::string& sTestName, const AFX_THREA
 		new CSolidSBCTestThread( sTestName, pThreadFunc, resultContainer ), 
 		resultContainer
 	);
+
+	m_mapDefaultConfigs[sTestName] = pDefaultConfig;
 }
 
 int CSolidSBCTestManager::StartTest(const std::string& sTestName, CSolidSBCTestConfig* pTestConfig)
@@ -111,4 +116,18 @@ int CSolidSBCTestManager::GetTestResults(std::vector<CSolidSBCTestResult*>& vecR
 	}
 
 	return nSize;
+}
+
+int CSolidSBCTestManager::GetTestDefaultConfigs(SSBC_CONF_MAP_TYPE& mapDefaultConfigs) 
+{ 
+	m_mapDefaultConfigs = mapDefaultConfigs; 
+	return m_mapDefaultConfigs.size(); 
+}
+
+CSolidSBCTestConfig* CSolidSBCTestManager::GetTestDefaultConfigByName(const std::string& sTestName)
+{
+	if ( m_mapDefaultConfigs.count(sTestName) != 1 )
+		return NULL;
+	else
+		return m_mapDefaultConfigs[sTestName];
 }

@@ -2,7 +2,7 @@
 
 #include <SolidSBCTestSDK.h>
 
-class CSolidSBCCPUConfig : CSolidSBCTestConfig
+class CSolidSBCCPUConfig : public CSolidSBCTestConfig
 {
 public:
 	CSolidSBCCPUConfig(void);
@@ -28,6 +28,6 @@ public:
 		{ return SetAttributeByName<UINT>(_T("ThreadCnt"), nThreadCnt); }
 
 protected:
-	virtual void RegisterAttributes(void);
+	void RegisterAttributes(void);
 };
 

@@ -2,7 +2,7 @@
 
 #include <SolidSBCTestSDK.h>
 
-class CSolidSBCCPUMeasureConfig : CSolidSBCTestConfig
+class CSolidSBCCPUMeasureConfig : public CSolidSBCTestConfig
 {
 public:
 	CSolidSBCCPUMeasureConfig(void);
@@ -32,6 +32,6 @@ public:
 		{ return SetAttributeByName<double>(_T("FixMultiplierTreshold"), dFixMultiplierTreshold); }
 
 protected:
-	virtual void RegisterAttributes(void);
+	void RegisterAttributes(void);
 };
 

@@ -4,7 +4,7 @@
 
 #define SSBC_PROFILE_MAX_SERVER_NAME	512
 
-class CSolidSBCNetPingConfig : CSolidSBCTestConfig
+class CSolidSBCNetPingConfig : public CSolidSBCTestConfig
 {
 public:
 	CSolidSBCNetPingConfig(void);
@@ -35,6 +35,6 @@ public:
 		{ return SetAttributeByName<BOOL>(_T("TransmitData"), bTransmitData); }
 
 protected:
-	virtual void RegisterAttributes(void);
+	void RegisterAttributes(void);
 };
 

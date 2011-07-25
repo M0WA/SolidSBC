@@ -8,7 +8,7 @@
 #define SSBC_TEST_HARDDRIVE_THREAD_BLOCKSIZE_WRITE	1024 //4MB
 #define SSBC_TEST_HARDDRIVE_THREAD_BLOCKSIZE_READ	1024 //4MB
 
-class CSolidSBCHarddriveConfig : CSolidSBCTestConfig
+class CSolidSBCHarddriveConfig : public CSolidSBCTestConfig
 {
 public:
 	CSolidSBCHarddriveConfig(void);
@@ -42,6 +42,6 @@ public:
 		{ return SetAttributeByName<BOOL>(_T("TransmitData"), bTransmitData); }
 
 protected:
-	virtual void RegisterAttributes(void);
+	void RegisterAttributes(void);
 };
 

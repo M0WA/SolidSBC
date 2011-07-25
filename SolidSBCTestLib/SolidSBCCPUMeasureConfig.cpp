@@ -4,6 +4,7 @@
 CSolidSBCCPUMeasureConfig::CSolidSBCCPUMeasureConfig(void)
 : CSolidSBCTestConfig(_T(SSBC_CPUMEASURE_TEST_NAME),_T("cpumeasure.xml"))
 {
+	RegisterAttributes();
 }
 
 CSolidSBCCPUMeasureConfig::~CSolidSBCCPUMeasureConfig(void)

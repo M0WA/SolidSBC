@@ -105,8 +105,8 @@
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)SolidSBCTestSDK;$(SolutionDir)SolidSBCTestSDK;$(SolutionDir)SolidSBCNetLib;C:\Program Files\MySQL\MySQL Server 5.1\include;$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)SolidSBCTestSDK;$(SolutionDir)SolidSBCTestLib;$(SolutionDir)SolidSBCNetLib;C:\Program Files\MySQL\MySQL Server 5.1\include;$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">$(SolutionDir)SolidSBCTestSDK;$(SolutionDir)SolidSBCTestLib;$(SolutionDir)SolidSBCNetLib;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;</IncludePath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)SolidSBCTestLib;$(SolutionDir)SolidSBCNetLib;$(IncludePath)</IncludePath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)SolidSBCTestLib;$(SolutionDir)SolidSBCNetLib;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)SolidSBCTestSDK\;$(SolutionDir)SolidSBCNetLib;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)SolidSBCTestSDK\;$(SolutionDir)SolidSBCNetLib;$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Template|x64'">$(SolutionDir)SolidSBCTestLib;$(SolutionDir)SolidSBCNetLib;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;</IncludePath>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">$(Platform)\$(Configuration)\</IntDir>
