@@ -54,7 +54,7 @@ int CSolidSBCTestManager::GetTestNames(std::vector<std::string>& vecTestnames)
 	vecTestnames.reserve(m_vecTestNames.size());
 	for( iIter = m_vecTestNames.begin(); iIter != m_vecTestNames.end(); iIter++)
 		vecTestnames.push_back( (*iIter).first );
-	return vecTestnames.size();
+	return (int)vecTestnames.size();
 }
 
 void CSolidSBCTestManager::AddTest(AFX_THREADPROC pThreadFunc, CSolidSBCTestConfig* pTestConfig)
@@ -117,7 +117,7 @@ int CSolidSBCTestManager::GetTestResults(std::vector<CSolidSBCTestResult*>& vecR
 
 		pResultVector = (*iIter).second.pResults;
 		if ( pResultVector && pResultVector->size() ) {
-			nSize += pResultVector->size();
+			nSize += (int)pResultVector->size();
 			vecResults.insert( vecResults.end(), pResultVector->begin(), pResultVector->end() );
 			pResultVector->clear();	}
 

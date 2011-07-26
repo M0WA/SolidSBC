@@ -18,7 +18,7 @@ public:
 	CSolidSBCTestConfig* GetTestConfigByName( const std::string& sTestName );
 	void                 SetTestConfigByName( const std::string& sTestName, CSolidSBCTestConfig* pConfig );
 
-	int GetRegisteredTestCount(void) { return m_vecTestNames.size(); };
+	int GetRegisteredTestCount(void) { return (int)m_vecTestNames.size(); };
 
 protected:
 	void AddTest(AFX_THREADPROC pThreadFunc, CSolidSBCTestConfig* pDefaultConfig);

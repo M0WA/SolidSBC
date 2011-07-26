@@ -60,7 +60,7 @@ void CXMLDlg::OnBnClickedSaveButton()
 		CFileException ex;
 		if ( !cFile.Open(xmlConfigFileName, CFile::modeCreate | CFile::modeReadWrite, &ex) )
 			return;
-		cFile.Write( T2A(strXML), strlen(T2A(strXML)));
+		cFile.Write( T2A(strXML), (UINT)strlen(T2A(strXML)));
 		cFile.Close();
 	}
 }
