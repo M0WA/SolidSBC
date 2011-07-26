@@ -6,7 +6,7 @@ class SOLIDSBCTESTSDK_API CSolidSBCXMLFile;
 class SOLIDSBCTESTSDK_API CSolidSBCTestConfig
 {
 protected:
-	CSolidSBCTestConfig(const CString& strTestname, const CString& strXmlFile);
+	CSolidSBCTestConfig(const CString& strTestname, const CString& strXml);
 public:
 	~CSolidSBCTestConfig(void);
 
@@ -21,16 +21,24 @@ public:
 	}
 
 	inline CString GetTestName(void) { return m_strTestname; };
-	CString GenerateEmptyXML(void);
+	CString GenerateXML(void);
+
+	static CString GetTestNameFromXML(const CString& strXml);
 
 protected:
 	//register your attributes
 	//by calling RegisterXPathByAttributeName for each attribute
-	void RegisterXPathByAttributeName(const CString& strAttributeName);
+	void RegisterAttribute(const CString& strAttributeName, const CString& strAttributeDefault = _T("0"));
+	void Init(void);
 
 private:
-	CSolidSBCXMLFile* m_pXmlFile;
-	CString m_strTestname;
+	void RegisterXPathByAttributeName(const CString& strAttributeName);
+	void RegisterDefaultValueByAttributeName(const CString& strAttributeName, const CString& strAttributeDefault);
+
+	CSolidSBCXMLFile*         m_pXmlFile;
+	CString                   m_strTestname;
+	CString                   m_strXml;
 	std::map<CString,CString> m_mapAttributeXPaths;
+	std::map<CString,CString> m_mapAttributeDefaults;
 };
 

@@ -9,21 +9,25 @@ protected:
 	~CSolidSBCTestManager(void);
 
 public:
-	int StartTest     (const std::string& sTestName, CSolidSBCTestConfig* pTestConfig);
-	int StartTestByXML(const std::string& sXML);
-	int StopTest      (const std::string& sTestName);
+	int StartTest(const std::string& sXML);
+	int StopTest (const std::string& sTestName);
 
 	int GetTestNames  (std::vector<std::string>& vecTestnames);
 	int GetTestResults(std::vector<CSolidSBCTestResult*>& vecResults);
-	int GetTestDefaultConfigs(SSBC_CONF_MAP_TYPE& mapDefaultConfigs);
-	CSolidSBCTestConfig* GetTestDefaultConfigByName(const std::string& sTestName);
-	int GetRegisteredTestCount(void) { return m_mapSolidSBCTestThreads.size(); };
+
+	CSolidSBCTestConfig* GetTestConfigByName( const std::string& sTestName );
+	void                 SetTestConfigByName( const std::string& sTestName, CSolidSBCTestConfig* pConfig );
+
+	int GetRegisteredTestCount(void) { return m_vecTestNames.size(); };
 
 protected:
-	void AddTest(const std::string& sTestName, const AFX_THREADPROC pThreadFunc, CSolidSBCTestConfig* pDefaultConfig);
+	void AddTest(AFX_THREADPROC pThreadFunc, CSolidSBCTestConfig* pDefaultConfig);
 
 private:
-	CSolidSBCTestThread* GetThreadByName(const std::string& sTestName);
-	SSBC_TEST_MAP_TYPE   m_mapSolidSBCTestThreads;
-	SSBC_CONF_MAP_TYPE   m_mapDefaultConfigs;
+	AFX_THREADPROC GetThreadFuncByName(const std::string& sTestName);
+	std::vector<SSBC_TESTNAME_FUNC_PAIR_TYPE> m_vecTestNames;
+	SSBC_RESULT_MAP_TYPE                      m_mapTestResults;
+	SSBC_CONFIG_MAP_TYPE                      m_mapTestConfigs;
+
+	std::vector<CSolidSBCTestThread*>         m_vecRunningTests;
 };

@@ -94,9 +94,6 @@ UINT SolidSBCCPUMeasureTest(LPVOID lpParam)
 		if ( CSolidSBCTestThread::ShallThreadEnd( pParam ) ) {
 			break;}
 	}
-	
-	delete pParam;
-	pParam = NULL;
 
 	delete pConfig;
 	pConfig = NULL;

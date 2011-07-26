@@ -1,14 +1,13 @@
 #include "StdAfx.h"
 #include "SolidSBCTestConfig.h"
 
-CSolidSBCTestConfig::CSolidSBCTestConfig(const CString& strTestname, const CString& strXmlFile)
+CSolidSBCTestConfig::CSolidSBCTestConfig(const CString& strTestname, const CString& strXml)
+: m_pXmlFile(NULL)
+, m_strXml(strXml)
+, m_strTestname(strTestname)
 {
-	m_pXmlFile = new CSolidSBCXMLFile(strXmlFile);
-
-	m_strTestname = strTestname;
-
 	//add standard attributes
-	RegisterXPathByAttributeName(_T("TestName"));
+	RegisterAttribute(_T("TestName"),m_strTestname);
 }
 
 CSolidSBCTestConfig::~CSolidSBCTestConfig(void)
@@ -17,27 +16,36 @@ CSolidSBCTestConfig::~CSolidSBCTestConfig(void)
 	m_pXmlFile = NULL;
 }
 
+void CSolidSBCTestConfig::RegisterAttribute(const CString& strAttributeName, const CString& strAttributeDefault)
+{
+	RegisterXPathByAttributeName(strAttributeName);
+	RegisterDefaultValueByAttributeName(strAttributeName, strAttributeDefault);
+}
+
 void CSolidSBCTestConfig::RegisterXPathByAttributeName(const CString& strAttributeName)
 {
-	CString sXPath = m_strTestname + _T("/") + strAttributeName +_T("[1]");
+	CString sXPath = _T("Test/") + strAttributeName +_T("[1]");
 	m_mapAttributeXPaths[strAttributeName] = sXPath;
 }
 
-CString CSolidSBCTestConfig::GenerateEmptyXML(void)
+void CSolidSBCTestConfig::RegisterDefaultValueByAttributeName(const CString& strAttributeName, const CString& strAttributeDefault)
+{
+	m_mapAttributeDefaults[strAttributeName] = strAttributeDefault;
+}
+
+CString CSolidSBCTestConfig::GenerateXML(void)
 {
 	CString strAttributesXML;
 	std::map<CString,CString>::iterator iIter = m_mapAttributeXPaths.begin();
 	for(;iIter != m_mapAttributeXPaths.end(); iIter++)
 	{
-		CString strAttributeDefaultValue = _T("INSERT VALUE HERE");
-		if ( !(*iIter).first.Compare(_T("TestName")) )
-			strAttributeDefaultValue = m_strTestname;
+		CString strAttributeDefaultValue = m_mapAttributeDefaults[(*iIter).first];
 
 		CString strSingleAttribute;
 		strSingleAttribute.Format( 
 			_T( "\t<%s>\r\n" )
 			_T( "\t\t%s\r\n" )
-			_T( "\t</%s>\r\n" )
+			_T( "\t</%s>\r\n\r\n" )
 			, (*iIter).first
 			, strAttributeDefaultValue
 			, (*iIter).first
@@ -47,11 +55,29 @@ CString CSolidSBCTestConfig::GenerateEmptyXML(void)
 
 	CString strGeneratedXML;
 	strGeneratedXML.Format(
-		_T( "<Test>\r\n" )
+		_T( "<Test>\r\n\r\n" )
 		_T( "%s" )
 		_T( "</Test>"	)
 		, strAttributesXML
 	);
 
 	return strGeneratedXML;
+}
+
+CString CSolidSBCTestConfig::GetTestNameFromXML(const CString& strXml)
+{
+	USES_CONVERSION;
+	CSolidSBCXMLFile cXML(strXml);
+	std::string sTestname = "";
+	if ( !cXML.GetNodeValue<std::string>(_T("Test/TestName[1]"), sTestname) )
+		return _T("");
+	return CString(A2T(sTestname.c_str()));
+}
+
+void CSolidSBCTestConfig::Init(void)
+{	
+	if ( m_strXml != _T("") ) {
+		m_pXmlFile = new CSolidSBCXMLFile(m_strXml); }
+	else {
+		m_pXmlFile = new CSolidSBCXMLFile(GenerateXML()); }
 }

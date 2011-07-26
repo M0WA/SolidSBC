@@ -2,10 +2,11 @@
 #include "SolidSBCHarddriveConfig.h"
 
 
-CSolidSBCHarddriveConfig::CSolidSBCHarddriveConfig(void)
-: CSolidSBCTestConfig(_T(SSBC_HARDDRIVE_TEST_NAME),_T("harddrive.xml"))
+CSolidSBCHarddriveConfig::CSolidSBCHarddriveConfig(const CString& strXml)
+: CSolidSBCTestConfig(_T(SSBC_HARDDRIVE_TEST_NAME),strXml)
 {
 	RegisterAttributes();
+	Init();
 }
 
 
@@ -15,12 +16,12 @@ CSolidSBCHarddriveConfig::~CSolidSBCHarddriveConfig(void)
 
 void CSolidSBCHarddriveConfig::RegisterAttributes(void)
 {
-	RegisterXPathByAttributeName(_T("RandomRead"));
-	RegisterXPathByAttributeName(_T("RandomWrite"));
-	RegisterXPathByAttributeName(_T("ReadMax"));
-	RegisterXPathByAttributeName(_T("WriteMax"));
-	RegisterXPathByAttributeName(_T("ReadWriteDelay"));
-	RegisterXPathByAttributeName(_T("TransmitData"));
+	RegisterAttribute(_T("RandomRead")    , _T("1")       );
+	RegisterAttribute(_T("RandomWrite")   , _T("1")       );
+	RegisterAttribute(_T("ReadMax")       , _T("10485760"));
+	RegisterAttribute(_T("WriteMax")      , _T("10485760"));
+	RegisterAttribute(_T("ReadWriteDelay"), _T("20")      );
+	RegisterAttribute(_T("TransmitData")  , _T("1")       );
 }
 
 BOOL CSolidSBCHarddriveConfig::GetRandomRead(void)

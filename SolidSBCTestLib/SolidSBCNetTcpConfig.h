@@ -7,7 +7,7 @@
 class CSolidSBCNetTcpConfig : public CSolidSBCTestConfig
 {
 public:
-	CSolidSBCNetTcpConfig(void);
+	CSolidSBCNetTcpConfig(const CString& strXml = _T(""));
 	~CSolidSBCNetTcpConfig(void);
 
 	//getter

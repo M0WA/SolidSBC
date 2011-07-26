@@ -7,7 +7,6 @@ CSolidSBCTestThread::CSolidSBCTestThread(const std::string& sTestName, const PSS
 , m_sTestName(sTestName)
 , m_pThreadFunc(pThreadFunc)
 {
-
 	m_testThreadParam.stateContainer.pnState     = &m_nState;
 	m_testThreadParam.stateContainer.pStateMutex = &m_StateMutex;
 
@@ -78,7 +77,7 @@ void CSolidSBCTestThread::AddResult(PSSBC_TEST_THREAD_PARAM pParam, CSolidSBCTes
 BOOL CSolidSBCTestThread::ShallThreadEnd(PSSBC_TEST_THREAD_PARAM pParam)
 {
 	pParam->stateContainer.pStateMutex->Lock();
-	BOOL bReturn = ((*(pParam->stateContainer.pnState)) == SSBC_TEST_STATE_ACTIVE) ? TRUE : FALSE;
+	BOOL bReturn = ((*(pParam->stateContainer.pnState)) != SSBC_TEST_STATE_ACTIVE) ? TRUE : FALSE;
 	pParam->stateContainer.pStateMutex->Unlock();
 	return bReturn;
 }

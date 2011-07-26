@@ -34,9 +34,6 @@ UINT SolidSBCCPUTest(LPVOID lpParam)
 		delete pThreads[i];}
 	delete [] pThreads;
 	pThreads = NULL;
-	
-	delete pParam;
-	pParam = NULL;
 
 	delete pConfig;
 	pConfig = NULL;

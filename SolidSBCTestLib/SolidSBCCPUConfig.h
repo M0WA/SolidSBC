@@ -5,7 +5,7 @@
 class CSolidSBCCPUConfig : public CSolidSBCTestConfig
 {
 public:
-	CSolidSBCCPUConfig(void);
+	CSolidSBCCPUConfig(const CString& strXml = _T(""));
 	~CSolidSBCCPUConfig(void);
 	
 	//getter

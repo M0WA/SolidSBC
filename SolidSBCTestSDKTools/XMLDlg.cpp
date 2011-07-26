@@ -16,6 +16,7 @@ CXMLDlg::CXMLDlg(CString sXmlText,CWnd* pParent /*=NULL*/)
 : CDialog(CXMLDlg::IDD, pParent)
 , m_sXmlText(sXmlText)
 {
+	m_sXmlText.Replace(_T("\t"),_T("    "));
 }
 
 CXMLDlg::~CXMLDlg()

@@ -2,10 +2,11 @@
 #include "SolidSBCMemoryConfig.h"
 
 
-CSolidSBCMemoryConfig::CSolidSBCMemoryConfig(void)
-: CSolidSBCTestConfig(_T(SSBC_MEMORY_TEST_NAME),_T("memory.xml"))
+CSolidSBCMemoryConfig::CSolidSBCMemoryConfig(const CString& strXml)
+: CSolidSBCTestConfig(_T(SSBC_MEMORY_TEST_NAME),strXml)
 {
 	RegisterAttributes();
+	Init();
 }
 
 CSolidSBCMemoryConfig::~CSolidSBCMemoryConfig(void)
@@ -14,10 +15,10 @@ CSolidSBCMemoryConfig::~CSolidSBCMemoryConfig(void)
 
 void CSolidSBCMemoryConfig::RegisterAttributes(void)
 {
-	RegisterXPathByAttributeName(_T("Randomize"));
-	RegisterXPathByAttributeName(_T("MinMem"));
-	RegisterXPathByAttributeName(_T("MaxMem"));
-	RegisterXPathByAttributeName(_T("TransmitData"));
+	RegisterAttribute(_T("Randomize")   , _T("1") );
+	RegisterAttribute(_T("MinMem")      , _T("1") );
+	RegisterAttribute(_T("MaxMem")      , _T("1048576") );
+	RegisterAttribute(_T("TransmitData"), _T("1") );
 }
 
 BOOL CSolidSBCMemoryConfig::GetRandomize(void)

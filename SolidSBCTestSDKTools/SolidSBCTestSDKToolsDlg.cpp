@@ -57,9 +57,7 @@ CSolidSBCTestSDKToolsDlg::CSolidSBCTestSDKToolsDlg(CWnd* pParent /*=NULL*/)
 
 CSolidSBCTestSDKToolsDlg::~CSolidSBCTestSDKToolsDlg()
 {
-	if (m_hTestLibrary)
-		FreeLibrary(m_hTestLibrary);
-	m_hTestLibrary = NULL;
+	UnloadTestLibrary();
 }
 
 void CSolidSBCTestSDKToolsDlg::DoDataExchange(CDataExchange* pDX)
@@ -195,15 +193,11 @@ void CSolidSBCTestSDKToolsDlg::OnBnClickedLoadDllfileButton()
 	std::vector<std::string>::iterator iIter = vecTestNames.begin();
 	for(; iIter != vecTestNames.end(); iIter++)
 		m_ctlTestList.AddString(CString((*iIter).c_str()));
-
-	m_ctlTestList.SetSel(0);
 }
 
 void CSolidSBCTestSDKToolsDlg::OnBnClickedGenerateEmptyConfigXmlButton()
 {
 	USES_CONVERSION;
-
-	//get filename to be saved to
 	CString strTestName = _T("");
 	m_ctlTestList.GetText(m_ctlTestList.GetCurSel(),strTestName);
 
@@ -211,19 +205,32 @@ void CSolidSBCTestSDKToolsDlg::OnBnClickedGenerateEmptyConfigXmlButton()
 	CSolidSBCTestManager* pManager = GetTestManager();
 	if (!pManager)
 		return;
-	CSolidSBCTestConfig* pConfig = pManager->GetTestDefaultConfigByName(T2A(strTestName));
+
+	CSolidSBCTestConfig* pConfig = pManager->GetTestConfigByName(T2A(strTestName));
 	if ( !pConfig )
 		return;
 
-	CString strXML = pConfig->GenerateEmptyXML();	
+	CString strXML = pConfig->GenerateXML();
 	CXMLDlg xmlDlg(strXML);
 	xmlDlg.DoModal();
 }
 
 void CSolidSBCTestSDKToolsDlg::OnBnClickedStartStopButton()
 {
+	USES_CONVERSION;
+	CString strTestName = _T("");
+	m_ctlTestList.GetText(m_ctlTestList.GetCurSel(),strTestName);
+
 	CSolidSBCTestManager* pManager = GetTestManager();
-	//pManager->StartTest();
+	if ( !pManager )
+		return;
+
+	CSolidSBCTestConfig*   pConfig = pConfig=pManager->GetTestConfigByName(T2A(strTestName));
+	if ( !pConfig )
+		return;
+
+	std::string sXML = T2A(pConfig->GenerateXML());
+	pManager->StartTest(sXML);
 }
 
 void CSolidSBCTestSDKToolsDlg::OnLbnSelchangeTestList()
@@ -278,7 +285,6 @@ bool CSolidSBCTestSDKToolsDlg::GetTestNames(std::vector<CString>& vecNames)
 	if( !vecTestNames.size() ) {
 		AfxMessageBox(_T("Test library does not export tests"));
 		return false; }
-
 	return true;
 }
 

@@ -2,10 +2,11 @@
 #include "SolidSBCNetTcpConfig.h"
 
 
-CSolidSBCNetTcpConfig::CSolidSBCNetTcpConfig(void)
-: CSolidSBCTestConfig(_T(SSBC_NETTCP_TEST_NAME),_T("nettcp.xml"))
+CSolidSBCNetTcpConfig::CSolidSBCNetTcpConfig(const CString& strXml)
+: CSolidSBCTestConfig(_T(SSBC_NETTCP_TEST_NAME),strXml)
 {
 	RegisterAttributes();
+	Init();
 }
 
 
@@ -15,11 +16,11 @@ CSolidSBCNetTcpConfig::~CSolidSBCNetTcpConfig(void)
 
 void CSolidSBCNetTcpConfig::RegisterAttributes(void)
 {
-	RegisterXPathByAttributeName(_T("Interval"));
-	RegisterXPathByAttributeName(_T("Host"));
-	RegisterXPathByAttributeName(_T("Port"));
-	RegisterXPathByAttributeName(_T("TTL"));
-	RegisterXPathByAttributeName(_T("TransmitData"));
+	RegisterAttribute(_T("Interval")    , _T("60000")    );
+	RegisterAttribute(_T("Host")        , _T("127.0.0.1"));
+	RegisterAttribute(_T("Port")        , _T("80")       );
+	RegisterAttribute(_T("TTL")         , _T("1000")     );
+	RegisterAttribute(_T("TransmitData"), _T("1")        );
 }
 
 UINT CSolidSBCNetTcpConfig::GetInterval(void)

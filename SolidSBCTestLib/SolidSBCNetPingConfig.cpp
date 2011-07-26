@@ -2,10 +2,11 @@
 #include "SolidSBCNetPingConfig.h"
 
 
-CSolidSBCNetPingConfig::CSolidSBCNetPingConfig(void)
-: CSolidSBCTestConfig(_T(SSBC_NETPING_TEST_NAME),_T("netping.xml"))
+CSolidSBCNetPingConfig::CSolidSBCNetPingConfig(const CString& strXml)
+: CSolidSBCTestConfig(_T(SSBC_NETPING_TEST_NAME),strXml)
 {
 	RegisterAttributes();
+	Init();
 }
 
 
@@ -15,11 +16,11 @@ CSolidSBCNetPingConfig::~CSolidSBCNetPingConfig(void)
 
 void CSolidSBCNetPingConfig::RegisterAttributes(void)
 {
-	RegisterXPathByAttributeName(_T("Interval"));
-	RegisterXPathByAttributeName(_T("Host"));
-	RegisterXPathByAttributeName(_T("TTL"));
-	RegisterXPathByAttributeName(_T("PayloadSize"));
-	RegisterXPathByAttributeName(_T("TransmitData"));
+	RegisterAttribute(_T("Host")        , _T("127.0.0.1"));
+	RegisterAttribute(_T("Interval")    , _T("60000")    );
+	RegisterAttribute(_T("TTL")         , _T("1000")     );
+	RegisterAttribute(_T("PayloadSize") , _T("32")       );
+	RegisterAttribute(_T("TransmitData"), _T("1")        );
 }
 
 UINT  CSolidSBCNetPingConfig::GetInterval(void)

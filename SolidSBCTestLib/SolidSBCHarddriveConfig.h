@@ -11,7 +11,7 @@
 class CSolidSBCHarddriveConfig : public CSolidSBCTestConfig
 {
 public:
-	CSolidSBCHarddriveConfig(void);
+	CSolidSBCHarddriveConfig(const CString& strXml = _T(""));
 	~CSolidSBCHarddriveConfig(void);
 
 	//getter

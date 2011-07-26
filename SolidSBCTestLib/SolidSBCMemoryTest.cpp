@@ -68,9 +68,6 @@ UINT SolidSBCMemoryTest(LPVOID lpParam)
 
 	delete pConfig;
 	pConfig = NULL;
-	
-	delete pParam;
-	pParam = NULL;
 
 	return 0;
 }

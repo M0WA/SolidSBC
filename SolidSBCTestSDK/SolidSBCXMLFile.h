@@ -6,7 +6,7 @@
 class SOLIDSBCTESTSDK_API CSolidSBCXMLFile
 {
 public:
-	CSolidSBCXMLFile(const CString& strFilename);
+	CSolidSBCXMLFile(const CString& strXml);
 	~CSolidSBCXMLFile(void);
 
 	int  Save(const CString& strFileName);
@@ -45,11 +45,10 @@ protected:
 	int GetNodeString(const CString& strXPath, CString& strValue);
 	int SetNodeString(const CString& strXPath, const CString& strValue);
 
-	CString m_strFileName;
+	CString m_strXml;
 	IXMLDOMDocument* m_pXMLDom;
 
 private:
-	int  Init(const CString& strFileName);
-	IXMLDOMNode* FindNodeByName(const CString& strName);
+	int  Init(void);
 };
 

@@ -1,10 +1,11 @@
 #include "StdAfx.h"
 #include "SolidSBCCPUMeasureConfig.h"
 
-CSolidSBCCPUMeasureConfig::CSolidSBCCPUMeasureConfig(void)
-: CSolidSBCTestConfig(_T(SSBC_CPUMEASURE_TEST_NAME),_T("cpumeasure.xml"))
+CSolidSBCCPUMeasureConfig::CSolidSBCCPUMeasureConfig(const CString& strXml)
+: CSolidSBCTestConfig(_T(SSBC_CPUMEASURE_TEST_NAME),strXml)
 {
 	RegisterAttributes();
+	Init();
 }
 
 CSolidSBCCPUMeasureConfig::~CSolidSBCCPUMeasureConfig(void)
@@ -13,11 +14,11 @@ CSolidSBCCPUMeasureConfig::~CSolidSBCCPUMeasureConfig(void)
 
 void CSolidSBCCPUMeasureConfig::RegisterAttributes(void)
 {
-	RegisterXPathByAttributeName(_T("DivisionCnt"));
-	RegisterXPathByAttributeName(_T("AdditionCnt"));
-	RegisterXPathByAttributeName(_T("AutoFixMultiplier"));
-	RegisterXPathByAttributeName(_T("FixMultiplierTreshold"));
-	RegisterXPathByAttributeName(_T("TransmitData"));
+	RegisterAttribute(_T("DivisionCnt")          , _T("1000"));
+	RegisterAttribute(_T("AdditionCnt")          , _T("1000"));
+	RegisterAttribute(_T("AutoFixMultiplier")    , _T("3")   );
+	RegisterAttribute(_T("FixMultiplierTreshold"), _T("0.5") );
+	RegisterAttribute(_T("TransmitData")         , _T("1")   );
 }
 
 UINT CSolidSBCCPUMeasureConfig::GetDivisionCnt(void)

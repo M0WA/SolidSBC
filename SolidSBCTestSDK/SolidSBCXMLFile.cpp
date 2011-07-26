@@ -10,14 +10,14 @@
 // Macro that releases a COM object if not NULL.
 #define SAFE_RELEASE(p)     do { if ((p)) { (p)->Release(); (p) = NULL; } } while(0)
 
-CSolidSBCXMLFile::CSolidSBCXMLFile(const CString& strFilename)
+CSolidSBCXMLFile::CSolidSBCXMLFile(const CString& strXml)
 : m_pXMLDom(NULL)
+, m_strXml(strXml)
 {
 	HRESULT hr = CoInitialize(NULL);
     if(SUCCEEDED(hr))
 		CreateAndInitDOM();
-
-	Init(strFilename);
+	Init();
 }
 
 CSolidSBCXMLFile::~CSolidSBCXMLFile(void)
@@ -26,11 +26,9 @@ CSolidSBCXMLFile::~CSolidSBCXMLFile(void)
 	CoUninitialize();
 }
 
-int CSolidSBCXMLFile::Init(const CString& strFileName)
+int CSolidSBCXMLFile::Init(void)
 {
-	m_strFileName = strFileName;
     loadDOM();
-
 	return 0;
 }
 
@@ -57,12 +55,8 @@ void CSolidSBCXMLFile::loadDOM(void)
 
     BSTR bstrErr = NULL;
     VARIANT_BOOL varStatus;
-    VARIANT varFileName;
-    VariantInit(&varFileName);
-
-	COleVariant strVar(m_strFileName);
-	varFileName=strVar.Detach();
-	m_pXMLDom->load(varFileName, &varStatus);
+	BSTR varXml = m_strXml.AllocSysString();
+	m_pXMLDom->loadXML(varXml, &varStatus);
 	
 	if (varStatus != VARIANT_TRUE) {
 		CHK_HR(m_pXMLDom->get_parseError(&pXMLErr));
@@ -72,15 +66,15 @@ void CSolidSBCXMLFile::loadDOM(void)
 CleanUpXML:
     SAFE_RELEASE(pXMLErr);
     SysFreeString(bstrErr);
-    VariantClear(&varFileName);
+    SysFreeString(varXml);
 }
 
 int CSolidSBCXMLFile::GetNodeString(const CString& strXPath, CString& strValue)
 {
-	int nReturn = 0;
-
 	IXMLDOMNode *pNode = NULL;
-    HRESULT hr = m_pXMLDom->selectSingleNode(*((BSTR*)&strXPath), &pNode);
+	BSTR bstrXPath = strXPath.AllocSysString();
+    HRESULT hr = m_pXMLDom->selectSingleNode(bstrXPath, &pNode);
+    SysFreeString(bstrXPath);
 	if (hr != S_OK){
 		return 1;}
 
@@ -91,6 +85,7 @@ int CSolidSBCXMLFile::GetNodeString(const CString& strXPath, CString& strValue)
 		return 2;}
 
 	strValue = bstrValue;
+    SysFreeString(bstrValue);
 	SAFE_RELEASE(pNode);
 	return 0;
 }
@@ -98,72 +93,36 @@ int CSolidSBCXMLFile::GetNodeString(const CString& strXPath, CString& strValue)
 int CSolidSBCXMLFile::Save(const CString& strFileName)
 {
 	HRESULT hr = m_pXMLDom->save(CComVariant(strFileName));
-	
 	if (hr != S_OK){
 		return 1;}
-
 	return 0;
 }
 
 int CSolidSBCXMLFile::SetNodeString(const CString& strXPath, const CString& strValue)
 {
 	IXMLDOMNode *pNode = NULL;
-
-	if (  (m_pXMLDom->selectSingleNode(*((BSTR*)&strXPath), &pNode) != S_OK) ){
-
-		IXMLDOMNode *pPortfolioNode = FindNodeByName(_T("portfolio"));
-		if ( !pPortfolioNode )
-			return 1;
-
-		if ( (m_pXMLDom->createTextNode(*((BSTR*)&strXPath), (IXMLDOMText**)&pNode)) != S_OK ){
-			return 2;}
+	
+	BSTR bstrXPath = strXPath.AllocSysString();
+	if (  (m_pXMLDom->selectSingleNode(bstrXPath, &pNode) != S_OK) ){
+		
+		if ( (m_pXMLDom->createTextNode(bstrXPath, (IXMLDOMText**)&pNode)) != S_OK ){
+			return 1;}
 		else {
-			return 3;}
-
-		SAFE_RELEASE(pPortfolioNode);
-
-		return 4;
+			return 2;}
+		
+		SysFreeString(bstrXPath);
+		return 3;
 	}
 
-	int nReturn = 0;
-	HRESULT hr = pNode->put_text(*((BSTR*)&strValue));
+	BSTR bstrValue = strValue.AllocSysString();
+	HRESULT hr = pNode->put_text(bstrValue);
 	if (hr != S_OK){ 		
 		SAFE_RELEASE(pNode);
-		return 5;}
+		return 4;}
+    SysFreeString(bstrValue);
 
 	SAFE_RELEASE(pNode);
 	return 0;
-}
-
-IXMLDOMNode* CSolidSBCXMLFile::FindNodeByName(const CString& strName)
-{
-	IXMLDOMNodeList* pNodesList = NULL;
-	if ((m_pXMLDom->get_childNodes(&pNodesList)) != S_OK){  
-		return NULL;}
-
-	long lNodeListLen = 0;
-	CString strNodeName;
-	if ( pNodesList->get_length(&lNodeListLen) != S_OK ){
-		SAFE_RELEASE(pNodesList);
-		return NULL;
-	}
-
-	for (long i = 0; i < lNodeListLen; i++){
-		IXMLDOMNode *pTestNode = NULL;
-		if ( ( pNodesList->get_item( i, &pTestNode )       != S_OK )
-			||( pTestNode->get_baseName( (BSTR*)&strNodeName ) != S_OK  )
-			){
-				SAFE_RELEASE(pTestNode);
-				SAFE_RELEASE(pNodesList);
-				return NULL;}
-
-		if ( strName == strNodeName ){		
-				SAFE_RELEASE(pNodesList);
-				return pTestNode;
-		}
-	}
-
-	return NULL;
 }
 
 bool CSolidSBCXMLFile::Validate(const CString& strXSDFile)

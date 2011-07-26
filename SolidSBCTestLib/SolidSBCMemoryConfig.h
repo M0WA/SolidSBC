@@ -5,7 +5,7 @@
 class CSolidSBCMemoryConfig : public CSolidSBCTestConfig
 {
 public:
-	CSolidSBCMemoryConfig(void);
+	CSolidSBCMemoryConfig(const CString& strXml = _T(""));
 	~CSolidSBCMemoryConfig(void);
 
 	//getter

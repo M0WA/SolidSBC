@@ -1,10 +1,11 @@
 #include "StdAfx.h"
 #include "SolidSBCCPUConfig.h"
 
-CSolidSBCCPUConfig::CSolidSBCCPUConfig(void)
-: CSolidSBCTestConfig(_T(SSBC_CPU_TEST_NAME),_T("cpu.xml"))
+CSolidSBCCPUConfig::CSolidSBCCPUConfig(const CString& strXml)
+: CSolidSBCTestConfig(_T(SSBC_CPU_TEST_NAME),strXml)
 {
 	RegisterAttributes();
+	Init();
 }
 
 CSolidSBCCPUConfig::~CSolidSBCCPUConfig(void)
@@ -13,10 +14,10 @@ CSolidSBCCPUConfig::~CSolidSBCCPUConfig(void)
 
 void CSolidSBCCPUConfig::RegisterAttributes(void)
 {
-	RegisterXPathByAttributeName(_T("Randomize"));
-	RegisterXPathByAttributeName(_T("MaxRand"));
-	RegisterXPathByAttributeName(_T("SleepMS"));
-	RegisterXPathByAttributeName(_T("ThreadCnt"));
+	RegisterAttribute(_T("Randomize"), _T("1"));
+	RegisterAttribute(_T("MaxRand")  , _T("20"));
+	RegisterAttribute(_T("SleepMS")  , _T("5.000000"));
+	RegisterAttribute(_T("ThreadCnt"), _T("2"));
 }
 
 BOOL CSolidSBCCPUConfig::GetRandomize(void)
