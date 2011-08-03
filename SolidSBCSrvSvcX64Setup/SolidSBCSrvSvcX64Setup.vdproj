@@ -21,19 +21,19 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_1C126B290FF94E07B55E3C0854B524DB"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_1CBEACEEC9954EB69708BAB5976AA37C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_81E611B49CD140B8B933000B49EFECFE"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_9B97E39170E14F41BC13453A227C8AE4"
+        "MsmKey" = "8:_5CA5166ED977427BB1458CA599F1EB0C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -125,10 +125,20 @@
             "ComponentsUrl" = "8:"
                 "Items"
                 {
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.0,Profile=Client"
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Visual.C++.10.0.IA64"
                     {
-                    "Name" = "8:Microsoft .NET Framework 4 Client Profile (x86 and x64)"
-                    "ProductCode" = "8:.NETFramework,Version=v4.0,Profile=Client"
+                    "Name" = "8:Visual C++ 2010 Runtime Libraries (IA64)"
+                    "ProductCode" = "8:Microsoft.Visual.C++.10.0.IA64"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Visual.C++.10.0.x64"
+                    {
+                    "Name" = "8:Visual C++ 2010 Runtime Libraries (x64)"
+                    "ProductCode" = "8:Microsoft.Visual.C++.10.0.x64"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Visual.C++.10.0.x86"
+                    {
+                    "Name" = "8:Visual C++ 2010 Runtime Libraries (x86)"
+                    "ProductCode" = "8:Microsoft.Visual.C++.10.0.x86"
                     }
                     "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
                     {
@@ -143,6 +153,34 @@
     {
         "CustomAction"
         {
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_09DDB8D1C1F74E5BB217ECC093614FFA"
+            {
+            "Name" = "8:InstallService"
+            "Condition" = "8:"
+            "Object" = "8:_E270D1B799CF4243962D28D2948AED0B"
+            "FileType" = "3:2"
+            "InstallAction" = "3:1"
+            "Arguments" = "8:/Install"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_4913EC24_5107_457D_97C2_4DF7B90B3AF9"
+            "InstallerClass" = "11:FALSE"
+            "CustomActionData" = "8:"
+            }
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_BC6608425E1049359674D9D8DE51DB1D"
+            {
+            "Name" = "8:DeleteService"
+            "Condition" = "8:"
+            "Object" = "8:_E270D1B799CF4243962D28D2948AED0B"
+            "FileType" = "3:2"
+            "InstallAction" = "3:4"
+            "Arguments" = "8:/DeleteService"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_333A2911_4968_42B6_A5EF_EF9590BBFD1D"
+            "InstallerClass" = "11:FALSE"
+            "CustomActionData" = "8:"
+            }
         }
         "DefaultFeature"
         {
@@ -154,6 +192,14 @@
         {
             "LaunchCondition"
             {
+                "{A06ECF26-33A3-4562-8140-9B0E340D4F24}:_239FA9F533B94122BE30BAF98AF3AE22"
+                {
+                "Name" = "8:.NET Framework"
+                "Message" = "8:[VSDNETMSG]"
+                "FrameworkVersion" = "8:.NETFramework,Version=v4.0,Profile=Client"
+                "AllowLaterVersions" = "11:FALSE"
+                "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=131000"
+                }
             }
         }
         "File"
@@ -162,46 +208,6 @@
             {
             "SourcePath" = "8:..\\license.rtf"
             "TargetName" = "8:license.rtf"
-            "Tag" = "8:"
-            "Folder" = "8:_B61F61609B184EF4A5F0731905ADE0DF"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_81E611B49CD140B8B933000B49EFECFE"
-            {
-            "SourcePath" = "8:..\\mysql-winx64\\lib\\libmysql.dll"
-            "TargetName" = "8:libmysql.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_B61F61609B184EF4A5F0731905ADE0DF"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9B97E39170E14F41BC13453A227C8AE4"
-            {
-            "SourcePath" = "8:..\\SolidSBCSrvSvc\\config files\\ssbc_profiles.xml"
-            "TargetName" = "8:ssbc_profiles.xml"
             "Tag" = "8:"
             "Folder" = "8:_B61F61609B184EF4A5F0731905ADE0DF"
             "Condition" = "8:"
@@ -306,7 +312,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SolidSBC Server x64"
         "ProductCode" = "8:{5C94603D-15D2-4C20-B2F1-589EFA3003C9}"
-        "PackageCode" = "8:{EF35677E-B5FB-4DEB-8228-8F77B8808212}"
+        "PackageCode" = "8:{FCC27598-B2B8-4E32-8747-8E443A067631}"
         "UpgradeCode" = "8:{E0D9BF02-5FD4-4536-9335-8F4142430867}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -853,6 +859,34 @@
         }
         "ProjectOutput"
         {
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_1C126B290FF94E07B55E3C0854B524DB"
+            {
+            "SourcePath" = "8:..\\x64\\Release\\SolidSBCDatabaseLib.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B61F61609B184EF4A5F0731905ADE0DF"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:Release|x64"
+            "OutputGroupCanonicalName" = "8:Built"
+            "OutputProjectGuid" = "8:{A3DD5B8A-101E-4673-8E2A-06FF14ECBCDE}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_1CBEACEEC9954EB69708BAB5976AA37C"
             {
             "SourcePath" = "8:..\\x64\\Release\\SolidSBCNetLib.dll"
@@ -876,6 +910,34 @@
             "OutputConfiguration" = "8:Release|x64"
             "OutputGroupCanonicalName" = "8:Built"
             "OutputProjectGuid" = "8:{674415A8-03B4-4774-8D11-F0DEFEC706AF}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_5CA5166ED977427BB1458CA599F1EB0C"
+            {
+            "SourcePath" = "8:..\\x64\\Release\\SolidSBCTestSDK.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B61F61609B184EF4A5F0731905ADE0DF"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:Release|x64"
+            "OutputGroupCanonicalName" = "8:Built"
+            "OutputProjectGuid" = "8:{5C95B3AA-4747-4EB9-A58A-CDDD46CC3B6B}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
                 {

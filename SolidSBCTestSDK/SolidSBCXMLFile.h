@@ -11,6 +11,7 @@ public:
 
 	int  Save(const CString& strFileName);
 	bool Validate(const CString& strXSDFile);
+	bool SetXmlString(const CString& strXml);
 
 	template<class Tvalue> bool GetNodeValue(const CString& strXPath, Tvalue& value)
 	{
@@ -37,18 +38,18 @@ public:
 		bool bSuccess = !SetNodeString(strXPath, CString(sStream.str().c_str()));
 		return bSuccess;
 	}
-	
-protected:
+
+private:
+	int  Init(void);
+	int  Clear(void);
+
 	HRESULT CreateAndInitDOM(void);
 	void    loadDOM(void);
 	
 	int GetNodeString(const CString& strXPath, CString& strValue);
 	int SetNodeString(const CString& strXPath, const CString& strValue);
 
-	CString m_strXml;
+	CString          m_strXml;
 	IXMLDOMDocument* m_pXMLDom;
-
-private:
-	int  Init(void);
 };
 

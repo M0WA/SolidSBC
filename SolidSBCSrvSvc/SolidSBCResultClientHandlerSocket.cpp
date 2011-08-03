@@ -4,58 +4,10 @@
 CMutex g_cNextClientIDMutex;
 UINT   g_nNextClientID = 0;
 
-UINT SolidSBCResultClientHandlerWaitForPacketThread(LPVOID lpParam)
-{
-	g_cNextClientIDMutex.Lock();
-	int nClientID = g_nNextClientID;
-	g_nNextClientID++;
-	g_cNextClientIDMutex.Unlock();
-
-	CSolidSBCResultClientHandlerSocket* pSocket = (CSolidSBCResultClientHandlerSocket*)lpParam;
-	
-	SOCKADDR_IN client;
-	ZeroMemory(&client,sizeof(SOCKADDR_IN));
-	pSocket->GetPeerName(&client);
-
-	CSolidSBCClientResultInfo clientResultInfo( client, pSocket, nClientID );
-	g_cClientList.AddResultClient(clientResultInfo);
-
-	//wait for packet till error occurs
-	BOOL bLoop = TRUE;
-	while ( bLoop )
-	{
-		if ( pSocket->WaitForPacket() ){
-			if ( !pSocket->OnRead(nClientID) ){
-				bLoop = FALSE;
-			} else {
-#ifdef _DEBUG
-				{
-					CString strMsg;
-					strMsg.Format(_T("SolidSBCResultClientHandlerWaitForPacketThread: packet from client id: %d received..."), nClientID);
-					CSolidSBCSrvServiceWnd::LogServiceMessage(strMsg,SSBC_SRVSVC_LOGMSG_TYPE_DEBUG);
-				}
-#endif
-			}
-		}else {
-			bLoop = FALSE;
-		}
-	}
-
-	{
-		CString strMsg;
-		strMsg.Format(_T("SolidSBCResultClientHandlerWaitForPacketThread: Closing result connection for client id: %d"), nClientID);
-		CSolidSBCSrvServiceWnd::LogServiceMessage(strMsg,SSBC_SRVSVC_LOGMSG_TYPE_DEBUG);
-	}
-	pSocket->Close();
-
-	g_cClientList.DeleteResultClient(nClientID);
-	return 0;
-}
-
 CSolidSBCResultClientHandlerSocket::CSolidSBCResultClientHandlerSocket(SOCKET hSocket)
 {
 	m_hSocket = hSocket;
-	AfxBeginThread(SolidSBCResultClientHandlerWaitForPacketThread,this);
+	AfxBeginThread(CSolidSBCResultClientHandlerSocket::WaitForPacketThread,this);
 }
 
 CSolidSBCResultClientHandlerSocket::~CSolidSBCResultClientHandlerSocket(void)
@@ -107,157 +59,77 @@ bool CSolidSBCResultClientHandlerSocket::WaitForPacket(void)
 	}
 }
 
-bool CSolidSBCResultClientHandlerSocket::OnRead(int nClientID)
+bool CSolidSBCResultClientHandlerSocket::OnRead(CSolidSBCClientResultInfo& clientInfo)
 {
-	bool bReturn = true;
-	int nRequiredSize = -1;
-	CString strType = _T("error");
+	int nHeaderSize = sizeof(SSBC_PACKET_HEADER);
+	SSBC_PACKET_HEADER header;
+	memset(&header,0,nHeaderSize);
+	
+	u_long iMode = 0;
+	ioctlsocket(m_hSocket, FIONBIO, &iMode);
 
-	int	  nRead       = 0;
-	int   nHeaderSize = sizeof(SSBC_BASE_PACKET_HEADER);
-	PBYTE pHeader     = (PBYTE)malloc( nHeaderSize );
-	ZeroMemory(pHeader,nHeaderSize);
+	//receive header
+	int nRead = recv(m_hSocket,(char*)&header,nHeaderSize,0);
+	if ( nRead != nHeaderSize )
+		return false;
 
-	//receive till header is there
-	nRead = recv(m_hSocket,(char*)pHeader,nHeaderSize,0);
-	if (nRead == nHeaderSize){
+	//allocate memory for packet
+	PBYTE pPacket = new BYTE[header.nPacketSize+1];
+	ZeroMemory(pPacket,header.nPacketSize+1);
+	memcpy(pPacket,&header,header.nPacketSize);
 
-		//calculating size for complete packet
-		switch( ((PSSBC_BASE_PACKET_HEADER)pHeader)->type )
-		{
-		case SSBC_CONN_RES_REQUEST_PACKET_TYPE:
-			nRequiredSize = sizeof(SSBC_CONN_RES_REQUEST_PACKET);
-			strType = _T("SSBC_CONN_RES_REQUEST_PACKET_TYPE");
-			break;
-		case SSBC_PROFILE_CHANGE_REQUEST_PACKET_TYPE:
-			nRequiredSize = sizeof(SSBC_RESULT_PROFILE_CHANGE_REQUEST_PACKET);
-			strType = _T("SSBC_PROFILE_CHANGE_REQUEST_PACKET_TYPE");
-			break;
-		case SSBC_HD_TESTRESULT_PACKET_TYPE:
-			nRequiredSize = sizeof(SSBC_HD_TESTRESULT_PACKET);
-			strType = _T("SSBC_HD_TESTRESULT_PACKET_TYPE");
-			break;
-		case SSBC_CPUMEASURE_TESTRESULT_PACKET_TYPE:
-			nRequiredSize = sizeof(SSBC_CPUMEASURE_TESTRESULT_PACKET);
-			strType = _T("SSBC_CPUMEASURE_TESTRESULT_PACKET_TYPE");
-			break;
-		case SSBC_MEMORY_TESTRESULT_PACKET_TYPE:
-			nRequiredSize = sizeof(SSBC_MEMORY_TESTRESULT_PACKET);
-			strType = _T("SSBC_MEMORY_TESTRESULT_PACKET_TYPE");
-			break;
-		case SSBC_NETWORK_PING_TESTRESULT_PACKET_TYPE:
-			nRequiredSize = sizeof(SSBC_NETWORK_PING_TESTRESULT_PACKET);
-			strType = _T("SSBC_NETWORK_PING_TESTRESULT_PACKET_TYPE");
-			break;
-		case SSBC_NETWORK_TCPCON_TESTRESULT_PACKET_TYPE:
-			nRequiredSize = sizeof(SSBC_NETWORK_TCPCON_TESTRESULT_PACKET);
-			strType = _T("SSBC_NETWORK_TCPCON_TESTRESULT_PACKET_TYPE");
-			break;
-		default:
-			bReturn = false;
-			break;
-		}
-		
-		//request space for complete packet
-		int nPacketSize = nHeaderSize + nRequiredSize;
-		PBYTE pPacket = new BYTE[nPacketSize];
-		ZeroMemory(pPacket,nPacketSize);
-		memcpy(pPacket,pHeader,nHeaderSize);
+	//receive payload
+	int nPayloadSize = header.nPacketSize - nHeaderSize;
+	nRead = recv(m_hSocket,(char*)&pPacket[nHeaderSize],nPayloadSize,0);
+	if ( nRead != nPayloadSize ){
+		delete pPacket;
+		return false;}
 
-		//receive rest of the packet
-		nRead = recv(m_hSocket,(char*)(&(pPacket[nHeaderSize])),nRequiredSize,0);
-
-		if ( nRead == nRequiredSize ){
-			//packet received
-			//everything is ok with the packet, do appropriate actions...
-			switch( ((PSSBC_BASE_PACKET_HEADER)pHeader)->type )
-			{
-			case SSBC_CONN_RES_REQUEST_PACKET_TYPE:
-				ReceiveResultConnRequest( (PSSBC_CONN_RES_REQUEST_PACKET) (&(pPacket[nHeaderSize])), nClientID );
-				break;
-			case SSBC_HD_TESTRESULT_PACKET_TYPE:
-				ReceiveHDResultPacket( (PSSBC_HD_TESTRESULT_PACKET) (&(pPacket[nHeaderSize])), nClientID );
-				break;
-			case SSBC_CPUMEASURE_TESTRESULT_PACKET_TYPE:
-				ReceiveCPUMeasureResultPacket( (PSSBC_CPUMEASURE_TESTRESULT_PACKET) (&(pPacket[nHeaderSize])), nClientID );
-				break;
-			case SSBC_MEMORY_TESTRESULT_PACKET_TYPE:
-				ReceiveMemResultPacket( (PSSBC_MEMORY_TESTRESULT_PACKET) (&(pPacket[nHeaderSize])), nClientID );
-				break;
-			case SSBC_NETWORK_PING_TESTRESULT_PACKET_TYPE:
-				ReceiveNetPingResultPacket( (PSSBC_NETWORK_PING_TESTRESULT_PACKET) (&(pPacket[nHeaderSize])), nClientID );
-				break;
-			case SSBC_NETWORK_TCPCON_TESTRESULT_PACKET_TYPE:
-				ReceiveNetTCPConResultPacket( (PSSBC_NETWORK_TCPCON_TESTRESULT_PACKET) (&(pPacket[nHeaderSize])), nClientID );
-				break;
-			default:
-				bReturn = false;
-				break;
-			}
-
-		} else {
-
-			//invalid packet size
-			bReturn = false;
-			{
-				CString strMsg;
-				strMsg.Format(_T("Invalid packet size. Closing result connection. received %d bytes, required %d bytes, type: %s."),nRead,nRequiredSize,strType);
-				CSolidSBCSrvServiceWnd::LogServiceMessage(strMsg,SSBC_SRVSVC_LOGMSG_TYPE_WARN);
-			}
-
-		}
-
-		delete [] pPacket;
-		pPacket = NULL;
-
-	} else{
-
-		//packet smaller than header ???
-		bReturn = false;
-		{
-			CString strMsg;
-			strMsg.Format(_T("Invalid header received. Closing result connection. received %d bytes"),nRead);
-			CSolidSBCSrvServiceWnd::LogServiceMessage(strMsg,SSBC_SRVSVC_LOGMSG_TYPE_WARN);
-		}
-	}
-
-#ifdef _DEBUG
+	iMode = 1;
+	ioctlsocket(m_hSocket, FIONBIO, &iMode);
+	
+	bool bSuccess = false;
+	switch(header.nType)
 	{
-		CString strMsg;
-		strMsg.Format(_T("CSolidSBCResultClientHandlerSocket::OnRead() returns %d. received %d bytes, required %d bytes, type: %s."),bReturn,nRead,nRequiredSize,strType);
-		CSolidSBCSrvServiceWnd::LogServiceMessage(strMsg,SSBC_SRVSVC_LOGMSG_TYPE_DEBUG);
+	case SSBC_PACKET_TYPE_RESULT:
+		bSuccess = OnTestResultPacket( clientInfo, pPacket );
+		break;
+	case SSBC_PACKET_TYPE_RESULT_REQUEST:
+		bSuccess = OnResultRequestPacket( clientInfo, pPacket );
+		break;
+	default:
+		bSuccess = false;
 	}
-#endif
 
-	free(pHeader);
-	pHeader = NULL;
-
-	return bReturn;
+	delete pPacket;
+	return bSuccess;
 }
 
-int CSolidSBCResultClientHandlerSocket::ReceiveResultConnRequest( PSSBC_CONN_RES_REQUEST_PACKET pPacket, int nClientID )
+bool CSolidSBCResultClientHandlerSocket::OnResultRequestPacket(CSolidSBCClientResultInfo& clientInfo, PBYTE pPacket)
 {
-	//TODO: this should not be in packet, see client for more info
-	struct sockaddr_in client;
-	int nClientSize = sizeof(client);
-	BOOL bErr = getpeername( m_hSocket, (SOCKADDR*)&client, &nClientSize );
-	pPacket->client = client;
+	bool bReturn = false;
+	CSolidSBCPacketResultRequest* pRequestPacket = new CSolidSBCPacketResultRequest(pPacket);
 
-	g_cClientList.AddResultRequest(*pPacket);
+	CString strClientUUID, strClientName;
+	pRequestPacket->GetClientUUID(strClientUUID);
+	pRequestPacket->GetClientName(strClientName);
+	delete pRequestPacket;
 
-	return 0;
+	clientInfo.SetClientUUID(strClientUUID);
+	clientInfo.SetClientName(strClientName);
+	
+	return !g_cClientList.AddResultClient(clientInfo);
 }
 
-void CSolidSBCResultClientHandlerSocket::SendProfileChangeRequest(UINT nNewProfileID)
+bool CSolidSBCResultClientHandlerSocket::OnTestResultPacket(CSolidSBCClientResultInfo& clientInfo, PBYTE pPacket)
 {
-	int nPacketSize = sizeof(SSBC_BASE_PACKET_HEADER) + sizeof(SSBC_RESULT_PROFILE_CHANGE_REQUEST_PACKET);
-	PBYTE pPacket = new byte[nPacketSize];
+	CSolidSBCPacketTestResult* pResultPacket = new CSolidSBCPacketTestResult(pPacket);
 
-	((PSSBC_BASE_PACKET_HEADER)pPacket)->type = SSBC_PROFILE_CHANGE_REQUEST_PACKET_TYPE;
-	((PSSBC_BASE_PACKET_HEADER)pPacket)->nPacketSize = nPacketSize;
-	((PSSBC_RESULT_PROFILE_CHANGE_REQUEST_PACKET)&pPacket[sizeof(SSBC_BASE_PACKET_HEADER)])->nChangeToProfileID = nNewProfileID;
+	CString strResultSQL;
+	pResultPacket->GetResultSQL(strResultSQL);
+	delete pResultPacket;
 
-	send(m_hSocket,(char*)&pPacket,nPacketSize,0);
+	return !g_cClientList.AddTestResult( clientInfo, strResultSQL );
 }
 
 void CSolidSBCResultClientHandlerSocket::Close(void)
@@ -268,57 +140,49 @@ void CSolidSBCResultClientHandlerSocket::Close(void)
 	m_hSocket = NULL;
 }
 
-int CSolidSBCResultClientHandlerSocket::ReceiveHDResultPacket(PSSBC_HD_TESTRESULT_PACKET pPacket, int nClientID)
+UINT CSolidSBCResultClientHandlerSocket::WaitForPacketThread(LPVOID lpParam)
 {
-	SSBC_HD_TESTRESULT result;
-	result.hdResult  = *pPacket;
-	result.nResultID = 0;
-	result.nClientID = nClientID;
+	g_cNextClientIDMutex.Lock();
+	int nClientID = g_nNextClientID;
+	g_nNextClientID++;
+	g_cNextClientIDMutex.Unlock();
 
-	g_cClientList.AddHDResult(&result);
-	return 0;
-}
+	CSolidSBCResultClientHandlerSocket* pSocket = (CSolidSBCResultClientHandlerSocket*)lpParam;
+	
+	SOCKADDR_IN client;
+	ZeroMemory(&client,sizeof(SOCKADDR_IN));
+	pSocket->GetPeerName(&client);
 
-int CSolidSBCResultClientHandlerSocket::ReceiveCPUMeasureResultPacket(PSSBC_CPUMEASURE_TESTRESULT_PACKET pPacket, int nClientID)
-{
-	SSBC_CPUMEASURE_TESTRESULT result;
-	result.cpuMeasure = *pPacket;
-	result.nResultID  = 0;
-	result.nClientID  = nClientID;
+	CSolidSBCClientResultInfo clientResultInfo( client, pSocket, nClientID );
+	
+	//wait for packet till error occurs
+	BOOL bLoop = TRUE;
+	while ( bLoop )
+	{
+		if ( pSocket->WaitForPacket() ){
+			if ( !pSocket->OnRead(clientResultInfo) ){
+				bLoop = FALSE;
+			} else {
+#ifdef _DEBUG
+				{
+					CString strMsg;
+					strMsg.Format(_T("SolidSBCResultClientHandlerWaitForPacketThread: packet from client id: %d received..."), nClientID);
+					CSolidSBCSrvServiceWnd::LogServiceMessage(strMsg,SSBC_SRVSVC_LOGMSG_TYPE_DEBUG);
+				}
+#endif
+			}
+		}else {
+			bLoop = FALSE;
+		}
+	}
 
-	g_cClientList.AddCPUMeasureResult(&result);
-	return 0;
-}
+	{
+		CString strMsg;
+		strMsg.Format(_T("SolidSBCResultClientHandlerWaitForPacketThread: Closing result connection for client id: %d"), nClientID);
+		CSolidSBCSrvServiceWnd::LogServiceMessage(strMsg,SSBC_SRVSVC_LOGMSG_TYPE_DEBUG);
+	}
+	pSocket->Close();
 
-int CSolidSBCResultClientHandlerSocket::ReceiveMemResultPacket(PSSBC_MEMORY_TESTRESULT_PACKET pPacket, int nClientID)
-{
-	SSBC_MEM_TESTRESULT result;
-	result.memResult  = *pPacket;
-	result.nResultID  = 0;
-	result.nClientID  = nClientID;
-
-	g_cClientList.AddMemResult(&result);
-	return 0;
-}
-
-int CSolidSBCResultClientHandlerSocket::ReceiveNetPingResultPacket(PSSBC_NETWORK_PING_TESTRESULT_PACKET pPacket, int nClientID)
-{
-	SSBC_NET_PING_TESTRESULT result;
-	result.netPingResult = *pPacket;
-	result.nResultID     = 0;
-	result.nClientID     = nClientID;
-
-	g_cClientList.AddNetPingResult(&result);
-	return 0;
-}
-
-int CSolidSBCResultClientHandlerSocket::ReceiveNetTCPConResultPacket(PSSBC_NETWORK_TCPCON_TESTRESULT_PACKET pPacket, int nClientID)
-{
-	SSBC_NET_TCPCON_TESTRESULT result;
-	result.netTCPConResult = *pPacket;
-	result.nResultID       = 0;
-	result.nClientID       = nClientID;
-
-	g_cClientList.AddNetTCPConResult(&result);
+	g_cClientList.DeleteResultClient(nClientID);
 	return 0;
 }

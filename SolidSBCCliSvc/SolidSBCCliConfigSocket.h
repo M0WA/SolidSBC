@@ -1,18 +1,25 @@
 #pragma once
 
-class CSolidSBCCliConfigSocket : public CSolidSBCClientSocket
+class CSolidSBCCliConfigSocket : public CSolidSBCSocketClient
 {
 public:
 	CSolidSBCCliConfigSocket();
 	~CSolidSBCCliConfigSocket();
+
+	void SetClientUUID(char* pszClientUUID) { m_pszClientUUID = pszClientUUID; }
+
 	virtual bool OnConnect(bool bSuccess);
 	virtual bool OnRead();
-	void SetProfileID(UINT nProfileID){m_nProfileID = nProfileID;};
+
+	int GetTestConfigXMLs(std::vector<CString>& vecTestConfigs) { vecTestConfigs = m_vecTestConfigs; 
+																  return (int) m_vecTestConfigs.size(); }
 
 private:
-	int SendRequestProfileID(void);
-	int ReceiveReplyProfileID(void);
-	UINT   m_nProfileID;
+	bool SendConfigRequest(void);
+	bool ReceiveConfigResponse(void);
+
+	std::vector<CString> m_vecTestConfigs;
+	char*                m_pszClientUUID;
 };
 
 

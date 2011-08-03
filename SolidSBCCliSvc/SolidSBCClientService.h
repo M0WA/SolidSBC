@@ -17,9 +17,8 @@ public:
 	int StopClientService(void);
 
 	int StartResultConnection(void);
-	int StartTestFromProfilePacket(PSSBC_PROFILE_REPLY_PACKET pPacket);
-	int ChangeProfile(PSSBC_RESULT_PROFILE_CHANGE_REQUEST_PACKET pPacket);
-	void SendTestResult( PSSBC_BASE_PACKET_HEADER pPacket );
+	int StartTests(void);
+	void SendTestResult( CSolidSBCTestResult* pResult );
 	void ConnectionClosed(void);
 
 	void SetImagePath(CString strImagePath){g_strImagePath = strImagePath;};
@@ -29,7 +28,6 @@ public:
 	, CString strDataSource
 	, DWORD   dwSrvConfPort
 	, DWORD   dwSrvDataPort
-	, UINT nProfileID
 	, BOOL bAutoReconnect);
 
 private:

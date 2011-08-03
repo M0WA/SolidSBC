@@ -19,6 +19,6 @@
 #include "SolidSBCTestConfig.h"
 
 
-//needed by client
+//needed by client and server
 #include "SolidSBCTestManager.h"
 #include "SolidSBCTestConfig.h"

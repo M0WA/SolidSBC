@@ -25,7 +25,7 @@ typedef struct {
 
 typedef std::pair< std::string, AFX_THREADPROC>          SSBC_TESTNAME_FUNC_PAIR_TYPE;
 typedef std::map < std::string, SSBC_RESULTS_CONTAINER > SSBC_RESULT_MAP_TYPE;
-typedef std::map< std::string, CSolidSBCTestConfig* >	 SSBC_CONFIG_MAP_TYPE;
+typedef std::map < std::string, CSolidSBCTestConfig* >	 SSBC_CONFIG_MAP_TYPE;
 
 typedef struct {
 	SSBC_STATE_CONTAINER   stateContainer;

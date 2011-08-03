@@ -14,21 +14,28 @@ CSolidSBCXMLFile::CSolidSBCXMLFile(const CString& strXml)
 : m_pXMLDom(NULL)
 , m_strXml(strXml)
 {
-	HRESULT hr = CoInitialize(NULL);
-    if(SUCCEEDED(hr))
-		CreateAndInitDOM();
 	Init();
 }
 
 CSolidSBCXMLFile::~CSolidSBCXMLFile(void)
 {
-    SAFE_RELEASE(m_pXMLDom);
-	CoUninitialize();
+	Clear();
 }
 
 int CSolidSBCXMLFile::Init(void)
 {
+	HRESULT hr = CoInitialize(NULL);
+    if(SUCCEEDED(hr))
+		CreateAndInitDOM();
     loadDOM();
+	return 0;
+}
+
+int CSolidSBCXMLFile::Clear(void)
+{
+    SAFE_RELEASE(m_pXMLDom);
+	CoUninitialize();
+	m_pXMLDom = NULL;
 	return 0;
 }
 
@@ -127,5 +134,15 @@ int CSolidSBCXMLFile::SetNodeString(const CString& strXPath, const CString& strV
 
 bool CSolidSBCXMLFile::Validate(const CString& strXSDFile)
 {	
+	return true;
+}
+
+bool CSolidSBCXMLFile::SetXmlString(const CString& strXml)
+{
+	Clear();
+
+	m_strXml = strXml;
+	Init();
+
 	return true;
 }

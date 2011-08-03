@@ -287,7 +287,7 @@ int CProfileListCtrl::SaveProfile(void)
 	TCHAR szValue[255] = {0};
 	CString strItem = _T("");
 	CXMLFile xmlProfileConfigFile;
-	xmlProfileConfigFile.Init(SSBC_SRV_PROFILEFILE);
+//	xmlProfileConfigFile.Init(SSBC_SRV_PROFILEFILE);
 	CString strXPath = _T(""), strXPathFormat = _T("/portfolio/profile[@id=\"%d\"]/%s");
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -568,7 +568,7 @@ int CProfileListCtrl::SaveProfile(void)
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	if ( nChangesFound ) {
-		xmlProfileConfigFile.Save(SSBC_SRV_PROFILEFILE);
+		//xmlProfileConfigFile.Save(SSBC_SRV_PROFILEFILE);
 
 		//TODO: does not save xml here
 		//xxx
@@ -946,7 +946,7 @@ CString CProfileListCtrl::GetProfileFileNamePath(void)
 {
 	//assemble name for svc settings file
 	CString strFileName;
-	strFileName.Format(_T("%s\\%s"),GetFilePath(),SSBC_SRV_PROFILEFILE);
+//	strFileName.Format(_T("%s\\%s"),GetFilePath(),SSBC_SRV_PROFILEFILE);
 	return strFileName;
 }
 

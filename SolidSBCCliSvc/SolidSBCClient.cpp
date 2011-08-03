@@ -7,7 +7,6 @@ CSolidSBCClient::CSolidSBCClient(void)
 : m_bIsInitialized(FALSE)
 , m_strDataSource (_T(""))
 , m_pszUUID(NULL)
-, m_nProfileID(0)
 {
 }
 
@@ -18,9 +17,8 @@ CSolidSBCClient::~CSolidSBCClient(void)
 	m_pszUUID = NULL;
 }
 
-int CSolidSBCClient::Run( CString strDataSource, DWORD dwSrvConfPort, DWORD dwSrvDataPort, UINT nProfileID )
+int CSolidSBCClient::Run( CString strDataSource, DWORD dwSrvConfPort, DWORD dwSrvDataPort )
 {
-	m_nProfileID  = nProfileID;
 	m_dwSrvConfPort = dwSrvConfPort;
 	m_dwSrvDataPort = dwSrvDataPort;
 
@@ -32,8 +30,8 @@ int CSolidSBCClient::Run( CString strDataSource, DWORD dwSrvConfPort, DWORD dwSr
 	int nInit = Init();
 	{
 		CString strMsg;
-		strMsg.Format(_T("DataSource = \"%s\", ProfileID = %d, SrvConfPort = %d, SrvDataPort = %d")
-			,strDataSource,nProfileID,dwSrvConfPort,dwSrvDataPort);
+		strMsg.Format(_T("DataSource = \"%s\", SrvConfPort = %d, SrvDataPort = %d")
+			,strDataSource,dwSrvConfPort,dwSrvDataPort);
 		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_INFO);
 	}
 	return nInit;
@@ -57,29 +55,23 @@ int CSolidSBCClient::Init( void )
 {
 	m_bIsInitialized = FALSE;
 
-	if ( !GetClientUUID() )
+	if ( !InitTests() )
 		return 1;
 
-	int nResult = InitServerConfig();
+	if ( !GetClientUUID() )
+		return 2;
 
-	if ( !nResult ){ m_bIsInitialized = TRUE;   }
-	else           { m_bIsInitialized = FALSE; 
-					 m_strDataSource  = _T(""); }
-
-	return nResult;
-}
-
-int CSolidSBCClient::InitServerConfig(void)
-{
 	USES_CONVERSION;
 	SOCKADDR_IN target;
-	target.sin_family = AF_INET;
-	target.sin_port   = htons(static_cast<USHORT>(m_dwSrvConfPort));
+	target.sin_family      = AF_INET;
+	target.sin_port        = htons(static_cast<USHORT>(m_dwSrvConfPort));
 	target.sin_addr.s_addr = inet_addr(T2A(m_strDataSource));
-
-	m_cCliConfigSocket.SetProfileID(m_nProfileID);
+	
+	m_cCliConfigSocket.SetClientUUID(m_pszUUID);
 	m_cCliConfigSocket.Connect( target );
-	return true;
+	m_bIsInitialized = TRUE;
+
+	return 0;
 }
 
 int CSolidSBCClient::StartResultConnection(SOCKADDR_IN target)
@@ -87,29 +79,22 @@ int CSolidSBCClient::StartResultConnection(SOCKADDR_IN target)
 	{
 		USES_CONVERSION;
 		CString strMsg;
-		strMsg.Format(_T("CSolidSBCClient::StartResultConnection() m_nProfileID = %d, m_pszUUID = %s"),m_nProfileID,A2T(m_pszUUID));
+		strMsg.Format(_T("CSolidSBCClient::StartResultConnection(), m_pszUUID = %s"),A2T(m_pszUUID));
 		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
 	}
 
-	m_cCliResultSocket.SetProfileID(m_nProfileID);
 	m_cCliResultSocket.SetClientUUID(m_pszUUID);
 	m_cCliResultSocket.Connect(target);
 
 	return 0;
 }
 
-int CSolidSBCClient::SendTestResult(PSSBC_BASE_PACKET_HEADER pPacket)
+int CSolidSBCClient::SendTestResult(CSolidSBCTestResult* pResult)
 {
-	int nReturn = 0;
 	if ( !m_bIsInitialized )
-		nReturn = 1;
+		return 1;
 	
-	nReturn = m_cCliResultSocket.SendPacket(pPacket);
-
-	PBYTE orgPacket = (PBYTE)pPacket;
-	delete [] orgPacket;
-	pPacket = 0;
-	return nReturn;
+	return m_cCliResultSocket.SendTestResultPacket(pResult);
 }
 
 BOOL CSolidSBCClient::GetClientUUID(void)
@@ -155,7 +140,6 @@ BOOL CSolidSBCClient::GetClientUUID(void)
 	if ( (*ppszUUID) == NULL) {
 		//some error occured, maybe insufficiant rights
 		{
-			USES_CONVERSION;
 			CString strMsg;
 			strMsg.Format( _T("GetClientUUID: Error while generating/restoring Client UUID") );
 			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_ERROR);
@@ -173,219 +157,53 @@ BOOL CSolidSBCClient::GetClientUUID(void)
 	return bReturn;
 }
 
-void CSolidSBCClient::DumpProfileReplyPacket(PSSBC_PROFILE_REPLY_PACKET pPacket)
+int CSolidSBCClient::StartTests(void)
 {
-		{
-			USES_CONVERSION;
-			CString strMsg;
-			strMsg.Format(
-			_T( "Dumping profile reply packet:\n\n")
-			_T( "\t\tnProfileID:    %d\n")
-			_T( "\t\tszProfileName: %s\n")
+	m_ResultManager.StopResultManager();
 
-			_T( "\t\tbHDCfgEnable:            %d\n")
-			_T( "\t\tbHDCfgRandomRead:        %d\n")
-			_T( "\t\tbHDCfgRandomWrite:       %d\n")
-			_T( "\t\tnHDCfgMaxRead:           %d\n")
-			_T( "\t\tnHDCfgMaxWrite:          %d\n")
-			_T( "\t\tnHDCfgReadWriteDelay:    %d\n")
-			_T( "\t\tbHDCfgTransmitData:      %d\n")
-
-			_T( "\t\tbCpuCfgEnable:       %d\n")
-			_T( "\t\tbCpuCfgRandom:       %d\n")
-			_T( "\t\tnCpuCfgMaxRand:      %d\n")
-			_T( "\t\tfCpuCfgSleepMS:      %f\n")
-			_T( "\t\tnCpuCfgThreadCnt:    %d\n")
-
-			_T( "\t\tbCpuMeasureCfgEnable:                     %d\n")
-			_T( "\t\tnCpuMeasureCfgAdditionCount:              %d\n")
-			_T( "\t\tnCpuMeasureCfgDivisionCount:              %d\n")
-			_T( "\t\tnCpuMeasureCfgTransmitData:               %d\n")
-			_T( "\t\tnCpuMeasureCfgAutoFixMultipliers:         %d\n")
-			_T( "\t\tdCpuMeasureCfgFixMultipliersThreshold:    %f\n")
-
-			_T( "\t\tbMemCfgEnable:          %d\n")
-			_T( "\t\tbMemCfgRandomize:       %d\n")
-			_T( "\t\tnMemCfgMinMem:          %d\n")
-			_T( "\t\tnMemCfgMaxMem:          %d\n")
-			_T( "\t\tbMemCfgTransmitData:    %d\n")
-
-			_T( "\t\tbNetCfgEnablePingTest:       %d\n")
-			_T( "\t\tbNetCfgEnableTcpConnTest:    %d\n")
-			_T( "\t\tnNetCfgPingInterval:         %d\n")
-			_T( "\t\tszNetCfgPingHost:            %s\n")
-			_T( "\t\tnNetCfgPingTTL:              %d\n")
-			_T( "\t\tnNetCfgPingPayloadSize:      %d\n")
-			_T( "\t\tbNetCfgPingTransmitData:     %d\n")
-
-			_T( "\t\tnNetCfgTcpConnInterval:        %d\n")
-			_T( "\t\tszNetCfgTcpConnHost:           %s\n")
-			_T( "\t\tnNetCfgTcpConnPort:            %d\n")
-			_T( "\t\tnNetCfgTcpConnTTL:             %d\n")
-			_T( "\t\tbNetCfgTcpConnTransmitData:    %d\n")
-
-			, pPacket->nProfileID
-			, pPacket->szProfileName
-
-			, pPacket->bHDCfgEnable
-			, pPacket->bHDCfgRandomRead
-			, pPacket->bHDCfgRandomWrite
-			, pPacket->nHDCfgMaxRead
-			, pPacket->nHDCfgMaxWrite
-			, pPacket->nHDCfgReadWriteDelay
-			, pPacket->bHDCfgTransmitData
-
-			, pPacket->bCpuCfgEnable
-			, pPacket->bCpuCfgRandom
-			, pPacket->nCpuCfgMaxRand
-			, pPacket->fCpuCfgSleepMS
-			, pPacket->nCpuCfgThreadCnt
-
-			, pPacket->bCpuMeasureCfgEnable
-			, pPacket->nCpuMeasureCfgAdditionCount
-			, pPacket->nCpuMeasureCfgDivisionCount
-			, pPacket->nCpuMeasureCfgTransmitData
-			, pPacket->nCpuMeasureCfgAutoFixMultipliers
-			, pPacket->dCpuMeasureCfgFixMultipliersThreshold
-
-			, pPacket->bMemCfgEnable
-			, pPacket->bMemCfgRandomize
-			, pPacket->nMemCfgMinMem
-			, pPacket->nMemCfgMaxMem
-			, pPacket->bMemCfgTransmitData
-
-			, pPacket->bNetCfgEnablePingTest
-			, pPacket->bNetCfgEnableTcpConnTest
-			, pPacket->nNetCfgPingInterval
-			, pPacket->szNetCfgPingHost
-			, pPacket->nNetCfgPingTTL
-			, pPacket->nNetCfgPingPayloadSize
-			, pPacket->bNetCfgPingTransmitData
-
-			, pPacket->nNetCfgTcpConnInterval
-			, pPacket->szNetCfgTcpConnHost
-			, pPacket->nNetCfgTcpConnPort
-			, pPacket->nNetCfgTcpConnTTL
-			, pPacket->bNetCfgTcpConnTransmitData
-			);
-
-			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_INFO);
-		}
-}
-
-int CSolidSBCClient::StartTestFromProfilePacket(PSSBC_PROFILE_REPLY_PACKET pPacket)
-{
-	DumpProfileReplyPacket(pPacket);
-	/*
-	HWND hMsgWnd = NULL;
-	if ( pPacket->bHDCfgEnable  ){
-		
-		{
-			CString strMsg;
-			strMsg.Format(_T("Starting Harddrive Tests...") );
-			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_INFO);
-		}
-
-		m_cVMPerfTestHarddrive.StartHarddrive(
-			hMsgWnd,
-			pPacket->bHDCfgRandomRead,
-			pPacket->bHDCfgRandomWrite,
-			pPacket->nHDCfgMaxRead,
-			pPacket->nHDCfgMaxWrite,
-			pPacket->nHDCfgReadWriteDelay,
-			pPacket->bHDCfgTransmitData
-		);
-	}
-
-	if ( pPacket->bCpuCfgEnable ){
-		
-		{
-			CString strMsg;
-			strMsg.Format(_T("Starting Cpu Tests...") );
-			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_INFO);
-		}
-
-		m_cVMPerfTestCPU.StartCPU(
-			hMsgWnd,
-			pPacket->bCpuCfgRandom,
-			pPacket->nCpuCfgMaxRand,
-			pPacket->fCpuCfgSleepMS,
-			pPacket->nCpuCfgThreadCnt
-		);
-	}
-
-	if ( pPacket->bCpuMeasureCfgEnable ){
-		
-		{
-			CString strMsg;
-			strMsg.Format(_T("Starting CpuMeasure Tests...") );
-			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_INFO);
-		}
-
-		m_cVMPerfTestCPUMeasure.StartCPUMeasure(
-			hMsgWnd,
-			pPacket->nCpuMeasureCfgAdditionCount,
-			pPacket->nCpuMeasureCfgDivisionCount,
-			pPacket->nCpuMeasureCfgTransmitData,
-			pPacket->nCpuMeasureCfgAutoFixMultipliers,
-			pPacket->dCpuMeasureCfgFixMultipliersThreshold
-		);
-	}
-
-	if ( pPacket->bMemCfgEnable ){
-		
-		{
-			CString strMsg;
-			strMsg.Format(_T("Starting Memory Tests..."));
-			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_INFO);
-		}
-
-		m_cVMPerfTestMemory.StartMemory(
-			hMsgWnd,
-			pPacket->bMemCfgRandomize,
-			pPacket->nMemCfgMinMem,
-			pPacket->nMemCfgMaxMem,
-			pPacket->bMemCfgTransmitData
-		);
-	}
-
-	if ( pPacket->bNetCfgEnablePingTest || pPacket->bNetCfgEnableTcpConnTest ){
-
-		VMPERF_TEST_NETWORK_PING_PARAM pingParam;
-		_stprintf_s(pingParam.szPingHost,SSBC_PROFILE_MAX_SERVER_NAME,pPacket->szNetCfgPingHost);
-		pingParam.nPingInterval		= pPacket->nNetCfgPingInterval;
-		pingParam.nPingTTL			= pPacket->nNetCfgPingTTL;
-		pingParam.nPingPayloadSize	= pPacket->nNetCfgPingPayloadSize;
-		pingParam.bPingTransmitData = pPacket->bNetCfgPingTransmitData;
-
-		VMPERF_TEST_NETWORK_TCPCONN_PARAM tcpconParam;
-		_stprintf_s(tcpconParam.szTcpConnHost,SSBC_PROFILE_MAX_SERVER_NAME,pPacket->szNetCfgTcpConnHost);
-		tcpconParam.nTcpConnInterval		= pPacket->nNetCfgTcpConnInterval;
-		tcpconParam.nTcpConnPort			= pPacket->nNetCfgTcpConnPort;
-		tcpconParam.nTcpConnTTL				= pPacket->nNetCfgTcpConnTTL;
-		tcpconParam.bTcpConnTransmitData	= pPacket->bNetCfgTcpConnTransmitData;
+	USES_CONVERSION;
+	std::vector<CString> vecTestXmls;
+	if ( !m_cCliConfigSocket.GetTestConfigXMLs(vecTestXmls) )
+		return 0;
 	
-		{
-			CString strMsg;
-			strMsg.Format(_T("Starting Network Tests...") );
-			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_INFO);
-		}
+	bool bFound = false;
+	int  nStartedTests = 0;
 
-		m_cVMPerfTestNetwork.StartNetwork(
-			hMsgWnd,
-			pPacket->bNetCfgEnablePingTest,
-			pPacket->bNetCfgEnableTcpConnTest,
-			pingParam,
-			tcpconParam
-		);
+	std::vector<CString>::iterator iXml;
+	std::vector< std::pair<HMODULE,CSolidSBCTestManager*> >::iterator iTest;
+
+	for ( iXml = vecTestXmls.begin(); iXml != vecTestXmls.end(); iXml++)
+	{
+		CString sTestName       = CSolidSBCTestConfig::GetTestNameFromXML(*iXml);
+		std::string strTestName = T2A(sTestName);
+
+		CString sXmlConfig       = *iXml;
+		std::string strXmlConfig = T2A(sXmlConfig);
+
+		m_lockTestLibs.Lock();
+		for ( iTest = m_vecTestLibs.begin(); iTest != m_vecTestLibs.end(); iTest++)
+		{
+			CSolidSBCTestManager* pTestManager = (*iTest).second;
+			if ( pTestManager && pTestManager->HasTestName(strTestName) )
+			{
+				pTestManager->StartTest(strXmlConfig);
+				bFound = true;
+				nStartedTests++;
+				break;
+			}	
+		}
+		m_lockTestLibs.Unlock();
 	}
-	*/
+
+	if ( nStartedTests )
+		m_ResultManager.StartResultManager(&m_lockTestLibs,&m_vecTestLibs);
 
 	return 0;
 }
 
 void CSolidSBCClient::StopTests(bool bUnloadLibraries)
 {
+	m_lockTestLibs.Lock();
 	std::vector<std::pair<HMODULE,CSolidSBCTestManager*>>::iterator iter = m_vecTestLibs.begin();
 
 	for(; iter != m_vecTestLibs.end(); iter++)
@@ -400,9 +218,10 @@ void CSolidSBCClient::StopTests(bool bUnloadLibraries)
 		if ( bUnloadLibraries )
 			FreeLibrary((*iter).first);
 	}
+	m_lockTestLibs.Unlock();
 }
 
-void CSolidSBCClient::InitTests(void)
+bool CSolidSBCClient::InitTests(void)
 {
 	TCHAR szPath[1025];
 	memset(szPath,0,1025 * sizeof(TCHAR));
@@ -414,12 +233,19 @@ void CSolidSBCClient::InitTests(void)
 	HANDLE hFind;
 
 	if( (hFind = FindFirstFile(dllDir,&ffd)) == INVALID_HANDLE_VALUE)
-		return;
+	{
+		CString strMsg;
+		strMsg.Format(_T("Could not find any test-dlls in %s."), dllDir );
+		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_ERROR);
+		return false;
+	}
 	
 	CSolidSBCTestManager* pTestManager = 0;
 	std::pair<HMODULE,CSolidSBCTestManager*> pairLibManager;
 
 	StopTests();
+
+	m_lockTestLibs.Lock();
 	m_vecTestLibs.clear();
 
 	do
@@ -435,13 +261,45 @@ void CSolidSBCClient::InitTests(void)
 			pTestManager = (CSolidSBCTestManager*)GetSolidSBCTestInstanceFunc();
 		else {FreeLibrary(hLib); continue;}
 		
-		if (!pTestManager) {FreeLibrary(hLib); continue;}
+		if (!pTestManager) 
+		{
+			{
+				CString strMsg;
+				strMsg.Format(_T("Could not find any valid testmanager in %s."), ffd.cFileName );
+				CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_WARN);
+			}
+			FreeLibrary(hLib); 
+			continue;
+		}
 
 		pairLibManager.first  = hLib;
 		pairLibManager.second = pTestManager;
 		m_vecTestLibs.push_back(pairLibManager);
+		
+		{
+			CString strMsg;
+			strMsg.Format(_T("Loaded testmanager from %s."), ffd.cFileName );
+			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+		}
 	}
 	while(FindNextFile(hFind,&ffd) != 0);
-
 	FindClose(hFind);
+
+	int nLibs = (int)m_vecTestLibs.size();
+	m_lockTestLibs.Unlock();
+
+	if( !nLibs)
+	{
+		CString strMsg;
+		strMsg.Format(_T("Could not find any valid testmanager in %s."), dllDir );
+		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_ERROR);
+		return false;
+	}
+	else
+	{
+		CString strMsg;
+		strMsg.Format(_T("Loaded %d valid test-dll(-s)."), nLibs );
+		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_INFO);
+		return true;
+	}
 }

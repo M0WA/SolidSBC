@@ -6,7 +6,7 @@
 
 // CSolidSBCResultClientSocket
 CSolidSBCResultClientSocket::CSolidSBCResultClientSocket()
-: CSolidSBCServerSocket()
+: CSolidSBCSocketServer()
 {
 }
 

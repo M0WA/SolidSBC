@@ -30,10 +30,31 @@
     <ClInclude Include="SolidSBCNetLib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SolidSBCClientConfigPackets.h">
+    <ClInclude Include="SolidSBCSocket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SolidSBCClientResultPackets.h">
+    <ClInclude Include="SolidSBCPacket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidSBCSocketClient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidSBCSocketServer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidSBCPacketConfigResponse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidSBCPacketConfigRequest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidSBCPacketResultRequest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidSBCPacketTestResult.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidSBCPacketDefinitions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -44,10 +65,28 @@
     <ClCompile Include="SolidSBCNetLib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SolidSBCServerSocket.cpp">
+    <ClCompile Include="SolidSBCSocket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SolidSBCClientSocket.cpp">
+    <ClCompile Include="SolidSBCPacket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidSBCSocketServer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidSBCSocketClient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidSBCPacketConfigRequest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidSBCPacketConfigResponse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidSBCPacketResultRequest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidSBCPacketTestResult.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

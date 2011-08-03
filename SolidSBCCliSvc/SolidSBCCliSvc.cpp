@@ -131,9 +131,6 @@ void ParseClientServiceCommandLine(int argc, TCHAR* argv[])
 		} else if ( !_tcscmp( argv[i], _T("/confport") ) ){
 			i++;
 			cliParam.dwSrvConfPort   = _ttoi(argv[i]);
-		} else if ( !_tcscmp( argv[i], _T("/profile") ) ){
-			i++;
-			cliParam.nProfileID = _ttoi(argv[i]);
 		}
 	}
 	
@@ -144,7 +141,7 @@ void ParseClientServiceCommandLine(int argc, TCHAR* argv[])
 			//handle missing cmdline arguments...
 	}
 
-	g_cClientService.SaveParameters(cliParam.bAutoStart,strDatasource,cliParam.dwSrvConfPort,cliParam.dwSrvDataPort,cliParam.nProfileID,cliParam.bAutoReconnect);
+	g_cClientService.SaveParameters(cliParam.bAutoStart,strDatasource,cliParam.dwSrvConfPort,cliParam.dwSrvDataPort,cliParam.bAutoReconnect);
 }
 
 void WINAPI ServiceMain(DWORD argc, LPTSTR *argv)

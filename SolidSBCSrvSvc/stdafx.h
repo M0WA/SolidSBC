@@ -29,12 +29,10 @@
 
 #include <iostream>
 #include <vector>
-#import <msxml3.dll> raw_interfaces_only
-
-//reference additional headers your program requires here
-#include <mysql.h>
 
 #include <SolidSBCNetLib.h>
+#include <SolidSBCTestSDK.h>
+#include <SolidSBCDatabaseLib.h>
 
 #include "defines.h"
 #include "SolidSBCSrvServiceWnd.h"
@@ -45,5 +43,4 @@
 
 #include "SolidSBCClientConfigInfo.h"
 #include "SolidSBCClientResultInfo.h"
-#include "SolidSBCClientConfigProfile.h"
 #include "SolidSBCClientList.h"

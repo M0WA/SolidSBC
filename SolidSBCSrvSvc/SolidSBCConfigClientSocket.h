@@ -1,7 +1,7 @@
 #pragma once
 
 // CSolidSBCConfigClientSocket command target
-class CSolidSBCConfigClientSocket : public CSolidSBCServerSocket
+class CSolidSBCConfigClientSocket : public CSolidSBCSocketServer
 {
 public:
 	CSolidSBCConfigClientSocket(void);
@@ -9,9 +9,11 @@ public:
 		
 	virtual bool OnAccept(SOCKET hCfgCliSocket);
 
-	int RecieveRequestProfileID(SOCKET hCfgListenSocket, CString* pstrClientName);
-	int SendReplyProfileID(SOCKET hCfgCliSocket, int nProfileID);
+	CSolidSBCPacketConfigRequest* ReceiveConfigRequest(SOCKET hCfgListenSocket);
+	int SendConfigResponses (SOCKET hCfgCliSocket, CSolidSBCPacketConfigRequest* pRequest);
 
-private:	
+private:
+	static UINT ConfigClientHandlerThread(LPVOID lpParam);
+
 	UINT   m_nProfileID;
 };

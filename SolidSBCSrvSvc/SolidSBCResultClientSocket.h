@@ -1,10 +1,10 @@
 #pragma once
 
-class CSolidSBCResultClientSocket : public CSolidSBCServerSocket
+class CSolidSBCResultClientSocket : public CSolidSBCSocketServer
 {
 public:
 	CSolidSBCResultClientSocket();
 	~CSolidSBCResultClientSocket();
-	void SendProfileChangeRequest(UINT nNewProfileID);
+
 	virtual bool OnAccept(SOCKET hResCliSocket);
 };

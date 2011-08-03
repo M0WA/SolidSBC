@@ -20,10 +20,10 @@ CSolidSBCTestManagerImpl::CSolidSBCTestManagerImpl(void)
 : CSolidSBCTestManager()
 {
 	//add tests that are available in this library
-	AddTest( &SolidSBCCPUTest        , new CSolidSBCCPUConfig()        );
-	AddTest( &SolidSBCCPUMeasureTest , new CSolidSBCCPUMeasureConfig() );
-	AddTest( &SolidSBCMemoryTest     , new CSolidSBCMemoryConfig()     );
-	AddTest( &SolidSBCHarddriveTest  , new CSolidSBCHarddriveConfig()  );
-	AddTest( &SolidSBCNetTcpTest     , new CSolidSBCNetTcpConfig()     );
-	AddTest( &SolidSBCNetPingTest    , new CSolidSBCNetPingConfig()    );
+	RegisterTest( &SolidSBCCPUTest        , new CSolidSBCCPUConfig()        );
+	RegisterTest( &SolidSBCCPUMeasureTest , new CSolidSBCCPUMeasureConfig() );
+	RegisterTest( &SolidSBCMemoryTest     , new CSolidSBCMemoryConfig()     );
+	RegisterTest( &SolidSBCHarddriveTest  , new CSolidSBCHarddriveConfig()  );
+	RegisterTest( &SolidSBCNetTcpTest     , new CSolidSBCNetTcpConfig()     );
+	RegisterTest( &SolidSBCNetPingTest    , new CSolidSBCNetPingConfig()    );
 }

@@ -57,7 +57,7 @@ int CSolidSBCTestManager::GetTestNames(std::vector<std::string>& vecTestnames)
 	return (int)vecTestnames.size();
 }
 
-void CSolidSBCTestManager::AddTest(AFX_THREADPROC pThreadFunc, CSolidSBCTestConfig* pTestConfig)
+void CSolidSBCTestManager::RegisterTest(AFX_THREADPROC pThreadFunc, CSolidSBCTestConfig* pTestConfig)
 {
 	USES_CONVERSION;
 	std::string sTestName = T2A(pTestConfig->GetTestName());
@@ -145,4 +145,12 @@ AFX_THREADPROC CSolidSBCTestManager::GetThreadFuncByName(const std::string& sTes
 			return (*iIter).second;
 
 	return NULL;
+}
+
+bool CSolidSBCTestManager::HasTestName( const std::string& sTestName )
+{
+	for( std::vector<SSBC_TESTNAME_FUNC_PAIR_TYPE>::iterator iIter = m_vecTestNames.begin(); iIter != m_vecTestNames.end(); iIter++)
+		if ( (*iIter).first == sTestName )
+			return true;
+	return false;
 }

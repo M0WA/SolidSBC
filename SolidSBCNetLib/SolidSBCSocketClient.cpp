@@ -1,37 +1,19 @@
 #include "StdAfx.h"
 #include "SolidSBCNetLib.h"
 
-UINT SolidSBCClientSocket_ConnectThread(LPVOID pParam)
-{
-	CSolidSBCClientSocket* pSocketClass = (CSolidSBCClientSocket*)pParam;
-	bool bSuccess = pSocketClass->WaitForConnect();
-	pSocketClass->OnConnect( bSuccess );
-	return 0;
-}
 
-UINT SolidSBCClientSocket_WaitForPacketThread(LPVOID pParam)
-{
-	CSolidSBCClientSocket* pSocketClass = (CSolidSBCClientSocket*)pParam;
-	if ( pSocketClass->WaitForPacket() )
-		pSocketClass->OnRead();
-	else
-		pSocketClass->Close();
-
-	return 0;
-}
-
-CSolidSBCClientSocket::CSolidSBCClientSocket(void)
-: m_hSocket(INVALID_SOCKET)
+CSolidSBCSocketClient::CSolidSBCSocketClient(void)
+: CSolidSBCSocket()
 , m_nConnectTimeout(5000)
 {
 }
 
-CSolidSBCClientSocket::~CSolidSBCClientSocket(void)
+CSolidSBCSocketClient::~CSolidSBCSocketClient(void)
 {
 	Close();
 }
 
-void CSolidSBCClientSocket::Connect(const struct sockaddr_in& target, const int& nTimeoutMS)
+void CSolidSBCSocketClient::Connect(const struct sockaddr_in& target, const int& nTimeoutMS)
 {
 	if (m_hSocket != INVALID_SOCKET)
 		Close();
@@ -56,7 +38,7 @@ void CSolidSBCClientSocket::Connect(const struct sockaddr_in& target, const int&
 
 	//check if connect was successful and act accordingly
 	if ( (nConnectErr == SOCKET_ERROR) && (nConnectGetLastError == WSAEWOULDBLOCK ) ){
-		AfxBeginThread(SolidSBCClientSocket_ConnectThread,(LPVOID)this);
+		AfxBeginThread(CSolidSBCSocketClient::ConnectThread,(LPVOID)this);
 	} else if ( !nConnectErr ) {
 		OnConnect(true);
 	}
@@ -65,19 +47,12 @@ void CSolidSBCClientSocket::Connect(const struct sockaddr_in& target, const int&
 	}
 }
 
-void CSolidSBCClientSocket::Close(void)
+void CSolidSBCSocketClient::GetNextPacket(void)
 {
-	if(m_hSocket != INVALID_SOCKET)
-		closesocket(m_hSocket);
-	m_hSocket = INVALID_SOCKET;
+	AfxBeginThread(CSolidSBCSocketClient::WaitForPacketThread,(LPVOID)this);
 }
 
-void CSolidSBCClientSocket::GetNextPacket(void)
-{
-	AfxBeginThread(SolidSBCClientSocket_WaitForPacketThread,(LPVOID)this);
-}
-
-bool CSolidSBCClientSocket::WaitForConnect()
+bool CSolidSBCSocketClient::WaitForConnect()
 {
 	//writeable socket means successful connect()
 	HANDLE hEvent = CreateEvent(NULL,FALSE,FALSE,NULL);
@@ -100,7 +75,7 @@ bool CSolidSBCClientSocket::WaitForConnect()
 	}
 }
 
-bool CSolidSBCClientSocket::WaitForPacket()
+bool CSolidSBCSocketClient::WaitForPacket()
 {
 	//readable socket means packet recieved
 	HANDLE hEvent = CreateEvent(NULL,FALSE,FALSE,NULL);
@@ -123,4 +98,28 @@ bool CSolidSBCClientSocket::WaitForPacket()
 	default:
 		return false;
 	}
+}
+
+void CSolidSBCSocketClient::Close(void)
+{
+	CSolidSBCSocket::Close();
+}
+
+UINT CSolidSBCSocketClient::ConnectThread(LPVOID pParam)
+{
+	CSolidSBCSocketClient* pSocketClass = (CSolidSBCSocketClient*)pParam;
+	bool bSuccess = pSocketClass->WaitForConnect();
+	pSocketClass->OnConnect( bSuccess );
+	return 0;
+}
+
+UINT CSolidSBCSocketClient::WaitForPacketThread(LPVOID pParam)
+{
+	CSolidSBCSocketClient* pSocketClass = (CSolidSBCSocketClient*)pParam;
+	if ( pSocketClass->WaitForPacket() )
+		pSocketClass->OnRead();
+	else
+		pSocketClass->Close();
+
+	return 0;
 }

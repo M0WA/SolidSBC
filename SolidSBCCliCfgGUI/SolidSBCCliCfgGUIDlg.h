@@ -58,7 +58,6 @@ private:
 	CIPAddressCtrl m_ctlServerIP;
 	CEdit m_ctlServerCfgPort;
 	CEdit m_ctlServerDtaPort;
-	CEdit m_ctlProfileID;
 	CButton m_ctlAutoStartCheck;
 	CButton m_ctlStartServiceButton;
 	CButton m_ctlStopServiceButton;

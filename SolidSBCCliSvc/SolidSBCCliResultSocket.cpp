@@ -5,7 +5,7 @@
 #include "SolidSBCCliResultSocket.h"
 
 CSolidSBCCliResultSocket::CSolidSBCCliResultSocket()
-: CSolidSBCClientSocket()
+: CSolidSBCSocketClient()
 {
 }
 
@@ -38,6 +38,9 @@ bool CSolidSBCCliResultSocket::OnConnect(bool bSuccess)
 
 bool CSolidSBCCliResultSocket::OnRead()
 {
+	return false;
+
+	/*
 	int nRead = 0, nTotal = 0;
 	int nBufferSize = sizeof(BYTE) * 1024;
 	PBYTE pBytes = (PBYTE)malloc( nBufferSize );
@@ -77,17 +80,19 @@ bool CSolidSBCCliResultSocket::OnRead()
 	pBytes = NULL;
 
 	return bReturn;
+	*/
 }
 
-int CSolidSBCCliResultSocket::ReceiveChangeProfileRequest(PSSBC_RESULT_PROFILE_CHANGE_REQUEST_PACKET pPacket, int nSize)
-{	
-	g_cClientService.ChangeProfile(pPacket);
-	return 0;
-}
-
-int CSolidSBCCliResultSocket::SendPacket(PSSBC_BASE_PACKET_HEADER pPacket)
+int CSolidSBCCliResultSocket::SendTestResultPacket(CSolidSBCTestResult* pResult)
 {
-	return send( m_hSocket,(char*)pPacket, pPacket->nPacketSize,0 );
+	int nPacketSize = 0;
+	CSolidSBCPacketTestResult resultPacket(pResult);
+	PBYTE pPacketBytes = resultPacket.GetPacketBytes(nPacketSize);
+
+	int nReturn = send( m_hSocket,(char*)pPacketBytes, nPacketSize,0 );
+
+	delete [] pPacketBytes;
+	return nReturn;
 }
 
 int CSolidSBCCliResultSocket::SendResultConnRequest(void)
@@ -97,28 +102,17 @@ int CSolidSBCCliResultSocket::SendResultConnRequest(void)
 	TCHAR szComputerName[1024] = {0};
 	GetComputerName(szComputerName,&nNameSize);
 
-	int nPacketSize = sizeof(SSBC_BASE_PACKET_HEADER) + sizeof(SSBC_CONN_RES_REQUEST_PACKET);
-	PBYTE pSendPacket = new BYTE[nPacketSize];
-	ZeroMemory(pSendPacket,nPacketSize);
-
-	((PSSBC_BASE_PACKET_HEADER)pSendPacket)->type = SSBC_CONN_RES_REQUEST_PACKET_TYPE;
-	((PSSBC_BASE_PACKET_HEADER)pSendPacket)->nPacketSize = nPacketSize;
-
-	PSSBC_CONN_RES_REQUEST_PACKET pPacket = (PSSBC_CONN_RES_REQUEST_PACKET)(pSendPacket+sizeof(SSBC_BASE_PACKET_HEADER));
-	pPacket->nProfileID = m_nProfileID;
-	_stprintf_s(pPacket->szClientName, SSBC_PROFILE_MAX_CLIENT_NAME, szComputerName);
-	_stprintf_s(pPacket->szClientUUID, SSBC_CLIENTUUID_SIZE        , A2T(m_pszClientUUID) );
-
+	CSolidSBCPacketResultRequest requestPacket(szComputerName,A2T(m_pszClientUUID));
+	int nPacketSize = 0;
+	PBYTE pPacketBytes = requestPacket.GetPacketBytes(nPacketSize);
+	
 	{
 		CString strMsg;
-		strMsg.Format(_T("CSolidSBCCliResultSocket::SendResultConnRequest(): sending result connection request"));
+		strMsg.Format(_T("CSolidSBCCliResultSocket::SendResultConnRequest(): sending result connection request."));
 		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
 	}
+	int nSent = send(m_hSocket,(char*)pPacketBytes,nPacketSize,0);
 
-	//TODO: packet.client (sockaddr_in) is filled out and used and needed on server side only, 
-	//      make this stuff less dirty here, unneeded bytes go over the wire...but its just an once
-	//		per session packet
-	int nSent = SendPacket((PSSBC_BASE_PACKET_HEADER)pSendPacket);
-	delete [] pSendPacket;
+	delete [] pPacketBytes;
 	return nSent;
 }

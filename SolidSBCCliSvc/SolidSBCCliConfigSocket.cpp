@@ -5,8 +5,8 @@
 #include "SolidSBCCliConfigSocket.h"
 
 CSolidSBCCliConfigSocket::CSolidSBCCliConfigSocket()
-: CSolidSBCClientSocket()
-, m_nProfileID(0)
+: CSolidSBCSocketClient()
+, m_pszClientUUID(NULL)
 {
 }
 
@@ -22,14 +22,13 @@ bool CSolidSBCCliConfigSocket::OnConnect(bool bSuccess)
 		strMsg.Format(_T("CSolidSBCCliConfigSocket::OnConnect(bool bSuccess = %d)"), bSuccess);
 		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
 	}
-
-	if (bSuccess){
-		SendRequestProfileID();
+	
+	if (bSuccess && SendConfigRequest()){
 		GetNextPacket();
-	} else{
+	} else {
 		{
 			CString strMsg;
-			strMsg.Format(_T("Could not connect to profile server."));
+			strMsg.Format(_T("Could not connect to config server."));
 			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_ERROR);
 		}
 		g_cClientService.ConnectionClosed();
@@ -38,92 +37,109 @@ bool CSolidSBCCliConfigSocket::OnConnect(bool bSuccess)
 }
 
 bool CSolidSBCCliConfigSocket::OnRead()
-{
-	if ( !ReceiveReplyProfileID() ){
+{	
+	if ( ReceiveConfigResponse() ){
+		GetNextPacket();
+		return true;}
+	else if ( m_vecTestConfigs.size() ){
 		{
 			CString strMsg;
-			strMsg.Format(_T("Fetched profile (id: %d) successfully from server."),m_nProfileID);
+			strMsg.Format(_T("Fetched %d configs from config server."), m_vecTestConfigs.size());
 			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_INFO);
 		}
-		return true;}
-	else{
+		Close();
+
+		g_cClientService.StartResultConnection();
+		g_cClientService.StartTests();
+		return false;}
+	else {
 		{
 			CString strMsg;
-			strMsg.Format(_T("Error while fetching profile from server."));
+			strMsg.Format(_T("Could not fetch config from server."));
 			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_ERROR);
 		}
-		return false;}
+		return false;
+	}
 }
 
-int CSolidSBCCliConfigSocket::SendRequestProfileID(void)
+bool CSolidSBCCliConfigSocket::SendConfigRequest(void)
 {
 	{
 		CString strMsg;
-		strMsg.Format( _T("SendRequestProfileID: Sending profile request packet") );
-		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+		strMsg.Format( _T("Requesting configs for this client.") );
+		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_INFO);
 	}
 
 	DWORD nNameSize = 1024;
 	TCHAR szComputerName[1024] = {0};
 	GetComputerName(szComputerName,&nNameSize);
-	
-	SSBC_PROFILE_REQUEST_PACKET packet;
-	packet.nProfileID = m_nProfileID;
-	_stprintf_s(packet.szClient, SSBC_PROFILE_MAX_CLIENT_NAME, szComputerName);
+	USES_CONVERSION;
+	CSolidSBCPacketConfigRequest configRequest(A2T(m_pszClientUUID),szComputerName);
+	std::vector<byte> vecPacketBytes;
+	configRequest.GetPacketBytes(vecPacketBytes);
 
+	int nPacketSize = (int)vecPacketBytes.size();
+	PBYTE pPacketBytes = new BYTE[nPacketSize];
+	memset(pPacketBytes,0,nPacketSize);
+	for(int i = 0; i < nPacketSize; i++)
+		pPacketBytes[i] = vecPacketBytes[i];
+	
 	u_long iMode = 0;
 	ioctlsocket(m_hSocket, FIONBIO, &iMode);
 
-	int nSent = send(m_hSocket,(char *)&packet,sizeof(packet),0);
+	int nSent = send(m_hSocket,(char *)&pPacketBytes,sizeof(nPacketSize),0);
 
 	iMode = 1;
 	ioctlsocket(m_hSocket, FIONBIO, &iMode);
 
-	return nSent;
+	delete pPacketBytes;
+	return nSent ? true : false;
 }
 
-int CSolidSBCCliConfigSocket::ReceiveReplyProfileID(void)
+bool CSolidSBCCliConfigSocket::ReceiveConfigResponse(void)
 {
-	int nRead = 0, nTotal = 0;
-	int nBufferSize = sizeof(BYTE) * 1024;
-	PBYTE pBytes = (PBYTE)malloc( nBufferSize );
-	ZeroMemory(pBytes,1024);
+	int nHeaderSize = sizeof(SSBC_PACKET_HEADER);
+	SSBC_PACKET_HEADER header;
+	memset(&header,0,nHeaderSize);
+	
+	u_long iMode = 0;
+	ioctlsocket(m_hSocket, FIONBIO, &iMode);
 
-	do{
-		nRead = recv(m_hSocket,(char*)&(pBytes[nTotal]),nBufferSize,0);
-		if (nRead == nBufferSize){
-			nTotal += nRead;
-			pBytes = (PBYTE)realloc(pBytes, nTotal + nBufferSize );
-			ZeroMemory( &pBytes[nTotal], nBufferSize);
-		} else if( nRead > 0 ){
-			nTotal += nRead; }
-	} while (nRead == nBufferSize);
+	int nRead = recv(m_hSocket,(char*)&header,nHeaderSize,0);
+	if ( nRead != nHeaderSize )
+		return false;
 
-	int nReturn = 0;
-	if ( nTotal != sizeof(SSBC_PROFILE_REPLY_PACKET) ) { 
-		//connection closed
-		//PostMessage( m_hMessageWnd, WM_SSBC_ERR, (LPARAM)SSBC_ERR_SRVCFG_REQPROFIDERR, (WPARAM)nTotal );
-		{
-			CString strMsg;
-			strMsg.Format( _T("ReceiveReplyProfileID: Error while fetching profile from server (invalid packet size %d bytes)."), nTotal );
-			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_ERROR);
-		}
-		nReturn = 1;
+	int nPayloadSize = header.nPacketSize - nHeaderSize;
+	PBYTE pPayload   = new BYTE[nPayloadSize];
+	memset(pPayload,0,nPayloadSize);
+	nRead = recv(m_hSocket,(char*)pPayload,nPayloadSize,0);
+	if ( nRead != nPayloadSize ){
+		delete pPayload;
+		return false;}
+
+	iMode = 1;
+	ioctlsocket(m_hSocket, FIONBIO, &iMode);
+	
+	wchar_t* pwszPayload = (wchar_t*)pPayload;
+
+
+#ifdef _UNICODE
+	m_vecTestConfigs.push_back(pwszPayload);
+	{
+		CString strMsg;
+		strMsg.Format(_T("Fetched config: %s successfully from server."),pwszPayload);
+		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
 	}
-	else {
-		{
-			CString strMsg;
-			strMsg.Format(_T("ReceiveReplyProfileID: Starting Result Connection"));
-			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
-		}
-
-		g_cClientService.StartResultConnection();
-		g_cClientService.StartTestFromProfilePacket((PSSBC_PROFILE_REPLY_PACKET)pBytes);
+#elif
+	USES_CONVERSION;
+	m_vecTestConfigs.push_back(W2A(pwszPayload));
+	{
+		CString strMsg;
+		strMsg.Format(_T("Fetched config (id: %s) successfully from server."),W2A(pwszPayload));
+		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
 	}
+#endif
 
-	free(pBytes);
-	pBytes = NULL;
-
-	Close();
-	return nReturn;
+	delete pPayload;
+	return true;
 }

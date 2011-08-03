@@ -17,7 +17,6 @@
 #define IDC_AUTO_START_CHECK            1006
 #define IDC_DATA_PORT_EDIT              1007
 #define IDC_CONFIG_PORT_EDIT            1008
-#define IDC_PROFILEID_EDIT              1009
 #define IDC_LOG_RICHEDIT2               1010
 #define IDC_APPLY_BUTTON                1011
 #define IDC_BUTTON1                     1012

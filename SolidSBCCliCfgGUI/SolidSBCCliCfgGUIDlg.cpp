@@ -61,7 +61,6 @@ void CSolidSBCCliCfgGUIDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CONFIG_PORT_EDIT, m_ctlServerCfgPort);
 	DDX_Control(pDX, IDC_DATA_PORT_EDIT, m_ctlServerDtaPort);
 	DDX_Control(pDX, IDC_LOG_RICHEDIT2, m_ctlLogEdit);
-	DDX_Control(pDX, IDC_PROFILEID_EDIT, m_ctlProfileID);
 	DDX_Control(pDX, IDC_AUTO_START_CHECK, m_ctlAutoStartCheck);
 	DDX_Control(pDX, IDC_START_BUTTON, m_ctlStartServiceButton);
 	DDX_Control(pDX, IDC_STOP_BUTTON, m_ctlStopServiceButton);
@@ -129,7 +128,6 @@ BOOL CSolidSBCCliCfgGUIDlg::OnInitDialog()
 		m_ctlServerIP.SetWindowText(_T("127.0.0.1"));
 		m_ctlServerCfgPort.SetWindowText(_T("52410"));
 		m_ctlServerDtaPort.SetWindowText(_T("52411"));
-		m_ctlProfileID.SetWindowText(_T("0"));
 	} else {
 		CString strOldTitle;
 		GetWindowText(strOldTitle);
@@ -239,11 +237,8 @@ void CSolidSBCCliCfgGUIDlg::OnBnClickedInstallButton()
 	CString strServerIP = _T("");
 	m_ctlServerIP.GetWindowText(strServerIP);
 
-	CString strProfileID = _T("");
-	m_ctlProfileID.GetWindowText(strProfileID);
-
 	CString strInstallString = _T("");
-	strInstallString.Format(_T("\"%s\\SolidSBCCliSvc.exe\" /install /remote %s /profile %s%s%s"),GetFilePath(),strServerIP,strProfileID,strAutoReconnect,strAutoStart);
+	strInstallString.Format(_T("\"%s\\SolidSBCCliSvc.exe\" /install /remote %s%s%s"),GetFilePath(),strServerIP,strAutoReconnect,strAutoStart);
 
 	USES_CONVERSION;
 	system(T2A(strInstallString));
@@ -310,9 +305,6 @@ BOOL CSolidSBCCliCfgGUIDlg::LoadParameters(void)
 	strTmp.Format(_T("%d"),tmpServiceParam.dwSrvDataPort);
 	m_ctlServerDtaPort.SetWindowText(strTmp);
 
-	strTmp.Format(_T("%d"),tmpServiceParam.nProfileID);
-	m_ctlProfileID.SetWindowText(strTmp);
-
 	return TRUE;
 }
 
@@ -351,10 +343,7 @@ void CSolidSBCCliCfgGUIDlg::OnBnClickedApplyButton()
 
 	m_ctlServerDtaPort.GetWindowText(strTmp);
 	tmpServiceParam.dwSrvDataPort = _ttoi(strTmp);
-
-	m_ctlProfileID.GetWindowText(strTmp);
-	tmpServiceParam.nProfileID = static_cast<UINT>(_ttoi(strTmp));
-
+	
 	TCHAR szPath[MAX_PATH];
 	GetCurrentDirectory(MAX_PATH,szPath);
 	CString strFileName = GetSettingsFileName();

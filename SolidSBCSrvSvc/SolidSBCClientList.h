@@ -1,7 +1,5 @@
 #pragma once
 
-#include "SolidSBCXMLFile.h"
-#include "SolidSBCResultDBConnectorMySQL.h"
 #include "SolidSBCConfigFile.h"
 
 class CSolidSBCClientList
@@ -11,39 +9,22 @@ public:
 	~CSolidSBCClientList(void);
 	int Init(void);
 	void Empty(void);
-
-	int AddResultRequest(SSBC_CONN_RES_REQUEST_PACKET packet);
-
-	int AddResultClient(CSolidSBCClientResultInfo clientInfo);
+			
+	int AddResultClient(const CSolidSBCClientResultInfo& clientInfo);
 	int DeleteResultClient(int nClientID);
+	int AddTestResult(const CSolidSBCClientResultInfo& clientInfo, const CString& strTestSQL);
 
-	SSBC_PROFILE_REPLY_PACKET GetProfileReplyPacket(UINT nProfileID);
+	int GetConfigsForClient(const CString& strClientUUID, std::vector<CString>& vecXmlConfigs);
 
-	CString GetProfileNameByID(UINT nProfileID);
-	int GetProfileIDByName(CString strProfileName, UINT* pnProfileID);
 	int GetClientResultInfoBySockAddr(struct sockaddr_in nClientAddr, CSolidSBCClientResultInfo** ppInfo);
 	int GetClientResultInfoByClientID(UINT nClientID, CSolidSBCClientResultInfo** ppInfo);
-	int GetClientResultInfos(std::vector<CSolidSBCClientResultInfo>* pClientResultInfos){m_cClientConfResultMutex.Lock();*pClientResultInfos = m_vClientResultInfos;m_cClientConfResultMutex.Unlock();return 0;};
-	int GetClientConfigProfiles(std::vector<CSolidSBCClientConfigProfile>* pClientConfigProfiles){m_cClientConfProfilesMutex.Lock();*pClientConfigProfiles = m_vClientConfProfiles;m_cClientConfProfilesMutex.Unlock();return 0;};
-
-	void ChangeClientProfile(UINT nClientID, UINT nNewProfileID);
-	
-	int AddHDResult				(PSSBC_HD_TESTRESULT pResult);
-	int AddCPUMeasureResult		(PSSBC_CPUMEASURE_TESTRESULT pResult);
-	int AddMemResult			(PSSBC_MEM_TESTRESULT pResult);
-	int AddNetPingResult		(PSSBC_NET_PING_TESTRESULT pResult);
-	int AddNetTCPConResult		(PSSBC_NET_TCPCON_TESTRESULT pResult);
+	int GetClientResultInfos(std::vector<CSolidSBCClientResultInfo>* pClientResultInfos){m_cClientResultInfoMutex.Lock();*pClientResultInfos = m_vClientResultInfos;m_cClientResultInfoMutex.Unlock();return 0;};
 
 private:
-	CString GetProfileFileNamePath(void);
-	int		InitDBConnection(void);
-	int		InitProfiles(void);
+	int	InitDBConnection(void);
 
 	std::vector<CSolidSBCClientResultInfo>      m_vClientResultInfos;
-	CMutex										m_cClientConfResultMutex;
-	std::vector<CSolidSBCClientConfigProfile>   m_vClientConfProfiles;
-	CMutex							            m_cClientConfProfilesMutex;
-	CSolidSBCXMLFile				            m_xmlProfileConfigFile;
+	CMutex										m_cClientResultInfoMutex;
 	CSolidSBCConfigFile							m_cConfigFile;
 	CSolidSBCResultDBConnector*					m_pResultDBConnector;
 };

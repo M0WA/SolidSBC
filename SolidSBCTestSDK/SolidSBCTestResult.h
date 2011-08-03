@@ -4,12 +4,6 @@
 
 #include <sstream>
 
-/*
-typedef struct {
-	UINT   nPacketSize;
-} SSBC_BASE_PACKET_HEADER, *PSSBC_BASE_PACKET_HEADER;
-*/
-
 class SOLIDSBCTESTSDK_API CSolidSBCTestResult
 {
 protected:
@@ -18,8 +12,7 @@ protected:
 public:
 	virtual ~CSolidSBCTestResult(void) {};
 
-	std::string ToSQL  (void);
-	byte*       ToBytes(void);
+	std::string ToSQL(void);
 
 protected:
 	//setter

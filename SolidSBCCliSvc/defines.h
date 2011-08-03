@@ -15,10 +15,9 @@
 #define SSBC_CLIENT_UUID_MAX_RAND		0xff
 
 typedef struct {
-	BOOL bAutoStart;
-	TCHAR* szDataSource[MAX_SERVER_NAME];
+	BOOL    bAutoStart;
+	TCHAR*  szDataSource[MAX_SERVER_NAME];
 	DWORD   dwSrvConfPort;
 	DWORD   dwSrvDataPort;
-	UINT nProfileID;
-	BOOL bAutoReconnect;
+	BOOL    bAutoReconnect;
 } SSBC_CLISVC_PARAM, *PSSBC_CLISVC_PARAM;

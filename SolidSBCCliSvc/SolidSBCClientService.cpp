@@ -175,7 +175,6 @@ void CSolidSBCClientService::SaveParameters(
 	, CString strDataSource
 	, DWORD   dwSrvConfPort
 	, DWORD   dwSrvDataPort
-	, UINT nProfileID
 	, BOOL bAutoReconnect)
 {
 	SSBC_CLISVC_PARAM tmpServiceParam;
@@ -184,7 +183,6 @@ void CSolidSBCClientService::SaveParameters(
 	tmpServiceParam.bAutoStart      = bAutoStart;
 	tmpServiceParam.dwSrvConfPort   = dwSrvConfPort;
 	tmpServiceParam.dwSrvDataPort   = dwSrvDataPort;
-	tmpServiceParam.nProfileID      = nProfileID;
 	tmpServiceParam.bAutoReconnect  = bAutoReconnect;
 	_stprintf_s( (TCHAR*)tmpServiceParam.szDataSource, MAX_SERVER_NAME, strDataSource );
 
@@ -268,7 +266,7 @@ int CSolidSBCClientService::StartClientService(void)
 
 	m_cSolidSBCClientMutex.Lock();
 
-	if ( m_cSolidSBCClient.Run( strDataSource, m_CliSvcParam.dwSrvConfPort, m_CliSvcParam.dwSrvDataPort, m_CliSvcParam.nProfileID ) ){
+	if ( m_cSolidSBCClient.Run( strDataSource, m_CliSvcParam.dwSrvConfPort, m_CliSvcParam.dwSrvDataPort ) ){
 
 		//error handling
 		CString strMsg;
@@ -307,55 +305,29 @@ int CSolidSBCClientService::StartResultConnection(void)
 	return nReturn;
 }
 
-int CSolidSBCClientService::StartTestFromProfilePacket(PSSBC_PROFILE_REPLY_PACKET pPacket)
+int CSolidSBCClientService::StartTests(void)
 {
 	m_cSolidSBCClientMutex.Lock();
-	int nReturn = m_cSolidSBCClient.StartTestFromProfilePacket(pPacket);
+	int nReturn = m_cSolidSBCClient.StartTests();
 	m_cSolidSBCClientMutex.Unlock();
 
 	return nReturn;
 }
 
-int CSolidSBCClientService::ChangeProfile(PSSBC_RESULT_PROFILE_CHANGE_REQUEST_PACKET pPacket)
-{
-	m_cSolidSBCClientMutex.Lock();
-
-	m_cSolidSBCClient.StopTests();
-	m_cSolidSBCClient.Stop();
-
-	m_CliSvcParam.nProfileID = pPacket->nChangeToProfileID;
-	CString strDataSource;
-	strDataSource.Format(_T("%s"),m_CliSvcParam.szDataSource);
-
-	if ( m_cSolidSBCClient.Run( strDataSource, m_CliSvcParam.dwSrvConfPort, m_CliSvcParam.dwSrvDataPort, m_CliSvcParam.nProfileID ) ){
-		//error handling
-		CString strMsg;
-		strMsg.Format(_T("ChangeProfile: Could not restart SolidSBC Client Service."));
-		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_ERROR);
-	}else{
-		CString strMsg;
-		strMsg.Format(_T("SolidSBC Client Service has changed profile to id %d."),m_CliSvcParam.nProfileID);
-		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_INFO);
-	}
-
-	m_cSolidSBCClientMutex.Unlock();
-	return 0;
-}
-
-void CSolidSBCClientService::SendTestResult( PSSBC_BASE_PACKET_HEADER pPacket )
+void CSolidSBCClientService::SendTestResult( CSolidSBCTestResult* pResult )
 {
 
 #ifdef _DEBUG
 	{
 		CString strMsg;
-		strMsg.Format(_T("CSolidSBCClientService::SendTestResult() pPacket->hdr.type = %d."),pPacket->type);
+		strMsg.Format(_T("CSolidSBCClientService::SendTestResult()."));
 		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
 	}
 #endif
 
 	//send test result packet
 	m_cSolidSBCClientMutex.Lock();
-	int nReturn = m_cSolidSBCClient.SendTestResult(pPacket);
+	int nReturn = m_cSolidSBCClient.SendTestResult(pResult);
 	m_cSolidSBCClientMutex.Unlock();
 	
 	//error while sending, result connection closed...
@@ -370,7 +342,7 @@ void CSolidSBCClientService::ConnectionClosed( void )
 	{
 		//log the error
 			CString strMsg;
-			strMsg.Format(_T("Reconnecting to server %s using profile %d."),m_CliSvcParam.szDataSource,m_CliSvcParam.nProfileID);
+			strMsg.Format(_T("Reconnecting to server %s."),m_CliSvcParam.szDataSource);
 			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
 	}
 
@@ -391,17 +363,17 @@ void CSolidSBCClientService::ConnectionClosed( void )
 
 			//log the error
 			CString strMsg;
-			strMsg.Format(_T("Could not reconnect to server %s using profile %d."),m_CliSvcParam.szDataSource,m_CliSvcParam.nProfileID);
+			strMsg.Format(_T("Could not reconnect to server %s."),m_CliSvcParam.szDataSource);
 			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_ERROR);
 		}
 
 		CString strDataSource;
 		strDataSource.Format(_T("%s"),m_CliSvcParam.szDataSource);
-		if ( m_cSolidSBCClient.Run( strDataSource, m_CliSvcParam.dwSrvConfPort, m_CliSvcParam.dwSrvDataPort, m_CliSvcParam.nProfileID ) ){
+		if ( m_cSolidSBCClient.Run( strDataSource, m_CliSvcParam.dwSrvConfPort, m_CliSvcParam.dwSrvDataPort ) ){
 
 			//log the error as debug, errors logged every 3 retries...
 			CString strMsg;
-			strMsg.Format(_T("Could not reconnect to server %s using profile %d (retry count: %d)."),m_CliSvcParam.szDataSource,m_CliSvcParam.nProfileID,m_nReconnectCounter);
+			strMsg.Format(_T("Could not reconnect to server %s (retry count: %d)."),m_CliSvcParam.szDataSource,m_nReconnectCounter);
 			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
 
 		}

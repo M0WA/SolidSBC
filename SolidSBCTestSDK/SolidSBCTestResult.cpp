@@ -11,20 +11,14 @@ std::string CSolidSBCTestResult::ToSQL(void)
 
 	//loop over result values
 	std::map<std::string,std::string>::iterator iterColumnValues;
-	std::string sColumnsSQL = "( ";
-	std::string sValuesSQL  = "( ";
+	std::string sColumnsSQL = "( `CLIENT_ID`";
+	std::string sValuesSQL  = "( %s ";
 	for( iterColumnValues  = m_mapColumnsValues.begin(); 
 		 iterColumnValues != m_mapColumnsValues.end();
 		 iterColumnValues++ )
 	{
-		
-		if (iterColumnValues != m_mapColumnsValues.begin()){
-			sColumnsSQL += ", ";
-			sValuesSQL  += ", ";
-		}
-
-		sColumnsSQL += "`" + (*iterColumnValues).first  + "`";
-		sValuesSQL  += "'" + (*iterColumnValues).second + "'";
+		sColumnsSQL += ", `" + (*iterColumnValues).first  + "`";
+		sValuesSQL  += ", '" + (*iterColumnValues).second + "'";
 	}
 	sColumnsSQL += " )";
 	sValuesSQL  += " )";

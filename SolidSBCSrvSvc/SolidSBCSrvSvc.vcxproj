@@ -102,22 +102,34 @@
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Template|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Template|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Template|x64'" />
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)SolidSBCNetLib\;$(SolutionDir)mysql-win32/include;$(IncludePath)</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Platform)\$(Configuration)\;$(SolutionDir)mysql-win32/lib;$(LibraryPath)</LibraryPath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)SolidSBCNetLib\;$(SolutionDir)mysql-winx64/include;$(IncludePath)</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)$(Platform)\$(Configuration)\;$(SolutionDir)mysql-winx64/lib;$(LibraryPath)</LibraryPath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)SolidSBCNetLib\;$(SolutionDir)mysql-win32/include;$(IncludePath)</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Platform)\$(Configuration)\;$(SolutionDir)mysql-win32/lib;$(LibraryPath)</LibraryPath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)SolidSBCNetLib\;$(SolutionDir)mysql-winx64/include;$(IncludePath)</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)$(Platform)\$(Configuration)\;$(SolutionDir)mysql-winx64/lib;$(LibraryPath)</LibraryPath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)SolidSBCDatabaseLib\;$(SolutionDir)SolidSBCTestSDK\;$(SolutionDir)SolidSBCNetLib\;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)SolidSBCDatabaseLib\;$(SolutionDir)SolidSBCTestSDK\;$(SolutionDir)SolidSBCNetLib\;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)SolidSBCDatabaseLib\;$(SolutionDir)SolidSBCTestSDK\;$(SolutionDir)SolidSBCNetLib\;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)SolidSBCDatabaseLib\;$(SolutionDir)SolidSBCTestSDK\;$(SolutionDir)SolidSBCNetLib\;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">$(Platform)\$(Configuration)\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Template|x64'">$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Template|x64'">$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">$(SolutionDir)SolidSBCNetLib\;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;</IncludePath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Template|x64'">$(SolutionDir)SolidSBCNetLib\;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">$(SolutionDir)$(Platform)\$(Configuration)\;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSdkDir)lib;$(FrameworkSDKDir)\lib</LibraryPath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Template|x64'">$(SolutionDir)$(Platform)\$(Configuration)\;$(VCInstallDir)lib\amd64;$(VCInstallDir)atlmfc\lib\amd64;$(WindowsSdkDir)lib\x64;</LibraryPath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">$(SolutionDir)SolidSBCDatabaseLib\;$(SolutionDir)SolidSBCTestSDK\;$(SolutionDir)SolidSBCNetLib\;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Template|x64'">$(SolutionDir)SolidSBCDatabaseLib\;$(SolutionDir)SolidSBCTestSDK\;$(SolutionDir)SolidSBCNetLib\;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Template|x64'">$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <ExecutablePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ExecutablePath)</ExecutablePath>
+    <ExecutablePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ExecutablePath)</ExecutablePath>
+    <ExecutablePath Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">$(ExecutablePath)</ExecutablePath>
+    <ExecutablePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ExecutablePath)</ExecutablePath>
+    <ExecutablePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ExecutablePath)</ExecutablePath>
+    <ExecutablePath Condition="'$(Configuration)|$(Platform)'=='Template|x64'">$(ExecutablePath)</ExecutablePath>
+    <ReferencePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ReferencePath)</ReferencePath>
+    <ReferencePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ReferencePath)</ReferencePath>
+    <ReferencePath Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">$(ReferencePath)</ReferencePath>
+    <ReferencePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ReferencePath)</ReferencePath>
+    <ReferencePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ReferencePath)</ReferencePath>
+    <ReferencePath Condition="'$(Configuration)|$(Platform)'=='Template|x64'">$(ReferencePath)</ReferencePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -132,7 +144,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SolidSBCNetLib.lib;libmysql.lib</AdditionalDependencies>
+      <AdditionalDependencies>SolidSBCTestSDK.lib;SolidSBCNetLib.lib;SolidSBCDatabaseLib.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>
       </AdditionalLibraryDirectories>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
@@ -154,7 +166,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SolidSBCNetLib.lib;libmysql.lib</AdditionalDependencies>
+      <AdditionalDependencies>SolidSBCTestSDK.lib;SolidSBCNetLib.lib;SolidSBCDatabaseLib.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>
       </AdditionalLibraryDirectories>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
@@ -176,7 +188,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SolidSBCNetLib.lib;libmysql.lib</AdditionalDependencies>
+      <AdditionalDependencies>SolidSBCTestSDK.lib;SolidSBCNetLib.lib;SolidSBCDatabaseLib.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>
       </AdditionalLibraryDirectories>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
@@ -200,7 +212,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SolidSBCNetLib.lib;libmysql.lib</AdditionalDependencies>
+      <AdditionalDependencies>SolidSBCTestSDK.lib;SolidSBCNetLib.lib;SolidSBCDatabaseLib.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>
       </AdditionalLibraryDirectories>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
@@ -212,30 +224,26 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
     <Link>
-      <AdditionalDependencies>SolidSBCNetLib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SolidSBCTestSDK.lib;SolidSBCNetLib.lib;SolidSBCDatabaseLib.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|x64'">
     <Link>
-      <AdditionalDependencies>SolidSBCNetLib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SolidSBCTestSDK.lib;SolidSBCNetLib.lib;SolidSBCDatabaseLib.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="SolidSBCClientConfigInfo.cpp" />
-    <ClCompile Include="SolidSBCClientConfigProfile.cpp" />
     <ClCompile Include="SolidSBCClientList.cpp" />
     <ClCompile Include="SolidSBCClientResultInfo.cpp" />
     <ClCompile Include="SolidSBCConfigClientSocket.cpp" />
     <ClCompile Include="SolidSBCConfigFile.cpp" />
     <ClCompile Include="SolidSBCResultClientHandlerSocket.cpp" />
     <ClCompile Include="SolidSBCResultClientSocket.cpp" />
-    <ClCompile Include="SolidSBCResultDBConnector.cpp" />
-    <ClCompile Include="SolidSBCResultDBConnectorMySQL.cpp" />
     <ClCompile Include="SolidSBCResultStack.cpp" />
     <ClCompile Include="SolidSBCServerService.cpp" />
     <ClCompile Include="SolidSBCSrvServiceWnd.cpp" />
     <ClCompile Include="SolidSBCSrvSvc.cpp" />
-    <ClCompile Include="SolidSBCXMLFile.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -247,20 +255,16 @@
     <ClInclude Include="defines.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SolidSBCClientConfigInfo.h" />
-    <ClInclude Include="SolidSBCClientConfigProfile.h" />
     <ClInclude Include="SolidSBCClientList.h" />
     <ClInclude Include="SolidSBCClientResultInfo.h" />
     <ClInclude Include="SolidSBCConfigClientSocket.h" />
     <ClInclude Include="SolidSBCConfigFile.h" />
     <ClInclude Include="SolidSBCResultClientHandlerSocket.h" />
     <ClInclude Include="SolidSBCResultClientSocket.h" />
-    <ClInclude Include="SolidSBCResultDBConnector.h" />
-    <ClInclude Include="SolidSBCResultDBConnectorMySQL.h" />
     <ClInclude Include="SolidSBCResultStack.h" />
     <ClInclude Include="SolidSBCServerService.h" />
     <ClInclude Include="SolidSBCSrvServiceWnd.h" />
     <ClInclude Include="SolidSBCSrvSvc.h" />
-    <ClInclude Include="SolidSBCXMLFile.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -268,11 +272,7 @@
     <ResourceCompile Include="SolidSBCSrvSvc.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\MySQL\VMPerformerResultsDB.mwb">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </None>
-    <None Include="config files\ssbc_profiles.xml" />
+    <None Include="..\MySQL\SolidSBC.mwb" />
     <None Include="config files\ssbc_srv.conf" />
     <None Include="ReadMe.txt" />
   </ItemGroup>

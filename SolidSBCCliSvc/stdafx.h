@@ -31,8 +31,8 @@
 
 #include <iostream>
 
-#include <SolidSBCTestSDK.h>
 #include <SolidSBCNetLib.h>
+#include <SolidSBCTestSDK.h>
 
 #include "defines.h"
 

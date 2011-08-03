@@ -7,30 +7,110 @@
 typedef struct {
 	CSolidSBCConfigClientSocket* pSocket;
 	SOCKET hClientSocket;
-} SolidSBCConfigClientHandlerThreadParam, *PSolidSBCConfigClientHandlerThreadParam;
+} SSBC_CONFIG_CLIENTHANDLER_THREAD_PARAM, *PSSBC_CONFIG_CLIENTHANDLER_THREAD_PARAM;
 
-UINT SolidSBCConfigClientHandlerThread(LPVOID lpParam)
+// CSolidSBCConfigClientSocket
+CSolidSBCConfigClientSocket::CSolidSBCConfigClientSocket()
+: CSolidSBCSocketServer()
 {
-	PSolidSBCConfigClientHandlerThreadParam pParams = (PSolidSBCConfigClientHandlerThreadParam)lpParam;
+}
 
-	CString strClientName = _T("");
-	int nResponseProfileID = pParams->pSocket->RecieveRequestProfileID(pParams->hClientSocket,&strClientName);
-	if ( nResponseProfileID > -1 ){
+CSolidSBCConfigClientSocket::~CSolidSBCConfigClientSocket()
+{
+	Close();
+}
+
+bool CSolidSBCConfigClientSocket::OnAccept(SOCKET hCfgCliSocket)
+{
+	PSSBC_CONFIG_CLIENTHANDLER_THREAD_PARAM pParams = new SSBC_CONFIG_CLIENTHANDLER_THREAD_PARAM;
+	pParams->hClientSocket = hCfgCliSocket;
+	pParams->pSocket       = this;
+
+	AfxBeginThread(ConfigClientHandlerThread,pParams);
+	return true;
+}
+
+CSolidSBCPacketConfigRequest* CSolidSBCConfigClientSocket::ReceiveConfigRequest(SOCKET hCfgListenSocket)
+{
+	int nHeaderSize = sizeof(SSBC_PACKET_HEADER);
+	SSBC_PACKET_HEADER header;
+	memset(&header,0,nHeaderSize);
+	
+	u_long iMode = 0;
+	ioctlsocket(m_hSocket, FIONBIO, &iMode);
+
+	int nRead = recv(m_hSocket,(char*)&header,nHeaderSize,0);
+	if ( nRead != nHeaderSize )
+		return NULL;
+
+	int nPayloadSize = header.nPacketSize - nHeaderSize;
+	PBYTE pPayload   = new BYTE[nPayloadSize+1];
+	memset(pPayload,0,nPayloadSize+1);
+	nRead = recv(m_hSocket,(char*)pPayload,nPayloadSize,0);
+	if ( nRead != nPayloadSize ){
+		delete [] pPayload;
+		return NULL;}
+
+	iMode = 1;
+	ioctlsocket(m_hSocket, FIONBIO, &iMode);
+	
+	CStringW strwPayload = (wchar_t*)pPayload;
+	CSolidSBCPacketConfigRequest* pRequest = NULL;
+
+	if( (strwPayload.Find(L"<ConfigRequest>") != -1) && (strwPayload.Find(L"</ConfigRequest>") != -1) )
+		pRequest = new CSolidSBCPacketConfigRequest(pPayload);
+	
+	delete [] pPayload;
+	return pRequest;
+}
+
+int CSolidSBCConfigClientSocket::SendConfigResponses(SOCKET hCfgCliSocket, CSolidSBCPacketConfigRequest* pRequest)
+{
+	CString strClientUUID;
+	pRequest->GetClientUUID(strClientUUID);
+
+	std::vector<CString> vecXmlConfigs;
+	g_cClientList.GetConfigsForClient(strClientUUID,vecXmlConfigs);
+
+	int nBytesSent = 0;
+	std::vector<CString>::iterator iXmlConfig;
+	for( iXmlConfig = vecXmlConfigs.begin(); iXmlConfig != vecXmlConfigs.end(); iXmlConfig++ )
+	{
+		CSolidSBCPacketConfigResponse response( *iXmlConfig );
+
+		int nPacketSize = 0;
+		PBYTE pPacket = response.GetPacketBytes(nPacketSize);
+		
+		nBytesSent += send(hCfgCliSocket,(char*)pPacket,nPacketSize,0);
+	}
+	return nBytesSent;
+}
+
+UINT CSolidSBCConfigClientSocket::ConfigClientHandlerThread(LPVOID lpParam)
+{
+	PSSBC_CONFIG_CLIENTHANDLER_THREAD_PARAM pParams = (PSSBC_CONFIG_CLIENTHANDLER_THREAD_PARAM)lpParam;
+	
+	CSolidSBCPacketConfigRequest* pRequest = pParams->pSocket->ReceiveConfigRequest(pParams->hClientSocket);
+	if ( pRequest ){
 		{
 			USES_CONVERSION;
 			SOCKADDR_IN client;
 			int nClientSize = sizeof(SOCKADDR_IN);
 			ZeroMemory(&client,sizeof(SOCKADDR_IN));
 			getpeername(pParams->hClientSocket,(SOCKADDR*)&client,&nClientSize);
+
+			CString sClientName;
+			pRequest->GetClientName(sClientName);
 			CString strMsg;
-			strMsg.Format(_T("Client (%s at %s:%d) requested Profile ID %d")
-				, strClientName
+			strMsg.Format(_T("Client (%s at %s:%d) requested config.")
+				, sClientName
 				, A2T(inet_ntoa(client.sin_addr))
 				, ntohs(client.sin_port)
-				, nResponseProfileID);
+				);
 			CSolidSBCSrvServiceWnd::LogServiceMessage(strMsg,SSBC_SRVSVC_LOGMSG_TYPE_INFO);
 		}
-		pParams->pSocket->SendReplyProfileID(pParams->hClientSocket,nResponseProfileID);
+
+		pParams->pSocket->SendConfigResponses(pParams->hClientSocket,pRequest);
 	} else {
 		{
 			CString strMsg;
@@ -44,70 +124,5 @@ UINT SolidSBCConfigClientHandlerThread(LPVOID lpParam)
 
 	delete pParams;
 	pParams = NULL;
-
 	return 0;
-}
-
-// CSolidSBCConfigClientSocket
-CSolidSBCConfigClientSocket::CSolidSBCConfigClientSocket()
-: CSolidSBCServerSocket()
-{
-}
-
-CSolidSBCConfigClientSocket::~CSolidSBCConfigClientSocket()
-{
-	Close();
-}
-
-bool CSolidSBCConfigClientSocket::OnAccept(SOCKET hCfgCliSocket)
-{
-	PSolidSBCConfigClientHandlerThreadParam pParams = new SolidSBCConfigClientHandlerThreadParam;
-	pParams->hClientSocket = hCfgCliSocket;
-	pParams->pSocket       = this;
-
-	AfxBeginThread(SolidSBCConfigClientHandlerThread,pParams);
-	return true;
-}
-
-int CSolidSBCConfigClientSocket::RecieveRequestProfileID(SOCKET hCfgListenSocket, CString* pstrClientName)
-{
-	int nReturn = -1;
-	int nRead = 0, nTotal = 0;
-	int nBufferSize = sizeof(BYTE) * 1024;
-	PBYTE pBytes = (PBYTE)malloc( nBufferSize );
-	ZeroMemory(pBytes,1024);
-
-	do{
-		nRead = recv(hCfgListenSocket,(char*)&(pBytes[nTotal]),nBufferSize,0);
-		if (nRead == nBufferSize){
-			nTotal += nRead;
-			pBytes = (PBYTE)realloc(pBytes, nTotal + nBufferSize );
-			ZeroMemory( &pBytes[nTotal], nBufferSize);
-		} else if( nRead > 0 ){
-			nTotal += nRead; }
-	} while (nRead == nBufferSize);
-
-	if ( (nTotal != sizeof(SSBC_PROFILE_REQUEST_PACKET)) ){
-		{
-			CString strMsg;
-			strMsg.Format(_T("ReceiveReplyProfileID: Error while receiving profile request from client (invalid packet size %d bytes)."), nTotal);
-			CSolidSBCSrvServiceWnd::LogServiceMessage(strMsg,SSBC_SRVSVC_LOGMSG_TYPE_ERROR);
-		}
-		nReturn = -1; }
-	else {
-		PSSBC_PROFILE_REQUEST_PACKET pPacket = (PSSBC_PROFILE_REQUEST_PACKET)pBytes;
-		nReturn = pPacket->nProfileID; 
-		pstrClientName->Format(_T("%s"),pPacket->szClient);
-	}
-
-	free(pBytes);
-	pBytes = NULL;
-
-	return nReturn;
-}
-
-int CSolidSBCConfigClientSocket::SendReplyProfileID(SOCKET hCfgCliSocket, int nProfileID)
-{
-	SSBC_PROFILE_REPLY_PACKET packet = g_cClientList.GetProfileReplyPacket(nProfileID);
-	return send(hCfgCliSocket,(char*)&packet,sizeof(SSBC_PROFILE_REPLY_PACKET),0);
 }

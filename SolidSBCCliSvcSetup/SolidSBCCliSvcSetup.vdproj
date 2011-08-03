@@ -15,13 +15,61 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_09A0D6F11C05439F80614DF10BC8585F"
+        "MsmKey" = "8:_09EEE2D179A14F6099DAA106752B6B02"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_20FCA4454BC3496D81CE9EBD891A7BE0"
+        "MsmKey" = "8:_462D7D4276134725B5ECC63C002D6A1A"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_4EF5AA84A0784AA8A9269E60062A132E"
+        "OwnerKey" = "8:_09EEE2D179A14F6099DAA106752B6B02"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_4EF5AA84A0784AA8A9269E60062A132E"
+        "OwnerKey" = "8:_CF8A6082361B4B0EA385A752138A3FD2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_4EF5AA84A0784AA8A9269E60062A132E"
+        "OwnerKey" = "8:_A3524A7010C446B795A4B2E857537D0D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_4EF5AA84A0784AA8A9269E60062A132E"
+        "OwnerKey" = "8:_4EF941098F804E5787465FD2A63FAFA2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_4EF5AA84A0784AA8A9269E60062A132E"
+        "OwnerKey" = "8:_462D7D4276134725B5ECC63C002D6A1A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_4EF941098F804E5787465FD2A63FAFA2"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_99D15303731E491A02B6651768BB8A47"
+        "OwnerKey" = "8:_CF8A6082361B4B0EA385A752138A3FD2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A3524A7010C446B795A4B2E857537D0D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -33,20 +81,38 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_B215DF4318704B36859347A9869AEA64"
+        "MsmKey" = "8:_CF8A6082361B4B0EA385A752138A3FD2"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_BDA41B2BB035482CE9BD94AC537950ED"
-        "OwnerKey" = "8:_09A0D6F11C05439F80614DF10BC8585F"
+        "MsmKey" = "8:_F8D0235E0BF14F4F8E70A1C28691E041"
+        "OwnerKey" = "8:_09EEE2D179A14F6099DAA106752B6B02"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_F20EA67657D441178F1C7D1F326E29AD"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_F8D0235E0BF14F4F8E70A1C28691E041"
+        "OwnerKey" = "8:_CF8A6082361B4B0EA385A752138A3FD2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F8D0235E0BF14F4F8E70A1C28691E041"
+        "OwnerKey" = "8:_A3524A7010C446B795A4B2E857537D0D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F8D0235E0BF14F4F8E70A1C28691E041"
+        "OwnerKey" = "8:_4EF941098F804E5787465FD2A63FAFA2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F8D0235E0BF14F4F8E70A1C28691E041"
+        "OwnerKey" = "8:_462D7D4276134725B5ECC63C002D6A1A"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -151,31 +217,31 @@
     {
         "CustomAction"
         {
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_311A9EA66299435B88ABDDD2519435D9"
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_B3919FEB19414F8A979EE0D013AAC38B"
             {
-            "Name" = "8:Start Configurator"
+            "Name" = "8:InstallService"
             "Condition" = "8:"
-            "Object" = "8:_20FCA4454BC3496D81CE9EBD891A7BE0"
+            "Object" = "8:_462D7D4276134725B5ECC63C002D6A1A"
             "FileType" = "3:2"
             "InstallAction" = "3:1"
             "Arguments" = "8:/Install"
             "EntryPoint" = "8:"
             "Sequence" = "3:1"
-            "Identifier" = "8:_88C35137_814D_4936_8AC3_7B0A95557F0A"
+            "Identifier" = "8:_0521EF43_E80D_4F70_98EF_8ED97E0EF771"
             "InstallerClass" = "11:FALSE"
             "CustomActionData" = "8:"
             }
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_C6C30FB87BF0475AA02451F43D29F581"
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_B3CB1578266643A7962D27EFE060EF3B"
             {
-            "Name" = "8:Delete Service"
+            "Name" = "8:DeleteService"
             "Condition" = "8:"
-            "Object" = "8:_09A0D6F11C05439F80614DF10BC8585F"
+            "Object" = "8:_462D7D4276134725B5ECC63C002D6A1A"
             "FileType" = "3:2"
             "InstallAction" = "3:4"
-            "Arguments" = "8:/delete"
+            "Arguments" = "8:/DeleteService"
             "EntryPoint" = "8:"
             "Sequence" = "3:1"
-            "Identifier" = "8:_51D15B33_924D_44F0_A95C_3C93B6AF5B5F"
+            "Identifier" = "8:_63E0E9D7_6723_483A_B7F0_381452B22481"
             "InstallerClass" = "11:FALSE"
             "CustomActionData" = "8:"
             }
@@ -194,6 +260,26 @@
         }
         "File"
         {
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_99D15303731E491A02B6651768BB8A47"
+            {
+            "SourcePath" = "8:IPHLPAPI.DLL"
+            "TargetName" = "8:IPHLPAPI.DLL"
+            "Tag" = "8:"
+            "Folder" = "8:_077E4DDC4B6B4685B7DE790DD77EFA66"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:TRUE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A3C16BAD53BD4B6DA958101E977F5FFA"
             {
             "SourcePath" = "8:..\\license.rtf"
@@ -212,26 +298,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BDA41B2BB035482CE9BD94AC537950ED"
-            {
-            "SourcePath" = "8:IPHLPAPI.DLL"
-            "TargetName" = "8:IPHLPAPI.DLL"
-            "Tag" = "8:"
-            "Folder" = "8:_BD9E6D42195F4CE5AEE947C8612A3968"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:TRUE"
-            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
         }
@@ -313,7 +379,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SolidSBC Client"
         "ProductCode" = "8:{AF951925-48E0-4AAD-9131-0D6F11627187}"
-        "PackageCode" = "8:{76D4306D-AA65-4F09-90E6-2836BABF3077}"
+        "PackageCode" = "8:{186EA004-D2DE-4C81-B05B-87871626F6FA}"
         "UpgradeCode" = "8:{7D8D1857-14C9-4AE2-990D-A25A24FEFFD3}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -433,7 +499,7 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_AD819C2C56984F80BF18B4DA015B6C28"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_4E0192090FC6475D849EF5C8C47F405D"
             {
             "Name" = "8:SolidSBC Client Configurator"
             "Arguments" = "8:"
@@ -441,7 +507,7 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_20FCA4454BC3496D81CE9EBD891A7BE0"
+            "Target" = "8:_4EF941098F804E5787465FD2A63FAFA2"
             "Folder" = "8:_7199DFE8493443E0B85EE715C5C86763"
             "WorkingFolder" = "8:_BD9E6D42195F4CE5AEE947C8612A3968"
             "Icon" = "8:"
@@ -937,10 +1003,66 @@
         }
         "MergeModule"
         {
+            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_4EF5AA84A0784AA8A9269E60062A132E"
+            {
+            "UseDynamicProperties" = "11:TRUE"
+            "IsDependency" = "11:TRUE"
+            "SourcePath" = "8:Microsoft_VC100_MFC_x86.msm"
+                "Properties"
+                {
+                }
+            "LanguageId" = "3:0"
+            "Exclude" = "11:FALSE"
+            "Folder" = "8:"
+            "Feature" = "8:"
+            "IsolateTo" = "8:"
+            }
+            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_F8D0235E0BF14F4F8E70A1C28691E041"
+            {
+            "UseDynamicProperties" = "11:TRUE"
+            "IsDependency" = "11:TRUE"
+            "SourcePath" = "8:Microsoft_VC100_CRT_x86.msm"
+                "Properties"
+                {
+                }
+            "LanguageId" = "3:0"
+            "Exclude" = "11:FALSE"
+            "Folder" = "8:"
+            "Feature" = "8:"
+            "IsolateTo" = "8:"
+            }
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_09A0D6F11C05439F80614DF10BC8585F"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_09EEE2D179A14F6099DAA106752B6B02"
+            {
+            "SourcePath" = "8:..\\Win32\\Release\\SolidSBCNetLib.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_BD9E6D42195F4CE5AEE947C8612A3968"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:Release|Win32"
+            "OutputGroupCanonicalName" = "8:Built"
+            "OutputProjectGuid" = "8:{674415A8-03B4-4774-8D11-F0DEFEC706AF}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_462D7D4276134725B5ECC63C002D6A1A"
             {
             "SourcePath" = "8:..\\Win32\\Release\\SolidSBCCliSvc.exe"
             "TargetName" = "8:"
@@ -968,7 +1090,7 @@
                 {
                 }
             }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_20FCA4454BC3496D81CE9EBD891A7BE0"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_4EF941098F804E5787465FD2A63FAFA2"
             {
             "SourcePath" = "8:..\\Win32\\Release\\SolidSBCCliCfgGUI.exe"
             "TargetName" = "8:"
@@ -996,7 +1118,35 @@
                 {
                 }
             }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_B215DF4318704B36859347A9869AEA64"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_A3524A7010C446B795A4B2E857537D0D"
+            {
+            "SourcePath" = "8:..\\Win32\\Release\\SolidSBCTestSDK.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_BD9E6D42195F4CE5AEE947C8612A3968"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:Release|Win32"
+            "OutputGroupCanonicalName" = "8:Built"
+            "OutputProjectGuid" = "8:{5C95B3AA-4747-4EB9-A58A-CDDD46CC3B6B}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_CF8A6082361B4B0EA385A752138A3FD2"
             {
             "SourcePath" = "8:..\\Win32\\Release\\SolidSBCTestLib.dll"
             "TargetName" = "8:"
@@ -1019,34 +1169,6 @@
             "OutputConfiguration" = "8:Release|Win32"
             "OutputGroupCanonicalName" = "8:Built"
             "OutputProjectGuid" = "8:{AF62176A-88A0-44D3-905F-416BF20756D7}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_F20EA67657D441178F1C7D1F326E29AD"
-            {
-            "SourcePath" = "8:..\\Win32\\Release\\SolidSBCNetLib.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_BD9E6D42195F4CE5AEE947C8612A3968"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:Release|Win32"
-            "OutputGroupCanonicalName" = "8:Built"
-            "OutputProjectGuid" = "8:{674415A8-03B4-4774-8D11-F0DEFEC706AF}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
                 {

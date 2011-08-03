@@ -2,6 +2,9 @@
 
 #include "Resource.h"
 #include "uuid_gen.h"
+
+#include "SolidSBCResultManager.h"
+
 #include "SolidSBCCliConfigSocket.h"
 #include "SolidSBCCliResultSocket.h"
 
@@ -10,25 +13,29 @@ class CSolidSBCClient
 public:
 	CSolidSBCClient(void);
 	~CSolidSBCClient(void);
-	int Run( CString strDataSource, DWORD dwSrvConfPort, DWORD dwSrvDataPort, UINT nProfileID );
-	int Stop(bool bLog = true);
-	int StartResultConnection(SOCKADDR_IN target);
-	int SendTestResult(PSSBC_BASE_PACKET_HEADER pPacket);
-	int StartTestFromProfilePacket(PSSBC_PROFILE_REPLY_PACKET pPacket);
+
+	int StartTests(void);
 	void StopTests(bool bUnloadLibraries = false);
 
-private:
-	int Init( void );
-	int InitServerConfig(void);
-	BOOL GetClientUUID(void);
-	void DumpProfileReplyPacket(PSSBC_PROFILE_REPLY_PACKET pPacket);
+	//used internally
+public:	
+	int Run( CString strDataSource, DWORD dwSrvConfPort, DWORD dwSrvDataPort );
+	int Stop(bool bLog = true);
 
-	void InitTests(void);
-	std::vector<std::pair<HMODULE, CSolidSBCTestManager*> > m_vecTestLibs;
+	int StartResultConnection(SOCKADDR_IN target);
+	int SendTestResult(CSolidSBCTestResult* pResult);
+
+private:
+	int  Init( void );
+	bool InitTests(void);
+	BOOL GetClientUUID(void);
+
+	CMutex                                                   m_lockTestLibs;
+	std::vector< std::pair<HMODULE, CSolidSBCTestManager*> > m_vecTestLibs;
+	CSolidSBCResultManager                                   m_ResultManager;
 
 	BOOL					m_bIsInitialized;
 	CString					m_strDataSource;
-	UINT					m_nProfileID;
 	DWORD					m_dwSrvConfPort;
 	DWORD					m_dwSrvDataPort;
 	char*					m_pszUUID;

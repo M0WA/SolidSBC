@@ -12,7 +12,6 @@
 //hardcoded file names
 #define SSBC_SRVSVC_LOG_FILENAME		_T("ssbc_srv.log")
 #define SSBC_SRV_CFGFILE				_T("ssbc_srv.conf")
-#define SSBC_SRV_PROFILEFILE			_T("ssbc_profiles.xml")
 
 //server ports
 #define SSBC_CFG_SERVER_PORT			52410
