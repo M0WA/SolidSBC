@@ -82,15 +82,18 @@ int CSolidSBCResultDBConnectorMySQL::GetConfigsForClient(const CString& strClien
 	CStringArray arSQLCmds;
 	if ( CSolidSBCResultDBConnector::GetConfigsForClientSQLString( strClientUUID, arSQLCmds ) != 0 )
 		return 1;
+	
+	int nReturn = 0;
+	vecXmlConfigs.clear();
 
 	m_DBConnMutex.Lock();
-	int nReturn = 0;
-
-	vecXmlConfigs.clear();
-	for (int i = 0; i < arSQLCmds.GetSize(); i++){
+	for (int i = 0; i < arSQLCmds.GetSize(); i++)
+	{
 		if ( mysql_query( m_conn, T2A(arSQLCmds.GetAt(i)) ) != 0 )
         {
 			MYSQL_RES* res = mysql_use_result(m_conn);
+			if( !res )
+				continue;
 
 			MYSQL_ROW row;
 			while ( ( row = mysql_fetch_row(res) ) )
@@ -99,6 +102,8 @@ int CSolidSBCResultDBConnectorMySQL::GetConfigsForClient(const CString& strClien
 			mysql_free_result(res);
 		}
 	}
+	m_DBConnMutex.Unlock();
+
 	return 0;
 }
 
@@ -140,7 +145,7 @@ int CSolidSBCResultDBConnectorMySQL::AddClientHistory(const CString& strClientUU
 			break;
 		}
 	}
-
 	m_DBConnMutex.Unlock();
+
 	return nReturn;
 }

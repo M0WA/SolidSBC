@@ -12,15 +12,17 @@ protected:
 public:
 	~CSolidSBCPacket(void);
 
-	virtual int              GetPacketBytes(std::vector<byte>& vecPacketBytes)=0;
-	virtual PBYTE            GetPacketBytes(int& nPacketSize)=0;
+	virtual int     GetPacketBytes(std::vector<byte>& vecPacketBytes)=0;
+	virtual PBYTE   GetPacketBytes(int& nPacketSize)=0;
+
+	CString         GetXml(void) {return m_sPacketXml;}
 
 protected:
-	int   SetPacketBytes(const PBYTE pPacketBytes);
-	bool  ParseXml(const CString& sPacketXml);
+	int				SetPacketBytes(const PBYTE pPacketBytes);
+	bool			ParseXml(const CString& sPacketXml);
 	
-	int              GetPacketBytes_Intern(std::vector<byte>& vecPacketBytes);
-	PBYTE            GetPacketBytes_Intern(int& nPacketSize);
+	int             GetPacketBytes_Intern(std::vector<byte>& vecPacketBytes);
+	PBYTE           GetPacketBytes_Intern(int& nPacketSize);
 
 private:
 	SSBC_PACKET_TYPE GetPacketType(void);

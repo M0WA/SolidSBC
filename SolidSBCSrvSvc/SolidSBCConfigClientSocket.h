@@ -14,6 +14,4 @@ public:
 
 private:
 	static UINT ConfigClientHandlerThread(LPVOID lpParam);
-
-	UINT   m_nProfileID;
 };

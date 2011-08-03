@@ -73,24 +73,37 @@ bool CSolidSBCCliConfigSocket::SendConfigRequest(void)
 	DWORD nNameSize = 1024;
 	TCHAR szComputerName[1024] = {0};
 	GetComputerName(szComputerName,&nNameSize);
+
 	USES_CONVERSION;
 	CSolidSBCPacketConfigRequest configRequest(A2T(m_pszClientUUID),szComputerName);
-	std::vector<byte> vecPacketBytes;
-	configRequest.GetPacketBytes(vecPacketBytes);
 
-	int nPacketSize = (int)vecPacketBytes.size();
-	PBYTE pPacketBytes = new BYTE[nPacketSize];
-	memset(pPacketBytes,0,nPacketSize);
-	for(int i = 0; i < nPacketSize; i++)
-		pPacketBytes[i] = vecPacketBytes[i];
-	
+	int nPacketSize = 0;
+	PBYTE pPacketBytes = configRequest.GetPacketBytes(nPacketSize);
+
 	u_long iMode = 0;
 	ioctlsocket(m_hSocket, FIONBIO, &iMode);
 
-	int nSent = send(m_hSocket,(char *)&pPacketBytes,sizeof(nPacketSize),0);
+	int nSent = send(m_hSocket,(char*)pPacketBytes,nPacketSize,0);
+	DWORD dwError = GetLastError();
 
 	iMode = 1;
 	ioctlsocket(m_hSocket, FIONBIO, &iMode);
+	
+	{
+		CString strMsg;
+		strMsg.Format( _T("Sent config request. %d of %d byte(-s)\r\n %s"), nSent,  nPacketSize, configRequest.GetXml());
+		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+	}
+	
+	if ( (nSent == -1) || ( nSent != nPacketSize ))
+	{
+		{
+			CString strMsg;
+			strMsg.Format( _T("Error while sending config request (%d)."), dwError);
+			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_ERROR);
+		}
+		nSent = 0;
+	}
 
 	delete pPacketBytes;
 	return nSent ? true : false;

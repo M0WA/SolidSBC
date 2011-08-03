@@ -7,6 +7,8 @@ CSolidSBCPacketConfigRequest::CSolidSBCPacketConfigRequest(const CString& sClien
 , m_sClientUUID(sClientUUID)
 , m_sComputerName(sComputerName)
 {
+	USES_CONVERSION;
+
 	CString sPacketXml;
 	sPacketXml.Format (
 	_T("<ConfigRequest>\n")

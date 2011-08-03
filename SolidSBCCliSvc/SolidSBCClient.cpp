@@ -228,7 +228,14 @@ bool CSolidSBCClient::InitTests(void)
 	GetModuleFileName(NULL,szPath,1024);
 
 	CString fileName = szPath;
-	CString dllDir   = fileName.Left( fileName.ReverseFind(_T('\\')) ).TrimRight('\\') + CString(_T("\\tests\\*.dll"));
+	CString dllDir   = fileName.Left( fileName.ReverseFind(_T('\\')) ).TrimRight('\\');
+
+#ifdef _DEBUG
+	dllDir += CString(_T("\\*.dll"));
+#elif
+	dllDir += CString(_T("\\tests\\*.dll"));
+#endif
+
 	WIN32_FIND_DATA ffd;
 	HANDLE hFind;
 

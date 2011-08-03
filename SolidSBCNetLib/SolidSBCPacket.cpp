@@ -28,14 +28,8 @@ int CSolidSBCPacket::GetPacketBytes_Intern(std::vector<byte>& vecPacketBytes)
 	USES_CONVERSION;
 	sXml = T2A(m_sPacketXml);
 #endif
-	
-	//generate payload
-	int     sizeOfString = (sXml.GetLength() + 1);
-	LPWSTR  lpwszPacket = new WCHAR[ sizeOfString ];
-	wcscpy_s(lpwszPacket, sizeOfString, sXml);
-	
 	//calculate sizes
-	int nPayloadSize = sizeof(lpwszPacket);
+	int nPayloadSize = sizeof(wchar_t) * sXml.GetLength();
 	int nHeaderSize  = sizeof(SSBC_PACKET_HEADER);
 	int nPacketSize  = nHeaderSize + nPayloadSize;
 	vecPacketBytes.reserve(nPacketSize);
@@ -43,7 +37,7 @@ int CSolidSBCPacket::GetPacketBytes_Intern(std::vector<byte>& vecPacketBytes)
 	//generate header
 	SSBC_PACKET_HEADER header;
 	memset(&header,0,nHeaderSize);
-	header.nPacketSize = nPacketSize;
+	header.nPacketSize = (UINT)nPacketSize;
 	header.nType       = GetPacketType();
 
 	//set header
@@ -52,12 +46,10 @@ int CSolidSBCPacket::GetPacketBytes_Intern(std::vector<byte>& vecPacketBytes)
 		vecPacketBytes.push_back(pHeader[i]);
 
 	//set payload
-	PBYTE pPacketByte = (PBYTE)lpwszPacket;
+	PBYTE pPacketByte = (PBYTE)sXml.GetString();
 	for(int i=0; i < nPayloadSize; i++)
 		vecPacketBytes.push_back(pPacketByte[i]);
 
-	//delete payload buffer
-	delete lpwszPacket;
 	return nPacketSize;
 }
 
@@ -65,11 +57,7 @@ int CSolidSBCPacket::SetPacketBytes(const PBYTE pPacketBytes)
 {
 	int nBytesSet   = 0;
 	int nHeaderSize = sizeof(SSBC_PACKET_HEADER);
-	wchar_t* pPacketXml = (wchar_t*)pPacketBytes;
-	
-	PSSBC_PACKET_HEADER pHeader = (PSSBC_PACKET_HEADER)pPacketBytes;
-	if (pHeader->nPacketSize != sizeof(pPacketBytes))
-		return 0;
+	wchar_t* pPacketXml = (wchar_t*)&pPacketBytes[nHeaderSize];
 
 	//TODO: this is very dangerous...
 #ifdef _UNICODE

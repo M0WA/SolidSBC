@@ -22,12 +22,6 @@ typedef enum {
 } SSBC_PACKET_TYPE,*PSSBC_PACKET_TYPE;
 
 typedef struct {
-
-	void SSBC_PACKET_HEADER(void)
-	{
-		memset(this,0,sizeof(this));
-	}
-
 	UINT             nPacketSize;
 	SSBC_PACKET_TYPE nType;
 	UINT             nReserved;

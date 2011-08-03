@@ -226,11 +226,17 @@
     <Link>
       <AdditionalDependencies>SolidSBCTestSDK.lib;SolidSBCNetLib.lib;SolidSBCDatabaseLib.lib</AdditionalDependencies>
     </Link>
+    <ClCompile>
+      <StructMemberAlignment>1Byte</StructMemberAlignment>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|x64'">
     <Link>
       <AdditionalDependencies>SolidSBCTestSDK.lib;SolidSBCNetLib.lib;SolidSBCDatabaseLib.lib</AdditionalDependencies>
     </Link>
+    <ClCompile>
+      <StructMemberAlignment>1Byte</StructMemberAlignment>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="SolidSBCClientConfigInfo.cpp" />

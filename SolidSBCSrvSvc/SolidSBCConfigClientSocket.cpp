@@ -37,30 +37,33 @@ CSolidSBCPacketConfigRequest* CSolidSBCConfigClientSocket::ReceiveConfigRequest(
 	memset(&header,0,nHeaderSize);
 	
 	u_long iMode = 0;
-	ioctlsocket(m_hSocket, FIONBIO, &iMode);
+	ioctlsocket(hCfgListenSocket, FIONBIO, &iMode);
 
-	int nRead = recv(m_hSocket,(char*)&header,nHeaderSize,0);
+	int nRead = recv(hCfgListenSocket,(char*)&header,nHeaderSize,0);
+	DWORD dwError = GetLastError();
 	if ( nRead != nHeaderSize )
 		return NULL;
-
+	
 	int nPayloadSize = header.nPacketSize - nHeaderSize;
-	PBYTE pPayload   = new BYTE[nPayloadSize+1];
-	memset(pPayload,0,nPayloadSize+1);
-	nRead = recv(m_hSocket,(char*)pPayload,nPayloadSize,0);
+	int nPacketSize  = header.nPacketSize+10;
+	PBYTE pPacket    = new BYTE[nPacketSize];
+	memset(pPacket,0,nPacketSize);
+	memcpy(pPacket,&header,nHeaderSize);
+	nRead = recv(hCfgListenSocket,(char*)&pPacket[nHeaderSize],nPayloadSize,0);
 	if ( nRead != nPayloadSize ){
-		delete [] pPayload;
+		delete [] pPacket;
 		return NULL;}
 
 	iMode = 1;
-	ioctlsocket(m_hSocket, FIONBIO, &iMode);
+	ioctlsocket(hCfgListenSocket, FIONBIO, &iMode);
 	
-	CStringW strwPayload = (wchar_t*)pPayload;
 	CSolidSBCPacketConfigRequest* pRequest = NULL;
-
+		
+	CStringW strwPayload = (wchar_t*)(&pPacket[nHeaderSize]);
 	if( (strwPayload.Find(L"<ConfigRequest>") != -1) && (strwPayload.Find(L"</ConfigRequest>") != -1) )
-		pRequest = new CSolidSBCPacketConfigRequest(pPayload);
+		pRequest = new CSolidSBCPacketConfigRequest(pPacket);
 	
-	delete [] pPayload;
+	delete [] pPacket;
 	return pRequest;
 }
 
@@ -111,17 +114,18 @@ UINT CSolidSBCConfigClientSocket::ConfigClientHandlerThread(LPVOID lpParam)
 		}
 
 		pParams->pSocket->SendConfigResponses(pParams->hClientSocket,pRequest);
+		delete pRequest;
 	} else {
 		{
 			CString strMsg;
-			strMsg.Format(_T("Error while waiting for client profile request."));
+			strMsg.Format(_T("Error while waiting for client config request."));
 			CSolidSBCSrvServiceWnd::LogServiceMessage(strMsg,SSBC_SRVSVC_LOGMSG_TYPE_WARN);
 		}
 	}
 
 	closesocket(pParams->hClientSocket);
 	pParams->hClientSocket = NULL;
-
+		
 	delete pParams;
 	pParams = NULL;
 	return 0;

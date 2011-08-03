@@ -30,8 +30,8 @@ int CSolidSBCResultDBConnector::GetConfigsForClientSQLString(const CString& strC
 	strSQL.Format(
 		_T("SELECT `config`.`xmlConfig` ")
 		_T("FROM `%s`.`Clients` AS `client` ")
-		_T("INNER JOIN `%s`.`ClientConfigs` AS `clientConfig` ON ( `clientConfig`.`CLIENT_ID` = `client`.`ID` ) ")
-		_T("INNER JOIN `%s``.Configs`       AS `config`       ON ( `clientConfig`.`CONFIG_ID` = `config`.`ID` ) ")
+		_T("INNER JOIN `%s`.`ClientsConfigs` AS `clientConfig` ON ( `clientConfig`.`CLIENT_ID` = `client`.`ID` ) ")
+		_T("INNER JOIN `%s`.`Configs`        AS `config`       ON ( `clientConfig`.`CONFIG_ID` = `config`.`ID` ) ")
 		_T("WHERE `client`.`uuid` = '%s' ")
 		, m_strDatabase
 		, m_strDatabase
