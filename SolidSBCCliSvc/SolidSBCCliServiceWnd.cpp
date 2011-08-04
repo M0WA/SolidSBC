@@ -14,15 +14,6 @@ CSolidSBCCliServiceWnd::~CSolidSBCCliServiceWnd(void)
 
 int CSolidSBCCliServiceWnd::LogServiceMessage( CString strMessage, SSBC_CLISVC_LOGMSG_TYPE nType )
 {
-
-#ifndef _DEBUG
-	// Throw away debug messages when we are in a non-debug version.
-	// Do this stuff hardcoded, because we dont want the user to see
-	// our internals.
-	if ( nType >= SSBC_CLISVC_LOGMSG_TYPE_DEBUG )
-		return 0;
-#endif
-
 	USES_CONVERSION;
 
 	_tzset();
@@ -46,6 +37,7 @@ int CSolidSBCCliServiceWnd::LogServiceMessage( CString strMessage, SSBC_CLISVC_L
 			strMessage = _T("[INFO]\t") + strMessage;
 			break;
 
+#ifdef _DEBUG
 		case SSBC_CLISVC_LOGMSG_TYPE_DEBUG:
 			strMessage = _T("[DEBUG]\t") + strMessage;
 			break;
@@ -53,6 +45,7 @@ int CSolidSBCCliServiceWnd::LogServiceMessage( CString strMessage, SSBC_CLISVC_L
 		case SSBC_CLISVC_LOGMSG_TYPE_DEBUG_BREAK:
 			strMessage = _T("[DEBUG_BREAK]\t") + strMessage;
 			break;
+#endif
 
 		default:
 			strMessage = _T("[UNKNW]\t") + strMessage;
@@ -79,8 +72,10 @@ int CSolidSBCCliServiceWnd::LogServiceMessage( CString strMessage, SSBC_CLISVC_L
 	END_CATCH
 	g_cSvcLogMutex.Unlock();
 
+#ifdef _DEBUG
 	if ( nType == SSBC_CLISVC_LOGMSG_TYPE_DEBUG_BREAK )
 		DebugBreak();
+#endif
 
 	return 0;
 }

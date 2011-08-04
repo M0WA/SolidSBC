@@ -54,13 +54,15 @@ int CSolidSBCResultDBConnector::GetAddClientHistorySQLString(const CString& strC
 {	
 	CString strSQL;
 	strSQL.Format(
-		_T("INSERT INTO `%s`.`ClientHistory` ")
-		_T("SELECT `client`.`ID`, '%d', NOW() ")
-		_T("FROM `%s`.`Clients` AS `client` ")
-		_T("WHERE `client`.`uuid` = '%s' ")
-		, m_strDatabase
+		_T("INSERT INTO `%s`.`ClientHistory` (`CLIENT_ID`,`action`,`actiontime`) ")
+		_T("(")
+			_T(" SELECT `client`.`ID`, '%d', NOW() ")
+			_T(" FROM `%s`.`Clients` AS `client`   ")
+			_T(" WHERE `client`.`uuid` = '%s'      ")
+		_T(")")
 		, m_strDatabase
 		, nAction
+		, m_strDatabase
 		, strClientUUID
 		);
 	arSQLCmds.Add(strSQL);

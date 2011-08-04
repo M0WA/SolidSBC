@@ -175,12 +175,14 @@ UINT CSolidSBCResultClientHandlerSocket::WaitForPacketThread(LPVOID lpParam)
 			bLoop = FALSE;
 		}
 	}
-
+	
+#ifdef _DEBUG
 	{
 		CString strMsg;
 		strMsg.Format(_T("CSolidSBCResultClientHandlerSocket::WaitForPacketThread(): Closing result connection for client id: %d"), nClientID);
 		CSolidSBCSrvServiceWnd::LogServiceMessage(strMsg,SSBC_SRVSVC_LOGMSG_TYPE_DEBUG);
 	}
+#endif
 	pSocket->Close();
 
 	g_cClientList.DeleteResultClient(nClientID);

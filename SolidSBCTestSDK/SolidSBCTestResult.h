@@ -20,7 +20,7 @@ protected:
 	void SetKeyValue(const std::string& sKey, const Tvalue& value)
 	{
 		std::stringstream sStream;
-		sStream << value;
+		sStream << std::fixed << value;
 		m_mapColumnsValues[sKey] = sStream.str();
 	}
 	

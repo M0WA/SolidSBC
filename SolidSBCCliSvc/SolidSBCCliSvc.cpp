@@ -224,11 +224,13 @@ void WINAPI ServiceCtrlHandler(DWORD Opcode)
 		break; 
 
 	default:
+#ifdef _DEBUG
 		{
 			CString strMsg;
 			strMsg.Format(_T("ServiceCtrlHandler(DWORD Opcode = %d): Unknown OPCODE received."),Opcode);
 			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
 		}
+#endif
 		break;
 	}
 }

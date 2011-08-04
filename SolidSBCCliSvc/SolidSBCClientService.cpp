@@ -16,9 +16,12 @@ int CSolidSBCClientService::InstallService(void)
 {
 	//already installed
 	if ( IsServiceInstalled() ){
+		
+#ifdef _DEBUG
 		CString strMsg;
 		strMsg.Format(_T("InstallService: Deleting previously installed SolidSBC Client Service first"));
 		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+#endif
 		DeleteService();}
 
 	SC_HANDLE schSCManager;
@@ -188,13 +191,15 @@ void CSolidSBCClientService::SaveParameters(
 
 	TCHAR szPath[MAX_PATH];
 	GetCurrentDirectory(MAX_PATH,szPath);
-	CString strFileName = GetSettingsFileName();
+	CString strFileName = GetSettingsFileName();		
+#ifdef _DEBUG
 	{
 		CString strMsg;
 		strMsg.Format(_T("CSolidSBCClientService::SaveParameters(): Saving settings for SolidSBC Client Service to file %s, pwd = %s"),strFileName,szPath);
 		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
 		_tprintf_s(_T("%s\r\n"),strMsg);
 	}
+#endif
 
 	//save new parameters to file
 	int nOpenFlags = ( CFile::modeCreate | CFile::modeWrite | CFile::shareExclusive | CFile::typeBinary );
@@ -233,7 +238,7 @@ BOOL CSolidSBCClientService::LoadParameters(void)
 	CATCH(CException, pEx)
 	{
 		CString strMsg;
-		strMsg.Format(_T("LoadParameters: Could not load SolidSBC Client Service parameters from file %s"),GetSettingsFileName());
+		strMsg.Format(_T("Could not load SolidSBC Client Service parameters from file %s"),GetSettingsFileName());
 		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_ERROR);
 		return FALSE;
 	}
@@ -270,7 +275,7 @@ int CSolidSBCClientService::StartClientService(void)
 
 		//error handling
 		CString strMsg;
-		strMsg.Format(_T("StartClientService: Could not start SolidSBC Client Service."));
+		strMsg.Format(_T("Could not start SolidSBC Client Service."));
 		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_ERROR);
 
 	} else{
@@ -338,13 +343,15 @@ void CSolidSBCClientService::SendTestResult( CSolidSBCTestResult* pResult )
 void CSolidSBCClientService::ConnectionClosed( void )
 {
 	m_cSolidSBCClientMutex.Lock();
-	
+
+#ifdef _DEBUG
 	{
 		//log the error
 		CString strMsg;
 		strMsg.Format(_T("CSolidSBCClientService::ConnectionClosed(): Reconnecting to server %s."),m_CliSvcParam.szDataSource);
 		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
 	}
+#endif
 
 	//stopping all test
 	m_cSolidSBCClient.StopTests();
@@ -370,11 +377,13 @@ void CSolidSBCClientService::ConnectionClosed( void )
 		CString strDataSource;
 		strDataSource.Format(_T("%s"),m_CliSvcParam.szDataSource);
 		if ( m_cSolidSBCClient.Run( strDataSource, m_CliSvcParam.dwSrvConfPort, m_CliSvcParam.dwSrvDataPort ) ){
-
+			
+#ifdef _DEBUG
 			//log the error as debug, errors logged every 3 retries...
 			CString strMsg;
 			strMsg.Format(_T("CSolidSBCClientService::ConnectionClosed(): Could not reconnect to server %s (retry count: %d)."),m_CliSvcParam.szDataSource,m_nReconnectCounter);
 			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+#endif
 
 		}
 

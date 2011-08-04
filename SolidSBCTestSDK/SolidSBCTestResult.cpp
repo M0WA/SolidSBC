@@ -11,23 +11,25 @@ std::string CSolidSBCTestResult::ToSQL(void)
 
 	//loop over result values
 	std::map<std::string,std::string>::iterator iterColumnValues;
-	std::string sColumnsSQL = "( `CLIENT_ID`";
-	std::string sValuesSQL  = "( %s ";
+
+	std::stringstream ssColumnsSQL, ssValuesSQL;
+	ssColumnsSQL << "( `CLIENT_ID`";
+	ssValuesSQL  << "( %s ";
 	for( iterColumnValues  = m_mapColumnsValues.begin(); 
 		 iterColumnValues != m_mapColumnsValues.end();
 		 iterColumnValues++ )
 	{
-		sColumnsSQL += ", `" + (*iterColumnValues).first  + "`";
-		sValuesSQL  += ", '" + (*iterColumnValues).second + "'";
+		ssColumnsSQL << ", `" << std::fixed << (*iterColumnValues).first  << "`";
+		ssValuesSQL  << ", '" << std::fixed << (*iterColumnValues).second << "'";
 	}
-	sColumnsSQL += " )";
-	sValuesSQL  += " )";
+	ssColumnsSQL << " )";
+	ssValuesSQL  << " )";
 	
 	//assemble sql string
 	std::stringstream sStream;
 	sStream << "INSERT INTO " << m_sTableName << " ";
-	sStream << sColumnsSQL << " VALUES ";
-	sStream << sValuesSQL  << " ;";
+	sStream << ssColumnsSQL.str() << " VALUES ";
+	sStream << ssValuesSQL.str()  << " ;";
 
 	return sStream.str();
 }

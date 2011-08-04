@@ -8,8 +8,11 @@ typedef enum SSBC_CLISVC_LOGMSG_TYPE {
 	SSBC_CLISVC_LOGMSG_TYPE_ERROR		= 0,
 	SSBC_CLISVC_LOGMSG_TYPE_WARN		= 1,
 	SSBC_CLISVC_LOGMSG_TYPE_INFO		= 2,
+	
+#ifdef _DEBUG
 	SSBC_CLISVC_LOGMSG_TYPE_DEBUG		= 3, //from here all messages suppressed in release version
-	SSBC_CLISVC_LOGMSG_TYPE_DEBUG_BREAK	= 4
+	SSBC_CLISVC_LOGMSG_TYPE_DEBUG_BREAK	= 4,
+#endif
 };
 
 class CSolidSBCCliServiceWnd

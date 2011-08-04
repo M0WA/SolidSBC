@@ -17,11 +17,13 @@ CSolidSBCCliConfigSocket::~CSolidSBCCliConfigSocket()
 
 bool CSolidSBCCliConfigSocket::OnConnect(bool bSuccess)
 {
+#ifdef _DEBUG
 	{
 		CString strMsg;
 		strMsg.Format(_T("CSolidSBCCliConfigSocket::OnConnect(bool bSuccess = %d)"), bSuccess);
 		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
 	}
+#endif
 	
 	if (bSuccess && SendConfigRequest()){
 		GetNextPacket();
@@ -89,11 +91,13 @@ bool CSolidSBCCliConfigSocket::SendConfigRequest(void)
 	iMode = 1;
 	ioctlsocket(m_hSocket, FIONBIO, &iMode);
 	
+#ifdef _DEBUG
 	{
 		CString strMsg;
 		strMsg.Format( _T("CSolidSBCCliConfigSocket::SendConfigRequest(): Sent config request. %d of %d byte(-s)\r\n %s"), nSent,  nPacketSize, configRequest.GetXml());
 		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
 	}
+#endif
 	
 	if ( (nSent == -1) || ( nSent != nPacketSize ))
 	{
@@ -113,12 +117,14 @@ bool CSolidSBCCliConfigSocket::ReceiveConfigResponse(void)
 {
 	PBYTE pPacket = CSolidSBCPacket::ReceivePacket(m_hSocket);
 	if(!pPacket)
-	{		
+	{
+#ifdef _DEBUG
 		{
 			CString strMsg;
 			strMsg.Format(_T("CSolidSBCCliConfigSocket::ReceiveConfigResponse(): Error while receiving ConfigResponse packet"));
 			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
 		}
+#endif
 		return false;
 	}
 
@@ -135,11 +141,13 @@ bool CSolidSBCCliConfigSocket::ReceiveConfigResponse(void)
 	CString strConfig = response.GetXml();
 	m_vecTestConfigs.push_back(strConfig);
 
+#ifdef _DEBUG
 	{
 		CString strMsg;
 		strMsg.Format(_T("CSolidSBCCliConfigSocket::ReceiveConfigResponse(): Fetched config successfully from server:\r\n%s"),strConfig);
 		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
 	}
+#endif
 
 	return true;
 }

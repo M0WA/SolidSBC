@@ -15,11 +15,14 @@ CSolidSBCCliResultSocket::~CSolidSBCCliResultSocket()
 
 bool CSolidSBCCliResultSocket::OnConnect(bool bSuccess)
 {
+	
+#ifdef _DEBUG
 	{
 		CString strMsg;
 		strMsg.Format(_T("CSolidSBCCliResultSocket::OnConnect(bool bSuccess = %d)"), bSuccess);
 		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
 	}
+#endif
 
 	if (bSuccess){
 		SendResultConnRequest();
@@ -39,48 +42,6 @@ bool CSolidSBCCliResultSocket::OnConnect(bool bSuccess)
 bool CSolidSBCCliResultSocket::OnRead()
 {
 	return false;
-
-	/*
-	int nRead = 0, nTotal = 0;
-	int nBufferSize = sizeof(BYTE) * 1024;
-	PBYTE pBytes = (PBYTE)malloc( nBufferSize );
-	ZeroMemory(pBytes,1024);
-
-	do{
-		//read from socket
-		nRead = recv(m_hSocket,(char*)&(pBytes[nTotal]),nBufferSize,0);
-
-		//read even more
-		if (nRead == nBufferSize){
-			nTotal += nRead;
-			pBytes = (PBYTE)realloc(pBytes, nTotal + nBufferSize );
-			ZeroMemory( &pBytes[nTotal], nBufferSize);
-		} else if( nRead > 0 ){
-			nTotal += nRead; }
-	} while (nRead == nBufferSize);
-
-	bool bReturn = true;
-	if (nTotal > 0){
-		PSSBC_BASE_PACKET_HEADER pHdr = (PSSBC_BASE_PACKET_HEADER)pBytes;
-		switch (pHdr->type)
-		{
-		case SSBC_PROFILE_CHANGE_REQUEST_PACKET_TYPE:
-			ReceiveChangeProfileRequest((PSSBC_RESULT_PROFILE_CHANGE_REQUEST_PACKET)pBytes,nTotal);
-			break;
-		default:
-			bReturn = false;
-			g_cClientService.ConnectionClosed();
-			break;
-		}
-	} else {
-		bReturn = false;
-		g_cClientService.ConnectionClosed();
-	}
-	free(pBytes);
-	pBytes = NULL;
-
-	return bReturn;
-	*/
 }
 
 int CSolidSBCCliResultSocket::SendTestResultPacket(CSolidSBCTestResult* pResult)
@@ -90,6 +51,15 @@ int CSolidSBCCliResultSocket::SendTestResultPacket(CSolidSBCTestResult* pResult)
 	PBYTE pPacketBytes = resultPacket.GetPacketBytes(nPacketSize);
 
 	int nReturn = send( m_hSocket,(char*)pPacketBytes, nPacketSize,0 );
+
+#ifdef _DEBUG
+	{
+		USES_CONVERSION;
+		CString strMsg;
+		strMsg.Format(_T("CSolidSBCCliResultSocket::SendTestResultPacket(): Sent result %d byte(-s):\r\n%s"),nReturn,A2T(pResult->ToSQL().c_str()));
+		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+	}
+#endif
 
 	delete [] pPacketBytes;
 	return nReturn;
@@ -106,11 +76,13 @@ int CSolidSBCCliResultSocket::SendResultConnRequest(void)
 	int nPacketSize = 0;
 	PBYTE pPacketBytes = requestPacket.GetPacketBytes(nPacketSize);
 	
+#ifdef _DEBUG
 	{
 		CString strMsg;
 		strMsg.Format(_T("CSolidSBCCliResultSocket::SendResultConnRequest(): sending result connection request."));
 		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
 	}
+#endif
 	int nSent = send(m_hSocket,(char*)pPacketBytes,nPacketSize,0);
 
 	delete [] pPacketBytes;

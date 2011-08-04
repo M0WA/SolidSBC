@@ -76,12 +76,15 @@ int CSolidSBCClient::Init( void )
 
 int CSolidSBCClient::StartResultConnection(SOCKADDR_IN target)
 {
+	
+#ifdef _DEBUG
 	{
 		USES_CONVERSION;
 		CString strMsg;
 		strMsg.Format(_T("CSolidSBCClient::StartResultConnection(), m_pszUUID = %s"),A2T(m_pszUUID));
 		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
 	}
+#endif
 
 	m_cCliResultSocket.SetClientUUID(m_pszUUID);
 	m_cCliResultSocket.Connect(target);
@@ -232,7 +235,7 @@ bool CSolidSBCClient::InitTests(void)
 
 #ifdef _DEBUG
 	dllDir += CString(_T("\\*.dll"));
-#elif
+#else
 	dllDir += CString(_T("\\tests\\*.dll"));
 #endif
 
@@ -282,12 +285,14 @@ bool CSolidSBCClient::InitTests(void)
 		pairLibManager.first  = hLib;
 		pairLibManager.second = pTestManager;
 		m_vecTestLibs.push_back(pairLibManager);
-		
+
+#ifdef _DEBUG
 		{
 			CString strMsg;
 			strMsg.Format(_T("CSolidSBCClient::InitTests(): Loaded testmanager from %s."), ffd.cFileName );
 			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
 		}
+#endif
 	}
 	while(FindNextFile(hFind,&ffd) != 0);
 	FindClose(hFind);
