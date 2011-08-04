@@ -191,7 +191,7 @@ void CSolidSBCClientService::SaveParameters(
 	CString strFileName = GetSettingsFileName();
 	{
 		CString strMsg;
-		strMsg.Format(_T("Saving settings for SolidSBC Client Service to file %s, pwd = %s"),strFileName,szPath);
+		strMsg.Format(_T("CSolidSBCClientService::SaveParameters(): Saving settings for SolidSBC Client Service to file %s, pwd = %s"),strFileName,szPath);
 		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
 		_tprintf_s(_T("%s\r\n"),strMsg);
 	}
@@ -276,7 +276,7 @@ int CSolidSBCClientService::StartClientService(void)
 	} else{
 
 		CString strMsg;
-		strMsg.Format(_T("\n\n\t\t===========================================\n\t\tSolidSBC Client Service v%s.%s has started.\n\t\t===========================================\n"),SSBC_CLISVC_VERSION_MAJOR,SSBC_CLISVC_VERSION_MINOR);
+		strMsg.Format(_T("\n\t\t===========================================\n\t\tSolidSBC Client Service v%s.%s has started.\n\t\t==========================================="),SSBC_CLISVC_VERSION_MAJOR,SSBC_CLISVC_VERSION_MINOR);
 		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_INFO);
 
 	}
@@ -341,9 +341,9 @@ void CSolidSBCClientService::ConnectionClosed( void )
 	
 	{
 		//log the error
-			CString strMsg;
-			strMsg.Format(_T("Reconnecting to server %s."),m_CliSvcParam.szDataSource);
-			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
+		CString strMsg;
+		strMsg.Format(_T("CSolidSBCClientService::ConnectionClosed(): Reconnecting to server %s."),m_CliSvcParam.szDataSource);
+		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
 	}
 
 	//stopping all test
@@ -373,7 +373,7 @@ void CSolidSBCClientService::ConnectionClosed( void )
 
 			//log the error as debug, errors logged every 3 retries...
 			CString strMsg;
-			strMsg.Format(_T("Could not reconnect to server %s (retry count: %d)."),m_CliSvcParam.szDataSource,m_nReconnectCounter);
+			strMsg.Format(_T("CSolidSBCClientService::ConnectionClosed(): Could not reconnect to server %s (retry count: %d)."),m_CliSvcParam.szDataSource,m_nReconnectCounter);
 			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
 
 		}

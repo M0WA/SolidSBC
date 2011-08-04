@@ -285,7 +285,7 @@ bool CSolidSBCClient::InitTests(void)
 		
 		{
 			CString strMsg;
-			strMsg.Format(_T("Loaded testmanager from %s."), ffd.cFileName );
+			strMsg.Format(_T("CSolidSBCClient::InitTests(): Loaded testmanager from %s."), ffd.cFileName );
 			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
 		}
 	}

@@ -25,8 +25,8 @@ CSolidSBCPacketConfigRequest::CSolidSBCPacketConfigRequest(const CString& sClien
 	ParseXml(sPacketXml);
 }
 
-CSolidSBCPacketConfigRequest::CSolidSBCPacketConfigRequest(const PBYTE pRawPacket)
-: CSolidSBCPacket(pRawPacket)
+CSolidSBCPacketConfigRequest::CSolidSBCPacketConfigRequest(const PBYTE pPacket)
+: CSolidSBCPacket(pPacket)
 {
 	USES_CONVERSION;
 	std::string sClientUUID, sComputerName;

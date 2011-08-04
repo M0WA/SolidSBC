@@ -6,7 +6,7 @@ class SOLIDSBCNETLIB_API CSolidSBCPacketResultRequest : public CSolidSBCPacket
 {
 public:
 	CSolidSBCPacketResultRequest(const CString& strComputerName,const CString& strClientUUID);
-	CSolidSBCPacketResultRequest(const PBYTE pRawPacket);
+	CSolidSBCPacketResultRequest(const PBYTE pPacket);
 	~CSolidSBCPacketResultRequest(void);
 	
 	void GetClientUUID(CString& sClientUUID)   { sClientUUID   = m_sClientUUID;   }

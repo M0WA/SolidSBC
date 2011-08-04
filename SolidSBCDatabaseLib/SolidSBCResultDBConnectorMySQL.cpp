@@ -89,9 +89,9 @@ int CSolidSBCResultDBConnectorMySQL::GetConfigsForClient(const CString& strClien
 	m_DBConnMutex.Lock();
 	for (int i = 0; i < arSQLCmds.GetSize(); i++)
 	{
-		if ( mysql_query( m_conn, T2A(arSQLCmds.GetAt(i)) ) != 0 )
+		if ( !mysql_query(m_conn, T2A(arSQLCmds.GetAt(i))) )
         {
-			MYSQL_RES* res = mysql_use_result(m_conn);
+			MYSQL_RES* res = mysql_store_result(m_conn);
 			if( !res )
 				continue;
 
@@ -117,7 +117,7 @@ int CSolidSBCResultDBConnectorMySQL::AddTestResult(const CString& strClientUUID,
 	m_DBConnMutex.Lock();
 	int nReturn = 0;
 	for (int i = 0; i < arSQLCmds.GetSize(); i++){
-		if ( mysql_query( m_conn, T2A(arSQLCmds.GetAt(i)) ) != 0 )
+		if ( mysql_query( m_conn, T2A(arSQLCmds.GetAt(i)) ) )
         {
 			nReturn = 1;
 			break;
@@ -139,7 +139,7 @@ int CSolidSBCResultDBConnectorMySQL::AddClientHistory(const CString& strClientUU
 	m_DBConnMutex.Lock();
 	int nReturn = 0;
 	for (int i = 0; i < arSQLCmds.GetSize(); i++){
-		if ( mysql_query( m_conn, T2A(arSQLCmds.GetAt(i)) ) != 0 )
+		if ( mysql_query( m_conn, T2A(arSQLCmds.GetAt(i)) ) )
         {
 			nReturn = 1;
 			break;

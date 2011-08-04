@@ -25,7 +25,7 @@ void CSolidSBCClientList::Empty(void)
 				USES_CONVERSION;
 				CString strMsg;
 				strMsg.Format( 
-					_T("Deleting and closing result/control connection: client id: %d, name: %s, ip:port %s:%d")
+					_T("CSolidSBCClientList::Empty(): Deleting and closing result/control connection: client id: %d, name: %s, ip:port %s:%d")
 					, (*i).GetClientID(), (*i).GetClientName(), A2T(inet_ntoa((*i).GetSockAddr().sin_addr))
 					, htons((*i).GetSockAddr().sin_port));
 				CSolidSBCSrvServiceWnd::LogServiceMessage(strMsg,SSBC_SRVSVC_LOGMSG_TYPE_DEBUG);

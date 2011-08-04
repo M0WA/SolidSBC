@@ -32,37 +32,8 @@ bool CSolidSBCConfigClientSocket::OnAccept(SOCKET hCfgCliSocket)
 
 CSolidSBCPacketConfigRequest* CSolidSBCConfigClientSocket::ReceiveConfigRequest(SOCKET hCfgListenSocket)
 {
-	int nHeaderSize = sizeof(SSBC_PACKET_HEADER);
-	SSBC_PACKET_HEADER header;
-	memset(&header,0,nHeaderSize);
-	
-	u_long iMode = 0;
-	ioctlsocket(hCfgListenSocket, FIONBIO, &iMode);
-
-	int nRead = recv(hCfgListenSocket,(char*)&header,nHeaderSize,0);
-	DWORD dwError = GetLastError();
-	if ( nRead != nHeaderSize )
-		return NULL;
-	
-	int nPayloadSize = header.nPacketSize - nHeaderSize;
-	int nPacketSize  = header.nPacketSize+10;
-	PBYTE pPacket    = new BYTE[nPacketSize];
-	memset(pPacket,0,nPacketSize);
-	memcpy(pPacket,&header,nHeaderSize);
-	nRead = recv(hCfgListenSocket,(char*)&pPacket[nHeaderSize],nPayloadSize,0);
-	if ( nRead != nPayloadSize ){
-		delete [] pPacket;
-		return NULL;}
-
-	iMode = 1;
-	ioctlsocket(hCfgListenSocket, FIONBIO, &iMode);
-	
-	CSolidSBCPacketConfigRequest* pRequest = NULL;
-		
-	CStringW strwPayload = (wchar_t*)(&pPacket[nHeaderSize]);
-	if( (strwPayload.Find(L"<ConfigRequest>") != -1) && (strwPayload.Find(L"</ConfigRequest>") != -1) )
-		pRequest = new CSolidSBCPacketConfigRequest(pPacket);
-	
+	PBYTE pPacket = CSolidSBCPacket::ReceivePacket(hCfgListenSocket);
+	CSolidSBCPacketConfigRequest* pRequest = new CSolidSBCPacketConfigRequest(pPacket);
 	delete [] pPacket;
 	return pRequest;
 }
@@ -75,6 +46,14 @@ int CSolidSBCConfigClientSocket::SendConfigResponses(SOCKET hCfgCliSocket, CSoli
 	std::vector<CString> vecXmlConfigs;
 	g_cClientList.GetConfigsForClient(strClientUUID,vecXmlConfigs);
 
+	{
+		CString strClientName;
+		pRequest->GetClientName(strClientName);
+		CString strMsg;
+		strMsg.Format(_T("Sending client %s %d configs."),strClientName,vecXmlConfigs.size());
+		CSolidSBCSrvServiceWnd::LogServiceMessage(strMsg,SSBC_SRVSVC_LOGMSG_TYPE_INFO);
+	}
+
 	int nBytesSent = 0;
 	std::vector<CString>::iterator iXmlConfig;
 	for( iXmlConfig = vecXmlConfigs.begin(); iXmlConfig != vecXmlConfigs.end(); iXmlConfig++ )
@@ -84,7 +63,13 @@ int CSolidSBCConfigClientSocket::SendConfigResponses(SOCKET hCfgCliSocket, CSoli
 		int nPacketSize = 0;
 		PBYTE pPacket = response.GetPacketBytes(nPacketSize);
 		
-		nBytesSent += send(hCfgCliSocket,(char*)pPacket,nPacketSize,0);
+		int nSent = send(hCfgCliSocket,(char*)pPacket,nPacketSize,0);
+		nBytesSent += nSent;
+		{
+			CString strMsg;
+			strMsg.Format(_T("CSolidSBCConfigClientSocket::SendConfigResponses(): Sending client config (%d byte(-s)):\r\n%s"), nSent,*iXmlConfig);
+			CSolidSBCSrvServiceWnd::LogServiceMessage(strMsg,SSBC_SRVSVC_LOGMSG_TYPE_DEBUG);
+		}
 	}
 	return nBytesSent;
 }
@@ -111,6 +96,9 @@ UINT CSolidSBCConfigClientSocket::ConfigClientHandlerThread(LPVOID lpParam)
 				, ntohs(client.sin_port)
 				);
 			CSolidSBCSrvServiceWnd::LogServiceMessage(strMsg,SSBC_SRVSVC_LOGMSG_TYPE_INFO);
+
+			strMsg.Format(_T("CSolidSBCConfigClientSocket::ConfigClientHandlerThread(): Client config request:\r\n%s"),pRequest->GetXml());
+			CSolidSBCSrvServiceWnd::LogServiceMessage(strMsg,SSBC_SRVSVC_LOGMSG_TYPE_DEBUG);
 		}
 
 		pParams->pSocket->SendConfigResponses(pParams->hClientSocket,pRequest);
@@ -121,6 +109,7 @@ UINT CSolidSBCConfigClientSocket::ConfigClientHandlerThread(LPVOID lpParam)
 			strMsg.Format(_T("Error while waiting for client config request."));
 			CSolidSBCSrvServiceWnd::LogServiceMessage(strMsg,SSBC_SRVSVC_LOGMSG_TYPE_WARN);
 		}
+
 	}
 
 	closesocket(pParams->hClientSocket);

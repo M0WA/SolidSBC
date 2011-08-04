@@ -18,8 +18,8 @@ CSolidSBCPacketTestResult::CSolidSBCPacketTestResult(CSolidSBCTestResult* pResul
 	ParseXml(sXmlPacket);
 }
 
-CSolidSBCPacketTestResult::CSolidSBCPacketTestResult(const PBYTE pRawPacket)
-: CSolidSBCPacket(pRawPacket)
+CSolidSBCPacketTestResult::CSolidSBCPacketTestResult(const PBYTE pPacket)
+: CSolidSBCPacket(pPacket)
 {
 	USES_CONVERSION;
 	std::string sResultSQL;

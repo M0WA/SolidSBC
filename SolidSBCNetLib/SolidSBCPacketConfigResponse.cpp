@@ -5,11 +5,11 @@
 CSolidSBCPacketConfigResponse::CSolidSBCPacketConfigResponse(const CString& sXml)
 : CSolidSBCPacket()
 {
-	SetXmlString(sXml);
+	ParseXml(sXml);
 }
 
-CSolidSBCPacketConfigResponse::CSolidSBCPacketConfigResponse(const PBYTE pRawPacket)
-: CSolidSBCPacket(pRawPacket)
+CSolidSBCPacketConfigResponse::CSolidSBCPacketConfigResponse(const PBYTE pPacket)
+: CSolidSBCPacket(pPacket)
 {
 }
 

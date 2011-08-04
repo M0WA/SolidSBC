@@ -156,7 +156,7 @@ void WINAPI ServiceMain(DWORD argc, LPTSTR *argv)
 
 	{
 		CString strMsg;
-		strMsg.Format(_T("\n\n\t\t===========================================\n\t\tSolidSBC Server Service v%s.%s is starting.\n\t\t===========================================\n"),SSBC_SRVSVC_VERSION_MAJOR,SSBC_SRVSVC_VERSION_MINOR);
+		strMsg.Format(_T("\n\t\t===========================================\n\t\tSolidSBC Server Service v%s.%s is starting.\n\t\t==========================================="),SSBC_SRVSVC_VERSION_MAJOR,SSBC_SRVSVC_VERSION_MINOR);
 		CSolidSBCSrvServiceWnd::LogServiceMessage(strMsg,SSBC_SRVSVC_LOGMSG_TYPE_INFO);
 	}
 	
@@ -167,7 +167,7 @@ void WINAPI ServiceMain(DWORD argc, LPTSTR *argv)
 	
 	{
 		CString strMsg;
-		strMsg.Format(_T("\n\n\t\t===========================================\n\t\tSolidSBC Server Service v%s.%s is ending.\n\t\t===========================================\n"),SSBC_SRVSVC_VERSION_MAJOR,SSBC_SRVSVC_VERSION_MINOR);
+		strMsg.Format(_T("\n\t\t===========================================\n\t\tSolidSBC Server Service v%s.%s is ending.\n\t\t==========================================="),SSBC_SRVSVC_VERSION_MAJOR,SSBC_SRVSVC_VERSION_MINOR);
 		CSolidSBCSrvServiceWnd::LogServiceMessage(strMsg,SSBC_SRVSVC_LOGMSG_TYPE_INFO);
 	}
 }

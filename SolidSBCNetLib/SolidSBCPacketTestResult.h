@@ -6,7 +6,7 @@ class SOLIDSBCNETLIB_API CSolidSBCPacketTestResult : public CSolidSBCPacket
 {
 public:
 	CSolidSBCPacketTestResult(CSolidSBCTestResult* pResult);
-	CSolidSBCPacketTestResult(const PBYTE pRawPacket);
+	CSolidSBCPacketTestResult(const PBYTE pPacket);
 	~CSolidSBCPacketTestResult(void);
 	
 	void GetResultSQL(CString& sResultSQL){ sResultSQL = m_sResultSQL;   }

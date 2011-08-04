@@ -11,7 +11,7 @@ CSolidSBCPacket::CSolidSBCPacket(const PBYTE pPacket)
 : CSolidSBCXMLFile(_T(""))
 , m_sPacketXml(_T(""))
 {
-	SetPacketBytes(pPacket);
+  	SetPacketBytes(pPacket);
 }
 
 CSolidSBCPacket::~CSolidSBCPacket(void)
@@ -55,22 +55,20 @@ int CSolidSBCPacket::GetPacketBytes_Intern(std::vector<byte>& vecPacketBytes)
 
 int CSolidSBCPacket::SetPacketBytes(const PBYTE pPacketBytes)
 {
-	int nBytesSet   = 0;
 	int nHeaderSize = sizeof(SSBC_PACKET_HEADER);
 	wchar_t* pPacketXml = (wchar_t*)&pPacketBytes[nHeaderSize];
+	int nBytesSet       = wcslen(pPacketXml);
 
 	//TODO: this is very dangerous...
 #ifdef _UNICODE
 	m_sPacketXml = pPacketXml;
-	nBytesSet    = sizeof(pPacketBytes);
 #elif
 	USES_CONVERSION;
 	char* pcszPacketBytes = W2A((wchar_t*)pPacketXml);
 	m_sPacketXml = pcszPacketBytes;
-	nBytesSet    = sizeof(pcszPacketBytes);
 #endif
 
-	return ParseXml(m_sPacketXml) ? nBytesSet : 0;
+	return nBytesSet ? ParseXml(m_sPacketXml) : 0;
 }
 
 bool CSolidSBCPacket::ParseXml(const CString& sPacketXml)

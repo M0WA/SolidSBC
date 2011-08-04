@@ -74,8 +74,8 @@ bool CSolidSBCResultClientHandlerSocket::OnRead(CSolidSBCClientResultInfo& clien
 		return false;
 
 	//allocate memory for packet
-	PBYTE pPacket = new BYTE[header.nPacketSize+1];
-	ZeroMemory(pPacket,header.nPacketSize+1);
+	PBYTE pPacket = new BYTE[header.nPacketSize+10];
+	ZeroMemory(pPacket,header.nPacketSize+10);
 	memcpy(pPacket,&header,header.nPacketSize);
 
 	//receive payload
@@ -166,7 +166,7 @@ UINT CSolidSBCResultClientHandlerSocket::WaitForPacketThread(LPVOID lpParam)
 #ifdef _DEBUG
 				{
 					CString strMsg;
-					strMsg.Format(_T("SolidSBCResultClientHandlerWaitForPacketThread: packet from client id: %d received..."), nClientID);
+					strMsg.Format(_T("CSolidSBCResultClientHandlerSocket::WaitForPacketThread(): packet from client id: %d received..."), nClientID);
 					CSolidSBCSrvServiceWnd::LogServiceMessage(strMsg,SSBC_SRVSVC_LOGMSG_TYPE_DEBUG);
 				}
 #endif
@@ -178,7 +178,7 @@ UINT CSolidSBCResultClientHandlerSocket::WaitForPacketThread(LPVOID lpParam)
 
 	{
 		CString strMsg;
-		strMsg.Format(_T("SolidSBCResultClientHandlerWaitForPacketThread: Closing result connection for client id: %d"), nClientID);
+		strMsg.Format(_T("CSolidSBCResultClientHandlerSocket::WaitForPacketThread(): Closing result connection for client id: %d"), nClientID);
 		CSolidSBCSrvServiceWnd::LogServiceMessage(strMsg,SSBC_SRVSVC_LOGMSG_TYPE_DEBUG);
 	}
 	pSocket->Close();
