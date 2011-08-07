@@ -5,7 +5,7 @@
 class CSolidSBCMemoryResult : CSolidSBCTestResult
 {
 public:
-	CSolidSBCMemoryResult(void) : CSolidSBCTestResult("memResults") {};
+	CSolidSBCMemoryResult(void) : CSolidSBCTestResult("testLib_MemoryResults") {};
 
 	DOUBLE GetMallocZeroDuration(void);
 	inline void SetMallocZeroDuration(DOUBLE dMallocZeroDuration) { SetKeyValue( "malloczeroduration", dMallocZeroDuration); };

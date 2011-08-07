@@ -12,7 +12,7 @@ CSolidSBCPacketTestResult::CSolidSBCPacketTestResult(CSolidSBCTestResult* pResul
 		_T("<TestResult>\n")
 		_T("\t%s")
 		_T("</TestResult>")
-		, pResult->ToSQL()
+		, A2T(pResult->ToSQL().c_str())
 		);
 
 	ParseXml(sXmlPacket);
@@ -20,10 +20,12 @@ CSolidSBCPacketTestResult::CSolidSBCPacketTestResult(CSolidSBCTestResult* pResul
 
 CSolidSBCPacketTestResult::CSolidSBCPacketTestResult(const PBYTE pPacket)
 : CSolidSBCPacket(pPacket)
+, m_sResultSQL(_T(""))
 {
 	USES_CONVERSION;
-	std::string sResultSQL;
-	m_sResultSQL = A2T(GetNodeValue<std::string>(_T("TestResult[1]")  , sResultSQL   ) ? sResultSQL.c_str()   : "" );
+	std::string sResult;
+	if ( GetNodeValue<std::string&>( _T("TestResult[1]"), sResult ) )
+		m_sResultSQL = A2T(sResult.c_str());
 }
 
 CSolidSBCPacketTestResult::~CSolidSBCPacketTestResult(void)

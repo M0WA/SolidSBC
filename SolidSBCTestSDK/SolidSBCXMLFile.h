@@ -3,6 +3,8 @@
 #include "SolidSBCTestSDK.h"
 #include <sstream>
 
+using namespace std;
+
 class SOLIDSBCTESTSDK_API CSolidSBCXMLFile
 {
 public:
@@ -23,9 +25,22 @@ public:
 		if(bSuccess)
 		{
 			std::stringstream in;
+			in << std::skipws;
 			in << sValue;
-			return (in >> value && in.eof());
+			in >> value;
+			return !in.bad();
 		}
+		return bSuccess;
+	}
+
+	template <class string> bool GetNodeValue(const CString strXPath, std::string& value)
+	{
+		bool bSuccess = false;
+		CString strValue;
+		bSuccess = !GetNodeString(strXPath, strValue);
+
+		USES_CONVERSION;
+		value = T2A(strValue);
 		return bSuccess;
 	}
 
