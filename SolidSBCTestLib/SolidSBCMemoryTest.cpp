@@ -14,7 +14,7 @@ UINT SolidSBCMemoryTest(LPVOID lpParam)
 		UINT nDiff = (UINT)pConfig->GetMaxMem() - (UINT)pConfig->GetMinMem();
 		UINT number,nRandomNumber;
 	
-		while ( 1 ){
+		while ( !CSolidSBCTestThread::ShallThreadEnd(pParam) ){
 			rand_s( &number );
 			nRandomNumber =  number % (nDiff + 1);
 			nRandomNumber += pConfig->GetMinMem();
@@ -47,12 +47,8 @@ UINT SolidSBCMemoryTest(LPVOID lpParam)
 				if ( CSolidSBCTestThread::ShallThreadEnd(pParam) )
 					break;
 				Sleep(970);}
-			Sleep(dwMilliSeconds);
 
 			delete pMem;
-
-			if ( CSolidSBCTestThread::ShallThreadEnd(pParam) )
-				break;
 		}
 	}
 	else{
