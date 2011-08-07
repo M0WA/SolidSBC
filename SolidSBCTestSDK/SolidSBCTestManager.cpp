@@ -81,7 +81,7 @@ int CSolidSBCTestManager::StartTest(const std::string& sXML)
 		return 1;
 
 	AFX_THREADPROC threadFunc = GetThreadFuncByName(std::string(T2A(strTestName)));
-	CSolidSBCTestThread* pThread = new CSolidSBCTestThread(std::string(T2A(strXml)),threadFunc,m_mapTestResults[std::string(T2A(strTestName))]);
+	CSolidSBCTestThread* pThread = new CSolidSBCTestThread(std::string(T2A(strTestName)),threadFunc,m_mapTestResults[std::string(T2A(strTestName))]);
 	if( !pThread )
 		return 1;
 
@@ -93,16 +93,29 @@ int CSolidSBCTestManager::StartTest(const std::string& sXML)
 int CSolidSBCTestManager::StopTest(const std::string& sTestName)
 {
 	int nStopped = 0;
-	for( std::vector<CSolidSBCTestThread*>::iterator iIter = m_vecRunningTests.begin(); iIter != m_vecRunningTests.end(); iIter++)
-		if ( (*iIter) && ((*iIter)->GetTestName() == sTestName) )
-		{
-			(*iIter)->StopThread();
-			delete (*iIter);
-			(*iIter) = NULL;
-			m_vecRunningTests.erase(iIter);
 
-			nStopped++;
+	while(1)
+	{
+		bool bTestFound = false;
+		for( std::vector<CSolidSBCTestThread*>::iterator iIter = m_vecRunningTests.begin(); iIter != m_vecRunningTests.end(); iIter++)
+		{
+			if ( (*iIter) && ((*iIter)->GetTestName() == sTestName) )
+			{
+				(*iIter)->StopThread();
+				delete (*iIter);
+				(*iIter) = NULL;
+				nStopped++;
+				
+				m_vecRunningTests.erase(iIter);
+				bTestFound = true;
+				break;
+			}
 		}
+
+		if(!bTestFound)
+			break;
+	}
+
 	return nStopped;
 }
 

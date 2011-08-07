@@ -217,10 +217,15 @@ void CSolidSBCClient::StopTests(bool bUnloadLibraries)
 		std::vector<std::string>::iterator iterName = vecTestNames.begin();
 		for(; iterName != vecTestNames.end(); iterName++)
 			(*iter).second->StopTest( (*iterName) );
+	}
 
-		if ( bUnloadLibraries )
+	if ( bUnloadLibraries )
+	{
+		iter = m_vecTestLibs.begin();
+		for(; iter != m_vecTestLibs.end(); iter++)
 			FreeLibrary((*iter).first);
 	}
+
 	m_lockTestLibs.Unlock();
 }
 
