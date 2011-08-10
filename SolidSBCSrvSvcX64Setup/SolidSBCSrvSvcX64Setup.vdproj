@@ -51,12 +51,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_E68A06DB87EB46BF9F448B9E51716BBE"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_FBDC814EB389411ABC19BD1D797FC03F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -440,7 +434,7 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_E68A06DB87EB46BF9F448B9E51716BBE"
+            "Target" = "8:"
             "Folder" = "8:_57DD5754CEBD4DA4BED93CFBC2DA8A10"
             "WorkingFolder" = "8:_B61F61609B184EF4A5F0731905ADE0DF"
             "Icon" = "8:"
@@ -966,34 +960,6 @@
             "OutputConfiguration" = "8:Release|x64"
             "OutputGroupCanonicalName" = "8:Built"
             "OutputProjectGuid" = "8:{7CADD4A2-E191-482D-B068-FDDCE492DE47}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_E68A06DB87EB46BF9F448B9E51716BBE"
-            {
-            "SourcePath" = "8:..\\x64\\Release\\SolidSBCResultViewer.exe"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_B61F61609B184EF4A5F0731905ADE0DF"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:Release|x64"
-            "OutputGroupCanonicalName" = "8:Built"
-            "OutputProjectGuid" = "8:{2FF2AFC1-11A0-4EF5-97EE-F9D90BCC4F95}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
                 {

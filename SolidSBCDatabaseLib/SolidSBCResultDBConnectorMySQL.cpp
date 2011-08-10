@@ -149,3 +149,33 @@ int CSolidSBCResultDBConnectorMySQL::AddClientHistory(const CString& strClientUU
 
 	return nReturn;
 }
+
+int CSolidSBCResultDBConnectorMySQL::GetNameFromUuid(const CString& strUuid, CString& strName)
+{
+	USES_CONVERSION;
+	CStringArray arSQLCmds;
+
+	if ( CSolidSBCResultDBConnector::GetNameFromUuidSQLString(strUuid, arSQLCmds) != 0 )
+		return 1;
+
+	int nResults = 0;
+	m_DBConnMutex.Lock();
+	for (int i = 0; i < arSQLCmds.GetSize(); i++)
+	{
+		if ( !mysql_query(m_conn, T2A(arSQLCmds.GetAt(i))) )
+        {
+			MYSQL_RES* res = mysql_store_result(m_conn);
+			if( !res )
+				continue;
+
+			MYSQL_ROW row;
+			while ( ( row = mysql_fetch_row(res) ) )
+				strName = A2T(row[0]);
+
+			mysql_free_result(res);
+		}
+	}
+	m_DBConnMutex.Unlock();
+
+	return nResults;
+}

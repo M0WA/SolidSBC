@@ -104,3 +104,25 @@ int CSolidSBCResultDBConnector::GetAddTestResultSQLString(const CString& strClie
 	*/
 	return 0;
 }
+
+int CSolidSBCResultDBConnector::GetNameFromUuidSQLString(const CString& strUuid, CStringArray& arSQLCmds)
+{
+	CString strSQL;
+	strSQL.Format(
+		_T("SELECT `client`.`name` ")
+		_T("FROM `%s`.`Clients` AS `client` ")
+		_T("WHERE `client`.`uuid` = '%s' ")
+		, m_strDatabase
+		, strUuid
+		);
+	arSQLCmds.Add(strSQL);
+
+	/*
+	{
+		CString strLog;
+		strLog.Format( _T("Getting name for client: \n%s"), strSQL );
+		CSolidSBCSrvServiceWnd::LogServiceMessage(strLog,SSBC_SRVSVC_LOGMSG_TYPE_DEBUG);
+	}
+	*/
+	return 0;
+}
