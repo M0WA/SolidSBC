@@ -55,9 +55,9 @@ int CSolidSBCPacket::GetPacketBytes_Intern(std::vector<byte>& vecPacketBytes)
 
 int CSolidSBCPacket::SetPacketBytes(const PBYTE pPacketBytes)
 {
-	int nHeaderSize = sizeof(SSBC_PACKET_HEADER);
+	int nHeaderSize     = (int)sizeof(SSBC_PACKET_HEADER);
 	wchar_t* pPacketXml = (wchar_t*)&pPacketBytes[nHeaderSize];
-	int nBytesSet       = wcslen(pPacketXml);
+	int nBytesSet       = (int)wcslen(pPacketXml);
 
 	//TODO: this is very dangerous...
 #ifdef _UNICODE

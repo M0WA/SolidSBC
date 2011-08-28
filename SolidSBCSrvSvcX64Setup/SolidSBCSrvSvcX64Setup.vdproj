@@ -33,6 +33,36 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_2167168BFFFD410DBB4E93848932EE17"
+        "OwnerKey" = "8:_1C126B290FF94E07B55E3C0854B524DB"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2167168BFFFD410DBB4E93848932EE17"
+        "OwnerKey" = "8:_FBDC814EB389411ABC19BD1D797FC03F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2167168BFFFD410DBB4E93848932EE17"
+        "OwnerKey" = "8:_E270D1B799CF4243962D28D2948AED0B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2167168BFFFD410DBB4E93848932EE17"
+        "OwnerKey" = "8:_5CA5166ED977427BB1458CA599F1EB0C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2167168BFFFD410DBB4E93848932EE17"
+        "OwnerKey" = "8:_1CBEACEEC9954EB69708BAB5976AA37C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_5CA5166ED977427BB1458CA599F1EB0C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -41,6 +71,36 @@
         {
         "MsmKey" = "8:_A622A9C3890443E38A2F0C4DCECEDB95"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C746C473C2DA448092BBF56DDEBD82B4"
+        "OwnerKey" = "8:_1C126B290FF94E07B55E3C0854B524DB"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C746C473C2DA448092BBF56DDEBD82B4"
+        "OwnerKey" = "8:_FBDC814EB389411ABC19BD1D797FC03F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C746C473C2DA448092BBF56DDEBD82B4"
+        "OwnerKey" = "8:_E270D1B799CF4243962D28D2948AED0B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C746C473C2DA448092BBF56DDEBD82B4"
+        "OwnerKey" = "8:_5CA5166ED977427BB1458CA599F1EB0C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C746C473C2DA448092BBF56DDEBD82B4"
+        "OwnerKey" = "8:_1CBEACEEC9954EB69708BAB5976AA37C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -119,20 +179,15 @@
             "ComponentsUrl" = "8:"
                 "Items"
                 {
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Visual.C++.10.0.IA64"
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.0,Profile=Client"
                     {
-                    "Name" = "8:Visual C++ 2010 Runtime Libraries (IA64)"
-                    "ProductCode" = "8:Microsoft.Visual.C++.10.0.IA64"
+                    "Name" = "8:Microsoft .NET Framework 4 Client Profile (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.0,Profile=Client"
                     }
                     "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Visual.C++.10.0.x64"
                     {
                     "Name" = "8:Visual C++ 2010 Runtime Libraries (x64)"
                     "ProductCode" = "8:Microsoft.Visual.C++.10.0.x64"
-                    }
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Visual.C++.10.0.x86"
-                    {
-                    "Name" = "8:Visual C++ 2010 Runtime Libraries (x86)"
-                    "ProductCode" = "8:Microsoft.Visual.C++.10.0.x86"
                     }
                     "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
                     {
@@ -306,7 +361,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SolidSBC Server x64"
         "ProductCode" = "8:{5C94603D-15D2-4C20-B2F1-589EFA3003C9}"
-        "PackageCode" = "8:{FCC27598-B2B8-4E32-8747-8E443A067631}"
+        "PackageCode" = "8:{2DB49563-9F85-4138-A50C-BAB38D482041}"
         "UpgradeCode" = "8:{E0D9BF02-5FD4-4536-9335-8F4142430867}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -426,20 +481,6 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_4301C6045FCF41A091A8783296EC0106"
-            {
-            "Name" = "8:SolidSBC Result Viewer (x64)"
-            "Arguments" = "8:"
-            "Description" = "8:"
-            "ShowCmd" = "3:1"
-            "IconIndex" = "3:0"
-            "Transitive" = "11:FALSE"
-            "Target" = "8:"
-            "Folder" = "8:_57DD5754CEBD4DA4BED93CFBC2DA8A10"
-            "WorkingFolder" = "8:_B61F61609B184EF4A5F0731905ADE0DF"
-            "Icon" = "8:"
-            "Feature" = "8:"
-            }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_C53510A45E8B4439BC0EA57925BF71EA"
             {
             "Name" = "8:SolidSBC Server Configurator (x64)"
@@ -850,6 +891,34 @@
         }
         "MergeModule"
         {
+            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_2167168BFFFD410DBB4E93848932EE17"
+            {
+            "UseDynamicProperties" = "11:TRUE"
+            "IsDependency" = "11:TRUE"
+            "SourcePath" = "8:Microsoft_VC100_CRT_x64.msm"
+                "Properties"
+                {
+                }
+            "LanguageId" = "3:0"
+            "Exclude" = "11:FALSE"
+            "Folder" = "8:"
+            "Feature" = "8:"
+            "IsolateTo" = "8:"
+            }
+            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_C746C473C2DA448092BBF56DDEBD82B4"
+            {
+            "UseDynamicProperties" = "11:TRUE"
+            "IsDependency" = "11:TRUE"
+            "SourcePath" = "8:Microsoft_VC100_MFC_x64.msm"
+                "Properties"
+                {
+                }
+            "LanguageId" = "3:0"
+            "Exclude" = "11:FALSE"
+            "Folder" = "8:"
+            "Feature" = "8:"
+            "IsolateTo" = "8:"
+            }
         }
         "ProjectOutput"
         {
