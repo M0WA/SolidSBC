@@ -250,7 +250,7 @@ bool CSolidSBCClient::InitTests(void)
 	if( (hFind = FindFirstFile(dllDir,&ffd)) == INVALID_HANDLE_VALUE)
 	{
 		CString strMsg;
-		strMsg.Format(_T("Could not find any test-dlls in %s."), dllDir );
+		strMsg.Format(_T("Could not find any test-dlls in %s. Error: %d"), dllDir, GetLastError() );
 		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_ERROR);
 		return false;
 	}
