@@ -9,6 +9,8 @@ UINT SolidSBCTestThreadHarddriveReader(LPVOID lpParam);
 UINT SolidSBCTestThreadHarddriveWriter(LPVOID lpParam);
 void WaitForChildHarddriveThreads(CWinThread* pReaderThread, CWinThread*  pWriterThread);
 
+#pragma warning( push )
+#pragma warning ( disable : 4748 )
 UINT SolidSBCTestThreadHarddriveReader(LPVOID lpParam)
 {
 	PSSBC_TEST_THREAD_PARAM pParam = (PSSBC_TEST_THREAD_PARAM)lpParam;
@@ -212,6 +214,8 @@ UINT SolidSBCTestThreadHarddriveWriter(LPVOID lpParam)
 
 	return 0;
 }
+
+#pragma warning( pop )
 
 void WaitForChildHarddriveThreads(CWinThread* pReaderThread, CWinThread*  pWriterThread)
 {
