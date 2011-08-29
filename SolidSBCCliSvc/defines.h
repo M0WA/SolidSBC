@@ -14,6 +14,10 @@
 #define SSBC_CLIENT_UUID_FILENAMEPATH   "ssbc_cli.uuid"
 #define SSBC_CLIENT_UUID_MAX_RAND		0xff
 
+//define to search for test dlls 
+//in build directories in release version 
+#define _DEBUG_RELEASE_DLL 0
+
 typedef struct {
 	BOOL    bAutoStart;
 	TCHAR*  szDataSource[MAX_SERVER_NAME];

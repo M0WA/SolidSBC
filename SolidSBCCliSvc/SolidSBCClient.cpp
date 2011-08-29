@@ -229,19 +229,54 @@ void CSolidSBCClient::StopTests(bool bUnloadLibraries)
 	m_lockTestLibs.Unlock();
 }
 
+
+
 bool CSolidSBCClient::InitTests(void)
 {
+#ifdef _DEBUG
+	#define _DEBUG_TEST_DLL
+#elif  _DEBUG_RELEASE_DLL
+	#define _DEBUG_TEST_DLL
+#endif
+
+#ifdef _DEBUG_TEST_DLL
+
 	TCHAR szPath[1025];
 	memset(szPath,0,1025 * sizeof(TCHAR));
 	GetModuleFileName(NULL,szPath,1024);
 
 	CString fileName = szPath;
 	CString dllDir   = fileName.Left( fileName.ReverseFind(_T('\\')) ).TrimRight('\\');
-
-#ifdef _DEBUG
 	dllDir += CString(_T("\\*.dll"));
+
 #else
-	dllDir += CString(_T("\\tests\\*.dll"));
+
+	TCHAR szPath[MAX_PATH];
+	DWORD dwError = GetEnvironmentVariable(_T("CommonProgramFiles"), szPath, MAX_PATH);
+
+	if( !dwError || (dwError == MAX_PATH) )	{
+		CString strMsg;
+		strMsg.Format(_T("Could not determine test-dlls path. Error: %d"), (dwError == MAX_PATH) ? -1 : GetLastError() );
+		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_ERROR);
+		return false; }
+
+	CString dllDir;
+	#ifdef _M_X64
+		dllDir.Format(_T("%s\\mo-sys\\SolidSBC Client (x64)\\tests\\*.dll"), szPath);
+	#elif _M_IX86
+		dllDir.Format(_T("%s\\mo-sys\\SolidSBC Client\\tests\\*.dll"), szPath);
+	#else
+		NO SUPPORTED PLATFORM
+	#endif
+
+	/*
+	{
+		CString strMsg;
+		strMsg.Format( _T("Determined dll-path: %s"), dllDir );
+		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_INFO);
+	}
+	*/
+
 #endif
 
 	WIN32_FIND_DATA ffd;
@@ -255,7 +290,6 @@ bool CSolidSBCClient::InitTests(void)
 		return false;
 	}
 	
-	CSolidSBCTestManager* pTestManager = 0;
 	std::pair<HMODULE,CSolidSBCTestManager*> pairLibManager;
 
 	StopTests();
@@ -265,6 +299,7 @@ bool CSolidSBCClient::InitTests(void)
 
 	do
 	{
+		CSolidSBCTestManager* pTestManager = 0;
 		HMODULE hLib = LoadLibrary(ffd.cFileName);
 		if( hLib == NULL ) continue;
 		
@@ -274,7 +309,16 @@ bool CSolidSBCClient::InitTests(void)
 
 		if(GetSolidSBCTestInstanceFunc)
 			pTestManager = (CSolidSBCTestManager*)GetSolidSBCTestInstanceFunc();
-		else {FreeLibrary(hLib); continue;}
+		else 
+		{
+			{
+				CString strMsg;
+				strMsg.Format(_T("Could not verify test-dll: %s, %p."), ffd.cFileName, GetSolidSBCTestInstanceFunc );
+				CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_WARN);
+			}
+			FreeLibrary(hLib);
+			continue;
+		}
 		
 		if (!pTestManager) 
 		{

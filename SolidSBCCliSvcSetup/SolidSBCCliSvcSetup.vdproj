@@ -21,31 +21,61 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_3ADE8B7807F6475C9864997E03DDAC5B"
+        "MsmKey" = "8:_11B3E211ADBB44C19897A682AD5D39FD"
         "OwnerKey" = "8:_09EEE2D179A14F6099DAA106752B6B02"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_3ADE8B7807F6475C9864997E03DDAC5B"
+        "MsmKey" = "8:_11B3E211ADBB44C19897A682AD5D39FD"
         "OwnerKey" = "8:_CF8A6082361B4B0EA385A752138A3FD2"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_3ADE8B7807F6475C9864997E03DDAC5B"
+        "MsmKey" = "8:_11B3E211ADBB44C19897A682AD5D39FD"
         "OwnerKey" = "8:_A3524A7010C446B795A4B2E857537D0D"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_3ADE8B7807F6475C9864997E03DDAC5B"
+        "MsmKey" = "8:_11B3E211ADBB44C19897A682AD5D39FD"
         "OwnerKey" = "8:_4EF941098F804E5787465FD2A63FAFA2"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_3ADE8B7807F6475C9864997E03DDAC5B"
+        "MsmKey" = "8:_11B3E211ADBB44C19897A682AD5D39FD"
+        "OwnerKey" = "8:_462D7D4276134725B5ECC63C002D6A1A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_4449ECF1815E441A9B37465960496A5D"
+        "OwnerKey" = "8:_09EEE2D179A14F6099DAA106752B6B02"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_4449ECF1815E441A9B37465960496A5D"
+        "OwnerKey" = "8:_CF8A6082361B4B0EA385A752138A3FD2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_4449ECF1815E441A9B37465960496A5D"
+        "OwnerKey" = "8:_A3524A7010C446B795A4B2E857537D0D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_4449ECF1815E441A9B37465960496A5D"
+        "OwnerKey" = "8:_4EF941098F804E5787465FD2A63FAFA2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_4449ECF1815E441A9B37465960496A5D"
         "OwnerKey" = "8:_462D7D4276134725B5ECC63C002D6A1A"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -53,36 +83,6 @@
         {
         "MsmKey" = "8:_462D7D4276134725B5ECC63C002D6A1A"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_4B70E6947F534F5EB724D1FAFA7F8D3E"
-        "OwnerKey" = "8:_09EEE2D179A14F6099DAA106752B6B02"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_4B70E6947F534F5EB724D1FAFA7F8D3E"
-        "OwnerKey" = "8:_CF8A6082361B4B0EA385A752138A3FD2"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_4B70E6947F534F5EB724D1FAFA7F8D3E"
-        "OwnerKey" = "8:_A3524A7010C446B795A4B2E857537D0D"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_4B70E6947F534F5EB724D1FAFA7F8D3E"
-        "OwnerKey" = "8:_4EF941098F804E5787465FD2A63FAFA2"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_4B70E6947F534F5EB724D1FAFA7F8D3E"
-        "OwnerKey" = "8:_462D7D4276134725B5ECC63C002D6A1A"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -255,7 +255,7 @@
             "SourcePath" = "8:IPHLPAPI.DLL"
             "TargetName" = "8:IPHLPAPI.DLL"
             "Tag" = "8:"
-            "Folder" = "8:_077E4DDC4B6B4685B7DE790DD77EFA66"
+            "Folder" = "8:_86DDB35E44C3403F9EB23F526EAA6FC5"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -329,6 +329,50 @@
                     }
                 }
             }
+            "{1525181F-901A-416C-8A58-119130FE478E}:_B0ABA41679034C93976F2B48382720F6"
+            {
+            "Name" = "8:#1910"
+            "AlwaysCreate" = "11:FALSE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Property" = "8:CommonFilesFolder"
+                "Folders"
+                {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_193A6291356A43FD8AED54CDD267D16E"
+                    {
+                    "Name" = "8:mo-sys"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_A258FBB4B40E4E60B2FB7613777DD5DF"
+                        "Folders"
+                        {
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_3D4CB451DC944AA19A11062302CE611A"
+                            {
+                            "Name" = "8:SolidSBC Client"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_FEB031C9072A495C8230C89E2661A109"
+                                "Folders"
+                                {
+                                    "{9EF0B969-E518-4E46-987F-47570745A589}:_86DDB35E44C3403F9EB23F526EAA6FC5"
+                                    {
+                                    "Name" = "8:tests"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "Condition" = "8:"
+                                    "Transitive" = "11:FALSE"
+                                    "Property" = "8:_E18D34BFD13E41B09AB209CD033AF60F"
+                                        "Folders"
+                                        {
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_BD9E6D42195F4CE5AEE947C8612A3968"
             {
             "DefaultLocation" = "8:[ProgramFilesFolder][Manufacturer]\\[ProductName]"
@@ -339,17 +383,6 @@
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_077E4DDC4B6B4685B7DE790DD77EFA66"
-                    {
-                    "Name" = "8:tests"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_E18D34BFD13E41B09AB209CD033AF60F"
-                        "Folders"
-                        {
-                        }
-                    }
                 }
             }
         }
@@ -369,7 +402,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SolidSBC Client"
         "ProductCode" = "8:{AF951925-48E0-4AAD-9131-0D6F11627187}"
-        "PackageCode" = "8:{743192C4-C8D7-4392-9C2C-A1708CE5959C}"
+        "PackageCode" = "8:{AC2D4013-A084-46C0-9D34-C903E1839AB9}"
         "UpgradeCode" = "8:{7D8D1857-14C9-4AE2-990D-A25A24FEFFD3}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -993,7 +1026,7 @@
         }
         "MergeModule"
         {
-            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_3ADE8B7807F6475C9864997E03DDAC5B"
+            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_11B3E211ADBB44C19897A682AD5D39FD"
             {
             "UseDynamicProperties" = "11:TRUE"
             "IsDependency" = "11:TRUE"
@@ -1007,7 +1040,7 @@
             "Feature" = "8:"
             "IsolateTo" = "8:"
             }
-            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_4B70E6947F534F5EB724D1FAFA7F8D3E"
+            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_4449ECF1815E441A9B37465960496A5D"
             {
             "UseDynamicProperties" = "11:TRUE"
             "IsDependency" = "11:TRUE"
@@ -1141,7 +1174,7 @@
             "SourcePath" = "8:..\\Win32\\Release\\SolidSBCTestLib.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_077E4DDC4B6B4685B7DE790DD77EFA66"
+            "Folder" = "8:_86DDB35E44C3403F9EB23F526EAA6FC5"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
