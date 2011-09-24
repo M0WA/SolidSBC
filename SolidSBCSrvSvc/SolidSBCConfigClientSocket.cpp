@@ -33,6 +33,19 @@ bool CSolidSBCConfigClientSocket::OnAccept(SOCKET hCfgCliSocket)
 CSolidSBCPacketConfigRequest* CSolidSBCConfigClientSocket::ReceiveConfigRequest(SOCKET hCfgListenSocket)
 {
 	PBYTE pPacket = CSolidSBCPacket::ReceivePacket(hCfgListenSocket);
+
+	if(!pPacket)
+	{
+#ifdef _DEBUG
+		{
+			CString strMsg;
+			strMsg.Format(_T("Error while receiving config request from unknown client."));
+			CSolidSBCSrvServiceWnd::LogServiceMessage(strMsg,SSBC_SRVSVC_LOGMSG_TYPE_DEBUG);
+		}
+#endif
+		return 0;
+	}
+
 	CSolidSBCPacketConfigRequest* pRequest = new CSolidSBCPacketConfigRequest(pPacket);
 	delete [] pPacket;
 	return pRequest;

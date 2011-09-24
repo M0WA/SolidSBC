@@ -234,10 +234,15 @@ void CSolidSBCClient::StopTests(bool bUnloadLibraries)
 bool CSolidSBCClient::InitTests(void)
 {
 #ifdef _DEBUG
-	#define _DEBUG_TEST_DLL
-#elif  _DEBUG_RELEASE_DLL
-	#define _DEBUG_TEST_DLL
+	#define _DEBUG_TEST_DLL        1
+	#ifndef _DEBUG_TEST_DLL_OUTPUT
+		#define _DEBUG_TEST_DLL_OUTPUT 1
+	#endif
+#elif  _DEBUG_TEST_DLL_BUILD_DIRECTORY
+	#define _DEBUG_TEST_DLL        1
 #endif
+
+	CString dllDir, dllFindString = _T("");
 
 #ifdef _DEBUG_TEST_DLL
 
@@ -245,9 +250,22 @@ bool CSolidSBCClient::InitTests(void)
 	memset(szPath,0,1025 * sizeof(TCHAR));
 	GetModuleFileName(NULL,szPath,1024);
 
-	CString fileName = szPath;
-	CString dllDir   = fileName.Left( fileName.ReverseFind(_T('\\')) ).TrimRight('\\');
-	dllDir += CString(_T("\\*.dll"));
+	TCHAR drive[_MAX_DRIVE];
+	TCHAR dir[_MAX_DIR];
+	TCHAR fname[_MAX_FNAME];
+	TCHAR ext[_MAX_EXT];
+	_tsplitpath_s(szPath,drive,dir,fname,ext);
+
+	dllDir.Format(_T("%s\\%s"),drive,dir);
+	dllFindString = dllDir + _T("\\*.dll");
+
+#ifdef _DEBUG_TEST_DLL_OUTPUT
+	{
+		CString strMsg;
+		strMsg.Format( _T("Determined dll-path: %s"),  dllDir );
+		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_INFO);
+	}
+#endif
 
 #else
 
@@ -260,29 +278,30 @@ bool CSolidSBCClient::InitTests(void)
 		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_ERROR);
 		return false; }
 
-	CString dllDir;
 	#ifdef _M_X64
-		dllDir.Format(_T("%s\\mo-sys\\SolidSBC Client (x64)\\tests\\*.dll"), szPath);
+		dllDir.Format(_T("%s\\mo-sys\\SolidSBC Client (x64)\\tests\\"), szPath);
 	#elif _M_IX86
-		dllDir.Format(_T("%s\\mo-sys\\SolidSBC Client\\tests\\*.dll"), szPath);
+		dllDir.Format(_T("%s\\mo-sys\\SolidSBC Client\\tests\\"), szPath);
 	#else
 		NO SUPPORTED PLATFORM
 	#endif
 
-	/*
+	dllFindString.Format(_T("%s*.dll"), dllDir);
+
+#ifdef _DEBUG_TEST_DLL_OUTPUT
 	{
 		CString strMsg;
 		strMsg.Format( _T("Determined dll-path: %s"), dllDir );
 		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_INFO);
 	}
-	*/
+#endif
 
 #endif
 
 	WIN32_FIND_DATA ffd;
 	HANDLE hFind;
 
-	if( (hFind = FindFirstFile(dllDir,&ffd)) == INVALID_HANDLE_VALUE)
+	if( (hFind = FindFirstFile(dllFindString,&ffd)) == INVALID_HANDLE_VALUE)
 	{
 		CString strMsg;
 		strMsg.Format(_T("Could not find any test-dlls in %s. Error: %d"), dllDir, GetLastError() );
@@ -299,9 +318,28 @@ bool CSolidSBCClient::InitTests(void)
 
 	do
 	{
+		CString sFileName;
+		sFileName.Format(_T("%s%s"), dllDir, ffd.cFileName);
+
+#ifdef _DEBUG_TEST_DLL_OUTPUT
+		{
+			CString strMsg;
+			strMsg.Format( _T("Searching for tests: %s"),  sFileName );
+			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_INFO);
+		}
+#endif
+
 		CSolidSBCTestManager* pTestManager = 0;
-		HMODULE hLib = LoadLibrary(ffd.cFileName);
-		if( hLib == NULL ) continue;
+		HMODULE hLib = LoadLibrary(sFileName);
+		if( hLib == NULL ) 
+		{
+			{
+				CString strMsg;
+				strMsg.Format( _T("Could not load library: %s. Error %d"),  sFileName, GetLastError() );
+				CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_WARN);
+			}
+			continue;
+		}
 		
 		typedef const void* (*PINSTANCE_GETTER_FUNC) (void);
 		PINSTANCE_GETTER_FUNC GetSolidSBCTestInstanceFunc = 0;
@@ -313,7 +351,7 @@ bool CSolidSBCClient::InitTests(void)
 		{
 			{
 				CString strMsg;
-				strMsg.Format(_T("Could not verify test-dll: %s, %p."), ffd.cFileName, GetSolidSBCTestInstanceFunc );
+				strMsg.Format(_T("Could not verify test-dll: %s."), sFileName );
 				CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_WARN);
 			}
 			FreeLibrary(hLib);
@@ -324,7 +362,7 @@ bool CSolidSBCClient::InitTests(void)
 		{
 			{
 				CString strMsg;
-				strMsg.Format(_T("Could not find any valid testmanager in %s."), ffd.cFileName );
+				strMsg.Format(_T("Could not find any valid testmanager in dll-file: %s."), sFileName );
 				CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_WARN);
 			}
 			FreeLibrary(hLib); 
@@ -338,7 +376,7 @@ bool CSolidSBCClient::InitTests(void)
 #ifdef _DEBUG
 		{
 			CString strMsg;
-			strMsg.Format(_T("CSolidSBCClient::InitTests(): Loaded testmanager from %s."), ffd.cFileName );
+			strMsg.Format(_T("CSolidSBCClient::InitTests(): Loaded testmanager from %s."), sFileName );
 			CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_DEBUG);
 		}
 #endif
@@ -352,14 +390,14 @@ bool CSolidSBCClient::InitTests(void)
 	if( !nLibs)
 	{
 		CString strMsg;
-		strMsg.Format(_T("Could not find any valid testmanager in %s."), dllDir );
+		strMsg.Format(_T("Could not find any valid testmanager in directory: %s."), dllDir );
 		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_ERROR);
 		return false;
 	}
 	else
 	{
 		CString strMsg;
-		strMsg.Format(_T("Loaded %d valid test-dll(-s)."), nLibs );
+		strMsg.Format(_T("Loaded %d valid test-dll%s."), nLibs, nLibs > 1 ? _T("(-s)") : _T("") );
 		CSolidSBCCliServiceWnd::LogServiceMessage(strMsg,SSBC_CLISVC_LOGMSG_TYPE_INFO);
 		return true;
 	}

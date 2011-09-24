@@ -78,10 +78,13 @@ CleanUpXML:
 
 int CSolidSBCXMLFile::GetNodeString(const CString& strXPath, CString& strValue)
 {
+	if ( !m_pXMLDom )
+		return 1;
+
 	IXMLDOMNode *pNode = NULL;
 	BSTR bstrXPath = strXPath.AllocSysString();
-    HRESULT hr = m_pXMLDom->selectSingleNode(bstrXPath, &pNode);
-    SysFreeString(bstrXPath);
+	HRESULT hr = m_pXMLDom->selectSingleNode(bstrXPath, &pNode);
+	SysFreeString(bstrXPath);
 	if (hr != S_OK){
 		return 1;}
 

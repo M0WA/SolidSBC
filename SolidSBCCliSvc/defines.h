@@ -16,7 +16,11 @@
 
 //define to search for test dlls 
 //in build directories in release version 
-#define _DEBUG_RELEASE_DLL 0
+#define _DEBUG_TEST_DLL_BUILD_DIRECTORY 0
+
+//define to see extra logging messages
+//concerning test-dlls
+#define _DEBUG_TEST_DLL_OUTPUT          0
 
 typedef struct {
 	BOOL    bAutoStart;

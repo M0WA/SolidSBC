@@ -58,6 +58,8 @@ void InitDatabase(SSBC_DB_TYPE type)
 	switch(type)
 	{
 	case SSBC_DB_TYPE_MYSQL:
+		//TODO: this pointer will not be deleted on exit
+		//and causes memory to leak
 		g_pDatabase = (CSolidSBCResultDBConnector*) new CSolidSBCResultDBConnectorMySQL();
 		break;
 	default:
