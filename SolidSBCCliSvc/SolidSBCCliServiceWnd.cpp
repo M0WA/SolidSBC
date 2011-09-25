@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 #include "SolidSBCCliServiceWnd.h"
 
+#include <time.h>
+
 CMutex g_cSvcLogMutex;
 CString g_strImagePath;
 
@@ -16,42 +18,44 @@ int CSolidSBCCliServiceWnd::LogServiceMessage( CString strMessage, SSBC_CLISVC_L
 {
 	USES_CONVERSION;
 
-	_tzset();
-	char tmpTime[9];
-	ZeroMemory(tmpTime,9);
-    _strtime_s(tmpTime, 9 );
-	CString strTime;
-	strTime.Format( _T("%s\t"), A2T(tmpTime) );
+	time_t rawtime;
+	time(&rawtime);
+	struct tm timeinfo;
+	localtime_s( &timeinfo, &rawtime );
+
+	TCHAR pszTime[256];
+	memset(pszTime,0,256);
+	_tcsftime(pszTime,256,_T("%d/%m/%y-%H:%m:%S "),&timeinfo);
 
 	switch ( nType ) {
 
 		case SSBC_CLISVC_LOGMSG_TYPE_ERROR:
-			strMessage = _T("[ERROR]\t") + strMessage;
+			strMessage = _T("[ERROR] ") + strMessage;
 			break;
 
 		case SSBC_CLISVC_LOGMSG_TYPE_WARN:
-			strMessage = _T("[WARN]\t") + strMessage;
+			strMessage = _T("[WARN]  ") + strMessage;
 			break;
 
 		case SSBC_CLISVC_LOGMSG_TYPE_INFO:
-			strMessage = _T("[INFO]\t") + strMessage;
+			strMessage = _T("[INFO]  ") + strMessage;
 			break;
 
 #ifdef _DEBUG
 		case SSBC_CLISVC_LOGMSG_TYPE_DEBUG:
-			strMessage = _T("[DEBUG]\t") + strMessage;
+			strMessage = _T("[DEBUG] ") + strMessage;
 			break;
 
 		case SSBC_CLISVC_LOGMSG_TYPE_DEBUG_BREAK:
-			strMessage = _T("[DEBUG_BREAK]\t") + strMessage;
+			strMessage = _T("[DEBUG_BREAK] ") + strMessage;
 			break;
 #endif
 
 		default:
-			strMessage = _T("[UNKNW]\t") + strMessage;
+			strMessage = _T("[UNKNW] ") + strMessage;
 			break;
 	}
-	strMessage = strTime + strMessage;
+	strMessage = pszTime + strMessage;
 	strMessage += _T("\r\n");
 
 	char* pczMsg = T2A(strMessage);
