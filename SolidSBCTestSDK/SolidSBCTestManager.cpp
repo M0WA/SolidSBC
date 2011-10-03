@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "SolidSBCTestManager.h"
 
+#include <stdio.h>
+
 using namespace std;
 
 CSolidSBCTestManager::CSolidSBCTestManager(void)
@@ -85,7 +87,9 @@ int CSolidSBCTestManager::StartTest(const std::string& sXML)
 	if( !pThread )
 		return 1;
 
-	pThread->StartThread(m_mapTestConfigs[std::string(T2A(strTestName))]);
+	CSolidSBCTestConfig* pConfig = m_mapTestConfigs[std::string(T2A(strTestName))];
+	pConfig->SetXml(A2T(sXML.c_str()));
+	pThread->StartThread(pConfig);
 	m_vecRunningTests.push_back(pThread);
 	return 0;
 }

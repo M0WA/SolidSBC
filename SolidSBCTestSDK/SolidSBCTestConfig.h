@@ -22,6 +22,7 @@ public:
 
 	inline CString GetTestName(void) { return m_strTestname; };
 	CString GenerateXML(void);
+	void SetXml(const CString& strXml) { m_strXml = strXml; Init(); };
 
 	static CString GetTestNameFromXML(const CString& strXml);
 
