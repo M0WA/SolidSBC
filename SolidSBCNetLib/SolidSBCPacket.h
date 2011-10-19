@@ -33,6 +33,9 @@ public:
 
 		//allocate memory for packet
 		int nBufferSize = header.nPacketSize+10;
+		if ( nBufferSize < 0 || nBufferSize > 5000 || header.nType <= SSBC_PACKET_TYPE_UNKNOWN || header.nType >= SSBC_PACKET_TYPE_MAX)
+			return NULL;
+
 		PBYTE pPacket = new BYTE[nBufferSize];
 		ZeroMemory(pPacket,nBufferSize);
 		memcpy(pPacket,&header,header.nPacketSize);

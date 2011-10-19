@@ -76,6 +76,9 @@ CString CSolidSBCTestConfig::GetTestNameFromXML(const CString& strXml)
 
 void CSolidSBCTestConfig::Init(void)
 {	
+	if(m_pXmlFile)
+		delete m_pXmlFile;
+
 	if ( m_strXml != _T("") ) {
 		m_pXmlFile = new CSolidSBCXMLFile(m_strXml); }
 	else {
