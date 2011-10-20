@@ -50,6 +50,7 @@ private:
 	bool IsServiceInstalled(void);
 	bool IsServiceRunning(void);
 	void MakeButtonStates(void);
+	bool StartStopClientService(bool bStart);
 
 	CString GetLogFileName(void);
 	CString GetSettingsFileName(void);

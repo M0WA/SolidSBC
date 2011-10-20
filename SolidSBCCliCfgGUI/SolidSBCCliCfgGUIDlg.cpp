@@ -205,23 +205,13 @@ HCURSOR CSolidSBCCliCfgGUIDlg::OnQueryDragIcon()
 
 void CSolidSBCCliCfgGUIDlg::OnBnClickedStartButton()
 {
-	CString strCmd = _T("");
-	strCmd.Format(_T("sc start %s & pause"),SSBC_CLISVC_NAME);
-
-	USES_CONVERSION;
-	system(T2A(strCmd));
-
+	StartStopClientService(true);
 	MakeButtonStates();
 }
 
 void CSolidSBCCliCfgGUIDlg::OnBnClickedStopButton()
 {
-	CString strCmd = _T("");
-	strCmd.Format(_T("sc stop %s & pause"),SSBC_CLISVC_NAME);
-
-	USES_CONVERSION;
-	system(T2A(strCmd));
-
+	StartStopClientService(false);
 	MakeButtonStates();
 }
 
@@ -512,7 +502,6 @@ void CSolidSBCCliCfgGUIDlg::MakeButtonStates(void)
 
 bool CSolidSBCCliCfgGUIDlg::IsServiceRunning(void)
 {
-	
 	SC_HANDLE schSCManager;
     SC_HANDLE schService;
 
@@ -555,6 +544,51 @@ bool CSolidSBCCliCfgGUIDlg::IsServiceRunning(void)
 	} else {
 		return FALSE;
 	}
+}
+
+bool CSolidSBCCliCfgGUIDlg::StartStopClientService(bool bStart)
+{
+	SC_HANDLE schSCManager;
+    SC_HANDLE schService;
+
+    // Get a handle to the SCM database. 
+    schSCManager = OpenSCManager( 
+        NULL,                    // local computer
+        NULL,                    // ServicesActive database 
+        SC_MANAGER_ALL_ACCESS);  // full access rights 
+ 
+    if (NULL == schSCManager) 
+    {
+        return false;
+    }
+
+    // Get a handle to the service.
+    schService = OpenService( 
+        schSCManager,						// SCM database 
+        SSBC_CLISVC_NAME,					// name of service 
+        SERVICE_ALL_ACCESS);				// full access 
+ 
+    if (schService == NULL)
+    { 
+        CloseServiceHandle(schSCManager);
+        return false;
+    }
+
+	if(bStart)
+	{
+		return !StartService(schService, 0, 0);
+	}
+	else
+	{
+		SERVICE_STATUS ss;
+
+  		if( !::ControlService( schService, SERVICE_CONTROL_STOP, &ss ) )
+  		{
+			return false;
+  		}
+	}
+
+	return true;
 }
 
 void CSolidSBCCliCfgGUIDlg::OnCancel()
