@@ -33,7 +33,10 @@ public:
 
 		//allocate memory for packet
 		int nBufferSize = header.nPacketSize+10;
-		if ( nBufferSize < 0 || nBufferSize > 5000 || header.nType <= SSBC_PACKET_TYPE_UNKNOWN || header.nType >= SSBC_PACKET_TYPE_MAX)
+
+		//TODO: make a more useful test here to
+		//      ensure packet is ok.
+		if ( nBufferSize < 0 || nBufferSize > 5000)
 			return NULL;
 
 		PBYTE pPacket = new BYTE[nBufferSize];
