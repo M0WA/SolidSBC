@@ -76,7 +76,7 @@ UINT SolidSBCNetPingTest(LPVOID lpParam)
 
 					CSolidSBCNetPingResult* pResult = new CSolidSBCNetPingResult();
 					pResult->SetDuration( pEchoReply->RoundTripTime );
-
+					pResult->SetICMPOpts( (ULONGLONG)pEchoReply->Status );
 					CSolidSBCTestThread::AddResult( pParam, (CSolidSBCTestResult*) pResult );
 				}
 			}
