@@ -235,11 +235,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="SolidSBCClientConfigProfile.cpp" />
-    <ClCompile Include="SolidSBCProfileEditorDlg.cpp" />
     <ClCompile Include="SolidSBCConfigFile.cpp" />
-    <ClCompile Include="SolidSBCProfileListCtrl.cpp" />
-    <ClCompile Include="SolidSBCProfileListEditCtrl.cpp" />
     <ClCompile Include="SolidSBCSrvCfgGUI.cpp" />
     <ClCompile Include="SolidSBCSrvCfgGUIDlg.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -251,12 +247,8 @@
     <ClCompile Include="XMLFile.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SolidSBCClientConfigProfile.h" />
-    <ClInclude Include="SolidSBCProfileEditorDlg.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SolidSBCConfigFile.h" />
-    <ClInclude Include="SolidSBCProfileListCtrl.h" />
-    <ClInclude Include="SolidSBCProfileListEditCtrl.h" />
     <ClInclude Include="SolidSBCSrvCfgGUI.h" />
     <ClInclude Include="SolidSBCSrvCfgGUIDlg.h" />
     <ClInclude Include="stdafx.h" />

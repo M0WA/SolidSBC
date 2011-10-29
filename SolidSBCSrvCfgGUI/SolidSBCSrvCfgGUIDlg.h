@@ -5,7 +5,6 @@
 #pragma once
 #include "afxcmn.h"
 #include "afxwin.h"
-#include "SolidSBCProfileEditorDlg.h"
 
 
 // CSolidSBCSrvCfgGUIDlg dialog
@@ -42,7 +41,6 @@ protected:
 	afx_msg void OnBnClickedOpenServerDirButton();
 	afx_msg void OnBnClickedApplySettingsButton();
 	afx_msg void OnBnClickedEditConfigButton();
-	afx_msg void OnBnClickedProfileEditorButton();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	DECLARE_MESSAGE_MAP()
 
@@ -51,6 +49,7 @@ private:
 	bool IsServiceRunning(void);
 	void MakeButtonStates(void);
 	bool StartStopClientService(bool bStart);
+	bool ExecuteCmd(const CString& sBinaryPathName, const CString& sCommandline);
 
 	CString GetLogFileName(void);
 	CString GetSettingsFileName(void);
@@ -66,7 +65,6 @@ private:
 	CEdit m_ctlDBNameEdit;
 	CEdit m_ctlDBUserEdit;
 	CEdit m_ctlDBPassEdit;
-	CSolidSBCProfileEditorDlg* m_pProfileEditor;
 	CButton m_ctlInstallServiceButton;
 	CButton m_ctlDeleteServiceButton;
 	CButton m_ctlStartServiceButton;

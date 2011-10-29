@@ -39,7 +39,6 @@
 
 #include "..\SolidSBCSrvSvc\defines.h"
 #include "SolidSBCConfigFile.h"
-#include "SolidSBCClientConfigProfile.h"
 
 
 #ifdef _UNICODE

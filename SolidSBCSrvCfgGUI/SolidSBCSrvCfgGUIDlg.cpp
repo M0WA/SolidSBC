@@ -49,7 +49,6 @@ END_MESSAGE_MAP()
 
 CSolidSBCSrvCfgGUIDlg::CSolidSBCSrvCfgGUIDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CSolidSBCSrvCfgGUIDlg::IDD, pParent)
-	, m_pProfileEditor(NULL)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -70,7 +69,6 @@ void CSolidSBCSrvCfgGUIDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STOP_BUTTON, m_ctlStopServiceButton);
 	DDX_Control(pDX, IDC_OPEN_SERVER_DIR_BUTTON, m_ctlOpenDirButton);
 	DDX_Control(pDX, IDC_EDIT_CONFIG_BUTTON, m_ctlEditConfigButton);
-	DDX_Control(pDX, IDC_PROFILE_EDITOR_BUTTON, m_ctlProfileEditorButton);
 	DDX_Control(pDX, IDC_LOG_STATIC, m_ctlLogStatic);
 }
 
@@ -87,7 +85,6 @@ BEGIN_MESSAGE_MAP(CSolidSBCSrvCfgGUIDlg, CDialog)
 	ON_BN_CLICKED(IDC_OPEN_SERVER_DIR_BUTTON, &CSolidSBCSrvCfgGUIDlg::OnBnClickedOpenServerDirButton)
 	ON_BN_CLICKED(IDC_APPLY_SETTINGS_BUTTON, &CSolidSBCSrvCfgGUIDlg::OnBnClickedApplySettingsButton)
 	ON_BN_CLICKED(IDC_EDIT_CONFIG_BUTTON, &CSolidSBCSrvCfgGUIDlg::OnBnClickedEditConfigButton)
-	ON_BN_CLICKED(IDC_PROFILE_EDITOR_BUTTON, &CSolidSBCSrvCfgGUIDlg::OnBnClickedProfileEditorButton)
 	ON_WM_CLOSE()
 	ON_WM_SIZE()
 END_MESSAGE_MAP()
@@ -230,11 +227,16 @@ void CSolidSBCSrvCfgGUIDlg::OnBnClickedStopButton()
 
 void CSolidSBCSrvCfgGUIDlg::OnBnClickedInstallButton()
 {
+	/*
+	CString sBinary;
+	sBinary.Format(_T("%s\\SolidSBCSrvSvc.exe"),GetFilePath());
+	ExecuteCmd(sBinary,_T("/install"));
+	*/
+
 	USES_CONVERSION;
 	CString strCmd;
 	strCmd.Format(_T("\"%s\\SolidSBCSrvSvc.exe\" /install"),GetFilePath());
 	system(T2A(strCmd));
-	
 	MakeButtonStates();
 }
 
@@ -311,13 +313,6 @@ CString CSolidSBCSrvCfgGUIDlg::GetLogFileName(void)
 BOOL CSolidSBCSrvCfgGUIDlg::DestroyWindow()
 {
 	KillTimer(m_nTimer);
-	
-	if ( m_pProfileEditor ){
-		m_pProfileEditor->DestroyWindow();
-		delete m_pProfileEditor;
-	}
-	m_pProfileEditor = NULL;
-
 	return CDialog::DestroyWindow();
 }
 
@@ -384,18 +379,6 @@ void CSolidSBCSrvCfgGUIDlg::OnBnClickedEditConfigButton()
 	strCmd.Format(_T("notepad \"%s\""),GetSettingsFileName());
 	USES_CONVERSION;
 	system(T2A(strCmd));
-}
-
-void CSolidSBCSrvCfgGUIDlg::OnBnClickedProfileEditorButton()
-{
-	if ( !m_pProfileEditor ){
-		m_pProfileEditor = new CSolidSBCProfileEditorDlg();
-		m_pProfileEditor->Create( IDD_PROFILE_EDITOR_DIALOG, (CWnd*)this );
-	} 
-
-	m_pProfileEditor->ShowWindow(SW_NORMAL);
-	m_pProfileEditor->UpdateWindow();
-	m_pProfileEditor->SetFocus();
 }
 
 bool CSolidSBCSrvCfgGUIDlg::IsServiceInstalled(void)
@@ -620,4 +603,39 @@ bool CSolidSBCSrvCfgGUIDlg::StartStopClientService(bool bStart)
 	}
 
 	return true;
+}
+
+bool CSolidSBCSrvCfgGUIDlg::ExecuteCmd(const CString& sBinaryPathName, const CString& sCommandline)
+{
+	PROCESS_INFORMATION processInformation;
+    STARTUPINFO startupInfo;
+    memset(&processInformation, 0, sizeof(processInformation));
+    memset(&startupInfo, 0, sizeof(startupInfo));
+    startupInfo.cb = sizeof(startupInfo);
+
+	BOOL result;
+	TCHAR tempCmdLine[MAX_PATH * 2];  //Needed since CreateProcessW may change the contents of CmdLine
+	memset(tempCmdLine,0,sizeof(TCHAR)*MAX_PATH * 2);
+    if (sCommandline != "")
+    {
+        _tcscpy_s(tempCmdLine, MAX_PATH *2, sCommandline);
+        result = ::CreateProcess(sBinaryPathName, tempCmdLine, NULL, NULL, FALSE, CREATE_NO_WINDOW, NULL, NULL, &startupInfo, &processInformation);
+    }
+    else
+    {
+        result = ::CreateProcess(sBinaryPathName, tempCmdLine, NULL, NULL, FALSE, CREATE_NO_WINDOW, NULL, NULL, &startupInfo, &processInformation);
+    }
+
+	if (result == 0)
+    {
+       return false;
+    }
+    else
+    {
+        WaitForSingleObject( processInformation.hProcess, INFINITE );
+        CloseHandle( processInformation.hProcess );
+        CloseHandle( processInformation.hThread );
+    }
+
+	return result ? true : false;
 }
