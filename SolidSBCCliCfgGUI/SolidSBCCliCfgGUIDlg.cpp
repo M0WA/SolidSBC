@@ -635,3 +635,38 @@ void CSolidSBCCliCfgGUIDlg::OnSize(UINT nType, int cx, int cy)
 		m_nOldY = cy;
 	}
 }
+
+bool CSolidSBCCliCfgGUIDlg::ExecuteCmd(const CString& sBinaryPathName, const CString& sCommandline)
+{
+	PROCESS_INFORMATION processInformation;
+    STARTUPINFO startupInfo;
+    memset(&processInformation, 0, sizeof(processInformation));
+    memset(&startupInfo, 0, sizeof(startupInfo));
+    startupInfo.cb = sizeof(startupInfo);
+
+	BOOL result;
+	TCHAR tempCmdLine[MAX_PATH * 2];  //Needed since CreateProcessW may change the contents of CmdLine
+	memset(tempCmdLine,0,sizeof(TCHAR)*MAX_PATH * 2);
+    if (sCommandline != "")
+    {
+        _tcscpy_s(tempCmdLine, MAX_PATH *2, sCommandline);
+        result = ::CreateProcess(sBinaryPathName, tempCmdLine, NULL, NULL, FALSE, NORMAL_PRIORITY_CLASS, NULL, NULL, &startupInfo, &processInformation);
+    }
+    else
+    {
+        result = ::CreateProcess(sBinaryPathName, tempCmdLine, NULL, NULL, FALSE, NORMAL_PRIORITY_CLASS, NULL, NULL, &startupInfo, &processInformation);
+    }
+
+	if (result == 0)
+    {
+       return false;
+    }
+    else
+    {
+        WaitForSingleObject( processInformation.hProcess, INFINITE );
+        CloseHandle( processInformation.hProcess );
+        CloseHandle( processInformation.hThread );
+    }
+
+	return result ? true : false;
+}

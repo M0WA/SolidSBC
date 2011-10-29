@@ -22,8 +22,6 @@ END_MESSAGE_MAP()
 
 CSolidSBCSrvCfgGUIApp::CSolidSBCSrvCfgGUIApp()
 {
-	// TODO: add construction code here,
-	// Place all significant initialization in InitInstance
 }
 
 

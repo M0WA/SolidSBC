@@ -45,6 +45,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
+	bool ExecuteCmd(const CString& sBinaryPathName, const CString& sCommandline);
 	bool IsServiceInstalled(void);
 	bool IsServiceRunning(void);
 	void MakeButtonStates(void);
