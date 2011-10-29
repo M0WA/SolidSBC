@@ -95,7 +95,7 @@ int CSolidSBCClient::StartResultConnection(SOCKADDR_IN target)
 int CSolidSBCClient::SendTestResult(CSolidSBCTestResult* pResult)
 {
 	if ( !m_bIsInitialized )
-		return 1;
+		return -1;
 	
 	return m_cCliResultSocket.SendTestResultPacket(pResult);
 }

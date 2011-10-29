@@ -62,7 +62,7 @@ int CSolidSBCCliResultSocket::SendTestResultPacket(CSolidSBCTestResult* pResult)
 #endif
 
 	delete [] pPacketBytes;
-	return nReturn;
+	return nReturn == nPacketSize ? nPacketSize : -1;
 }
 
 int CSolidSBCCliResultSocket::SendResultConnRequest(void)
