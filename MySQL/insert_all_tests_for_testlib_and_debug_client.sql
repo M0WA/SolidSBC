@@ -35,7 +35,8 @@ INSERT INTO `SolidSBC`.`Clients` ( `ID`, `uuid`, `name` )
   ( 1, '374ce507902419b-3ef865b4-490f-aaaf-ceccb44d3b15ca6d3d07419c' , 'MASTERMIND (Win32 Debug)' ),
   ( 2, '3064ab4bf55334ec-79399f0b-4537-ad9d-3ed450c034ad47a079ef223c', 'MASTERMIND (Win64 Debug)' ),
   ( 3, 'c0ce1e50532a1b4c-dc66da3c-4b13-bae2-af1b64896d1662e51a298e1' , 'TOY (Win32 Debug)' ),
-  ( 4, 'c90c38506732b4ef-7ba04d65-4a03-9f45-14113fc1dcea1b848c92d46' , 'VM Ubuntu SolidSBCLinux' );
+  ( 4, '4a7799ef2c58ba0-f0018014-420d-9ef7-2e8cc37413eb8bba99124cb3' , 'TOY (Win64 Debug)' ),
+  ( 5, 'c90c38506732b4ef-7ba04d65-4a03-9f45-14113fc1dcea1b848c92d46' , 'VM Ubuntu SolidSBCLinux' );
 
 -- --------------------------------------------------
 
@@ -63,7 +64,13 @@ INSERT INTO `SolidSBC`.`ClientsConfigs` ( `CLIENT_ID`, `CONFIG_ID` )
   ( 4,7 ),
   ( 4,2 ),
   ( 4,3 ),
-  ( 4,4 );
+  ( 4,4 ),
+  ( 4,5 ),
+  ( 4,6 ),
+  ( 5,7 ),
+  ( 5,2 ),
+  ( 5,3 ),
+  ( 5,4 );
 
 -- --------------------------------------------------
 -- just some test entries, not needed for productional
