@@ -22,8 +22,8 @@ INSERT INTO `SolidSBC`.`Configs` ( `ID`, `xmlConfig` )
   ( 2, '<Test><AdditionCnt>1000</AdditionCnt><AutoFixMultiplier>3</AutoFixMultiplier><DivisionCnt>1000</DivisionCnt><FixMultiplierTreshold>0.5</FixMultiplierTreshold><TestName>CPU-Measure-Test</TestName><TransmitData>1</TransmitData></Test>' ),
   ( 3, '<Test><MaxRand>20</MaxRand><Randomize>1</Randomize><SleepMS>5.000000</SleepMS><TestName>CPU-Test</TestName><ThreadCnt>2</ThreadCnt></Test>' ),
   ( 4, '<Test><RandomRead>1</RandomRead><RandomWrite>1</RandomWrite><ReadMax>10485760</ReadMax><ReadWriteDelay>20</ReadWriteDelay><TestName>Harddrive-Test</TestName><TransmitData>1</TransmitData><WriteMax>10485760</WriteMax></Test>' ),
-  ( 5, '<Test><Host>127.0.0.1</Host><Interval>60000</Interval><PayloadSize>32</PayloadSize><TTL>1000</TTL><TestName>Net-Ping-Test</TestName><TransmitData>1</TransmitData></Test>' ),
-  ( 6, '<Test><Host>127.0.0.1</Host><Interval>60000</Interval><Port>80</Port><TTL>1000</TTL><TestName>Net-TCP-Test</TestName><TransmitData>1</TransmitData></Test>' ),
+  ( 5, '<Test><Host>ping.mo-sys.de</Host><Interval>30000</Interval><PayloadSize>32</PayloadSize><TTL>1000</TTL><TestName>Net-Ping-Test</TestName><TransmitData>1</TransmitData></Test>' ),
+  ( 6, '<Test><Host>port.mo-sys.de</Host><Interval>30000</Interval><Port>80</Port><TTL>1000</TTL><TestName>Net-TCP-Test</TestName><TransmitData>1</TransmitData></Test>' ),
   
   -- insert non default test
   ( 7, '<Test><MaxMem>4096000</MaxMem><MinMem>1</MinMem><Randomize>1</Randomize><TestName>Memory-Test</TestName><TransmitData>1</TransmitData></Test>' );
@@ -52,8 +52,18 @@ INSERT INTO `SolidSBC`.`ClientsConfigs` ( `CLIENT_ID`, `CONFIG_ID` )
   ( 2,2 ),
   ( 2,3 ),
   ( 2,4 ),
-  ( 3,1 ),
-  ( 4,1 );
+  ( 2,5 ),
+  ( 2,6 ),
+  ( 3,7 ),
+  ( 3,2 ),
+  ( 3,3 ),
+  ( 3,4 ),
+  ( 3,5 ),
+  ( 3,6 ),
+  ( 4,7 ),
+  ( 4,2 ),
+  ( 4,3 ),
+  ( 4,4 );
 
 -- --------------------------------------------------
 -- just some test entries, not needed for productional
