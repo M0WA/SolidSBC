@@ -20,6 +20,10 @@ CSolidSBCTestManager::~CSolidSBCTestManager(void)
 	}
 	m_vecRunningTests.clear();
 
+	//delete all dummy results
+	for(std::map<std::string,CSolidSBCTestResult*>::iterator iIter = m_mapTestResultDataTypes.begin(); iIter != m_mapTestResultDataTypes.end(); iIter++)
+		delete (*iIter).second;
+
 	//delete all configs for tests
 	for( SSBC_CONFIG_MAP_TYPE::iterator iIter = m_mapTestConfigs.begin(); iIter != m_mapTestConfigs.end(); iIter++)	{
 		delete (*iIter).second;	}
@@ -59,7 +63,7 @@ int CSolidSBCTestManager::GetTestNames(std::vector<std::string>& vecTestnames)
 	return (int)vecTestnames.size();
 }
 
-void CSolidSBCTestManager::RegisterTest(AFX_THREADPROC pThreadFunc, CSolidSBCTestConfig* pTestConfig)
+void CSolidSBCTestManager::RegisterTest(AFX_THREADPROC pThreadFunc, CSolidSBCTestConfig* pTestConfig, CSolidSBCTestResult* pTestResult)
 {
 	USES_CONVERSION;
 	std::string sTestName = T2A(pTestConfig->GetTestName());
@@ -72,6 +76,7 @@ void CSolidSBCTestManager::RegisterTest(AFX_THREADPROC pThreadFunc, CSolidSBCTes
 	m_vecTestNames.push_back(pairNameFunc);
 	m_mapTestConfigs[sTestName] = pTestConfig;
 	m_mapTestResults[sTestName] = resultContainer;
+	m_mapTestResultDataTypes[sTestName] = pTestResult;
 }
 
 int CSolidSBCTestManager::StartTest(const std::string& sXML)
@@ -170,4 +175,12 @@ bool CSolidSBCTestManager::HasTestName( const std::string& sTestName )
 		if ( (*iIter).first == sTestName )
 			return true;
 	return false;
+}
+
+void CSolidSBCTestManager::GetCreateTableStatements(std::string& sStatement)
+{
+	std::map<std::string,CSolidSBCTestResult*>::iterator iIter = m_mapTestResultDataTypes.begin();
+	for(; iIter != m_mapTestResultDataTypes.end(); iIter++)
+		if( (*iIter).second != NULL )
+			sStatement += (*iIter).second->GetTestDBStructure();
 }

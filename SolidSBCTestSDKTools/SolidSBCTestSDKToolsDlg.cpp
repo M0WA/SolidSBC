@@ -67,6 +67,7 @@ void CSolidSBCTestSDKToolsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TEST_LIST, m_ctlTestList);
 	DDX_Control(pDX, IDC_GENERATE_EMPTY_CONFIG_XML_BUTTON, m_ctlGenerateConfigButton);
 	DDX_Control(pDX, IDC_START_STOP_BUTTON, m_ctlStartStopButton);
+	DDX_Control(pDX, IDC_GENERATE_STUCTURE_BUTTON, m_ctlGenerateDBStructure);
 }
 
 BEGIN_MESSAGE_MAP(CSolidSBCTestSDKToolsDlg, CDialogEx)
@@ -78,6 +79,7 @@ BEGIN_MESSAGE_MAP(CSolidSBCTestSDKToolsDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_GENERATE_EMPTY_CONFIG_XML_BUTTON, &CSolidSBCTestSDKToolsDlg::OnBnClickedGenerateEmptyConfigXmlButton)
 	ON_BN_CLICKED(IDC_START_STOP_BUTTON, &CSolidSBCTestSDKToolsDlg::OnBnClickedStartStopButton)
 	ON_LBN_SELCHANGE(IDC_TEST_LIST, &CSolidSBCTestSDKToolsDlg::OnLbnSelchangeTestList)
+	ON_BN_CLICKED(IDC_GENERATE_STUCTURE_BUTTON, &CSolidSBCTestSDKToolsDlg::OnBnClickedGenerateStuctureButton)
 END_MESSAGE_MAP()
 
 
@@ -114,6 +116,7 @@ BOOL CSolidSBCTestSDKToolsDlg::OnInitDialog()
 
 	m_ctlGenerateConfigButton.EnableWindow(FALSE);
 	m_ctlStartStopButton.EnableWindow(FALSE);
+	m_ctlGenerateDBStructure.EnableWindow(FALSE);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -237,6 +240,18 @@ void CSolidSBCTestSDKToolsDlg::OnLbnSelchangeTestList()
 {
 	m_ctlGenerateConfigButton.EnableWindow(TRUE);
 	m_ctlStartStopButton.EnableWindow(TRUE);
+	m_ctlGenerateDBStructure.EnableWindow(TRUE);
+}
+
+bool CSolidSBCTestSDKToolsDlg::LoadTestLibrary()
+{
+	CString sDllFilename;
+	m_cDllFileName.GetWindowText(sDllFilename);
+	m_hTestLibrary = LoadLibrary(sDllFilename);
+
+	if(!m_hTestLibrary)
+		return false;
+	return true;
 }
 
 CSolidSBCTestManager* CSolidSBCTestSDKToolsDlg::GetTestManager()
@@ -288,15 +303,17 @@ bool CSolidSBCTestSDKToolsDlg::GetTestNames(std::vector<CString>& vecNames)
 	return true;
 }
 
-bool CSolidSBCTestSDKToolsDlg::LoadTestLibrary()
+void CSolidSBCTestSDKToolsDlg::OnBnClickedGenerateStuctureButton()
 {
-	CString sDllFilename;
-	m_cDllFileName.GetWindowText(sDllFilename);
-	m_hTestLibrary = LoadLibrary(sDllFilename);
+	USES_CONVERSION;
+	CSolidSBCTestManager* pManager = GetTestManager();
+	if( !pManager )
+		return;
 
-	if(!m_hTestLibrary)
-		return false;
-	return true;
+	std::string sCreateTableStatements = "";
+	pManager->GetCreateTableStatements(sCreateTableStatements);
+	CXMLDlg xmlDlg(A2T(sCreateTableStatements.c_str()));
+	xmlDlg.DoModal();
 }
 
 bool CSolidSBCTestSDKToolsDlg::UnloadTestLibrary()

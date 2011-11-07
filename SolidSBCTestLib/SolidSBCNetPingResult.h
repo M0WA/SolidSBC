@@ -5,7 +5,7 @@
 class CSolidSBCNetPingResult : CSolidSBCTestResult
 {
 public:
-	CSolidSBCNetPingResult(void) : CSolidSBCTestResult("testLib_NetPingResults") {};
+	CSolidSBCNetPingResult(void);
 
 	ULONG GetDuration(void);
 	inline void SetDuration(ULONG ullDuration) { SetKeyValue( "rtt_duration", ullDuration); }

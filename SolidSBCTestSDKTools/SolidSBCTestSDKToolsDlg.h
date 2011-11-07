@@ -50,4 +50,8 @@ private:
 	CEdit    m_cDllFileName;
 	CListBox m_ctlTestList;
 	HMODULE  m_hTestLibrary;
+public:
+	afx_msg void OnBnClickedGenerateStuctureButton();
+private:
+	CButton m_ctlGenerateDBStructure;
 };

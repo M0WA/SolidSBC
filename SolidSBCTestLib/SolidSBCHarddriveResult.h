@@ -11,7 +11,7 @@ typedef enum SSBC_TEST_HARDDRIVE_RESULT_TYPE {
 class CSolidSBCHarddriveResult : CSolidSBCTestResult
 {
 public:
-	CSolidSBCHarddriveResult(void) : CSolidSBCTestResult("testLib_HDResults") {};
+	CSolidSBCHarddriveResult(void);
 	
 	DOUBLE GetDuration(void);
 	inline void SetDuration(DOUBLE dDuration) { SetKeyValue( "duration", dDuration); }

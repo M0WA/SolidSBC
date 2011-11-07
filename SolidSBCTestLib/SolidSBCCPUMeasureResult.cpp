@@ -1,6 +1,15 @@
 #include "StdAfx.h"
 #include "SolidSBCCPUMeasureResult.h"
 
+CSolidSBCCPUMeasureResult::CSolidSBCCPUMeasureResult(void) : CSolidSBCTestResult("testLib_CPUMeasureResults") 
+{
+	RegisterAttributeDataType("addduration", DB_DOUBLE);
+	RegisterAttributeDataType("divduration", DB_DOUBLE);
+	RegisterAttributeDataType("overallduration", DB_DOUBLE);
+	RegisterAttributeDataType("addmultiplier", DB_UINT64);
+	RegisterAttributeDataType("divmultiplier", DB_UINT64);
+}
+
 DOUBLE CSolidSBCCPUMeasureResult::GetAddDuration(void)
 {
 	std::string sKey = "addduration";

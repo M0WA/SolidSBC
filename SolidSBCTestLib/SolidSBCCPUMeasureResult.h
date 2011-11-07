@@ -5,7 +5,7 @@
 class CSolidSBCCPUMeasureResult : CSolidSBCTestResult
 {
 public:
-	CSolidSBCCPUMeasureResult(void) : CSolidSBCTestResult("testLib_CPUMeasureResults") {};
+	CSolidSBCCPUMeasureResult(void);
 
 	DOUBLE GetAddDuration(void);
 	inline void SetAddDuration(DOUBLE dAddDuration) { SetKeyValue( "addduration", dAddDuration); }

@@ -8,6 +8,12 @@
 #include "SolidSBCNetTcpConfig.h"
 #include "SolidSBCNetPingConfig.h"
 
+#include "SolidSBCCPUMeasureResult.h"
+#include "SolidSBCMemoryResult.h"
+#include "SolidSBCHarddriveResult.h"
+#include "SolidSBCNetPingResult.h"
+#include "SolidSBCNetTcpResult.h"
+
 #include "SolidSBCCPUTest.h"
 #include "SolidSBCCPUMeasureTest.h"
 #include "SolidSBCMemoryTest.h"
@@ -20,10 +26,10 @@ CSolidSBCTestManagerImpl::CSolidSBCTestManagerImpl(void)
 : CSolidSBCTestManager()
 {
 	//add tests that are available in this library
-	RegisterTest( &SolidSBCCPUTest        , new CSolidSBCCPUConfig()        );
-	RegisterTest( &SolidSBCCPUMeasureTest , new CSolidSBCCPUMeasureConfig() );
-	RegisterTest( &SolidSBCMemoryTest     , new CSolidSBCMemoryConfig()     );
-	RegisterTest( &SolidSBCHarddriveTest  , new CSolidSBCHarddriveConfig()  );
-	RegisterTest( &SolidSBCNetTcpTest     , new CSolidSBCNetTcpConfig()     );
-	RegisterTest( &SolidSBCNetPingTest    , new CSolidSBCNetPingConfig()    );
+	RegisterTest( &SolidSBCCPUTest        , new CSolidSBCCPUConfig()       , NULL );
+	RegisterTest( &SolidSBCCPUMeasureTest , new CSolidSBCCPUMeasureConfig(), (CSolidSBCTestResult*)new CSolidSBCCPUMeasureResult() );
+	RegisterTest( &SolidSBCMemoryTest     , new CSolidSBCMemoryConfig()    , (CSolidSBCTestResult*)new CSolidSBCMemoryResult()     );
+	RegisterTest( &SolidSBCHarddriveTest  , new CSolidSBCHarddriveConfig() , (CSolidSBCTestResult*)new CSolidSBCHarddriveResult()  );
+	RegisterTest( &SolidSBCNetTcpTest     , new CSolidSBCNetTcpConfig()    , (CSolidSBCTestResult*)new CSolidSBCNetTcpResult()     );
+	RegisterTest( &SolidSBCNetPingTest    , new CSolidSBCNetPingConfig()   , (CSolidSBCTestResult*)new CSolidSBCNetPingResult()    );
 }

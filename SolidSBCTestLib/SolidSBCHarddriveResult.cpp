@@ -1,6 +1,15 @@
 #include "StdAfx.h"
 #include "SolidSBCHarddriveResult.h"
 
+CSolidSBCHarddriveResult::CSolidSBCHarddriveResult(void) 
+: CSolidSBCTestResult("testLib_HDResults") 
+{
+	RegisterAttributeDataType("duration",DB_DOUBLE);
+	RegisterAttributeDataType("amountbytes",DB_UINT32);
+	RegisterAttributeDataType("wait",DB_UINT32);
+	RegisterAttributeDataType("resulttype",DB_UINT16);
+}
+
 DOUBLE CSolidSBCHarddriveResult::GetDuration(void)
 {
 	DOUBLE dValue = 0.0;

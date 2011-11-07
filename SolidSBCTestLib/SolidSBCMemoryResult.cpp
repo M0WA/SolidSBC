@@ -1,6 +1,13 @@
 #include "StdAfx.h"
 #include "SolidSBCMemoryResult.h"
 
+CSolidSBCMemoryResult::CSolidSBCMemoryResult(void)
+: CSolidSBCTestResult("testLib_MemoryResults")
+{
+	RegisterAttributeDataType("malloczeroduration", DB_DOUBLE);
+	RegisterAttributeDataType("bytes", DB_UINT32);
+}
+
 DOUBLE CSolidSBCMemoryResult::GetMallocZeroDuration(void)
 {
 	std::string sKey = "malloczeroduration";

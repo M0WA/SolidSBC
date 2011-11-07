@@ -5,9 +5,8 @@
 class CSolidSBCNetTcpResult : CSolidSBCTestResult
 {
 public:
-	CSolidSBCNetTcpResult(void) : CSolidSBCTestResult("testLib_NetTCPResults") {};
+	CSolidSBCNetTcpResult(void);
 	
 	DOUBLE GetDuration(void);
 	inline void SetDuration(DOUBLE dDuration) { SetKeyValue( "handshake_duration", dDuration); }
 };
-

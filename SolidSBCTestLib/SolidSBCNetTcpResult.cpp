@@ -1,6 +1,12 @@
 #include "StdAfx.h"
 #include "SolidSBCNetTcpResult.h"
 
+CSolidSBCNetTcpResult::CSolidSBCNetTcpResult(void)
+: CSolidSBCTestResult("testLib_NetTCPResults") 
+{
+	RegisterAttributeDataType("handshake_duration", DB_DOUBLE);
+}
+
 DOUBLE CSolidSBCNetTcpResult::GetDuration(void)
 {
 	DOUBLE dValue = 0.0;
