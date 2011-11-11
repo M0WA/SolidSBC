@@ -196,6 +196,9 @@ void CSolidSBCTestSDKToolsDlg::OnBnClickedLoadDllfileButton()
 	std::vector<std::string>::iterator iIter = vecTestNames.begin();
 	for(; iIter != vecTestNames.end(); iIter++)
 		m_ctlTestList.AddString(CString((*iIter).c_str()));
+
+	if(vecTestNames.size())
+		m_ctlGenerateDBStructure.EnableWindow(TRUE);
 }
 
 void CSolidSBCTestSDKToolsDlg::OnBnClickedGenerateEmptyConfigXmlButton()
