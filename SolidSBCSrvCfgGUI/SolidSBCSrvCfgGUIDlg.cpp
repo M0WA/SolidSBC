@@ -83,7 +83,6 @@ BEGIN_MESSAGE_MAP(CSolidSBCSrvCfgGUIDlg, CDialog)
 	ON_BN_CLICKED(IDC_DELETE_BUTTON, &CSolidSBCSrvCfgGUIDlg::OnBnClickedDeleteButton)
 	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_OPEN_SERVER_DIR_BUTTON, &CSolidSBCSrvCfgGUIDlg::OnBnClickedOpenServerDirButton)
-	ON_BN_CLICKED(IDC_APPLY_SETTINGS_BUTTON, &CSolidSBCSrvCfgGUIDlg::OnBnClickedApplySettingsButton)
 	ON_BN_CLICKED(IDC_EDIT_CONFIG_BUTTON, &CSolidSBCSrvCfgGUIDlg::OnBnClickedEditConfigButton)
 	ON_WM_CLOSE()
 	ON_WM_SIZE()
@@ -541,25 +540,11 @@ void CSolidSBCSrvCfgGUIDlg::OnSize(UINT nType, int cx, int cy)
 		nNewWidth  = (wndCtrlRect.right  - wndCtrlRect.left);
 		nNewHeight = (wndCtrlRect.bottom - wndCtrlRect.top );
 		m_ctlEditConfigButton.SetWindowPos(NULL,wndCtrlRect.left,wndCtrlRect.top, nNewWidth, nNewHeight,0);
-		
-		m_ctlProfileEditorButton.GetWindowRect(&wndCtrlRect);
-		ScreenToClient(&wndCtrlRect);
-		wndCtrlRect.top    += nYDiff;
-		wndCtrlRect.bottom += nYDiff;
-		nNewWidth  = (wndCtrlRect.right  - wndCtrlRect.left);
-		nNewHeight = (wndCtrlRect.bottom - wndCtrlRect.top );
-		m_ctlProfileEditorButton.SetWindowPos(NULL,wndCtrlRect.left,wndCtrlRect.top, nNewWidth, nNewHeight,0);
 
 		m_nOldX = cx;
 		m_nOldY = cy;
 	}
 }
-
-void CSolidSBCSrvCfgGUIDlg::OnBnClickedApplySettingsButton()
-{
-}
-
-
 
 bool CSolidSBCSrvCfgGUIDlg::StartStopClientService(bool bStart)
 {

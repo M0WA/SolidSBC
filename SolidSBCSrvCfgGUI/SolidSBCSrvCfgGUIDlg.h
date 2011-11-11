@@ -39,7 +39,6 @@ protected:
 	afx_msg void OnBnClickedDeleteButton();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnBnClickedOpenServerDirButton();
-	afx_msg void OnBnClickedApplySettingsButton();
 	afx_msg void OnBnClickedEditConfigButton();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	DECLARE_MESSAGE_MAP()
@@ -71,7 +70,6 @@ private:
 	CButton m_ctlStopServiceButton;
 	CButton m_ctlOpenDirButton;
 	CButton m_ctlEditConfigButton;
-	CButton m_ctlProfileEditorButton;
 	CStatic m_ctlLogStatic;
 	CString m_strLogFileContent;
 	RECT    m_rectLogEdit;
