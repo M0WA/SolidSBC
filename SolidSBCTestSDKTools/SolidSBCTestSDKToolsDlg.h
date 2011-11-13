@@ -54,4 +54,6 @@ public:
 	afx_msg void OnBnClickedGenerateStuctureButton();
 private:
 	CButton m_ctlGenerateDBStructure;
+public:
+	afx_msg void OnBnClickedCreateDatabaseButton();
 };

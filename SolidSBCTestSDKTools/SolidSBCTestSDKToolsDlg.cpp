@@ -80,6 +80,7 @@ BEGIN_MESSAGE_MAP(CSolidSBCTestSDKToolsDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_START_STOP_BUTTON, &CSolidSBCTestSDKToolsDlg::OnBnClickedStartStopButton)
 	ON_LBN_SELCHANGE(IDC_TEST_LIST, &CSolidSBCTestSDKToolsDlg::OnLbnSelchangeTestList)
 	ON_BN_CLICKED(IDC_GENERATE_STUCTURE_BUTTON, &CSolidSBCTestSDKToolsDlg::OnBnClickedGenerateStuctureButton)
+	ON_BN_CLICKED(IDC_CREATE_DATABASE_BUTTON, &CSolidSBCTestSDKToolsDlg::OnBnClickedCreateDatabaseButton)
 END_MESSAGE_MAP()
 
 
@@ -326,4 +327,9 @@ bool CSolidSBCTestSDKToolsDlg::UnloadTestLibrary()
 	FreeLibrary(m_hTestLibrary);
 	m_hTestLibrary = NULL;
 	return true;
+}
+
+void CSolidSBCTestSDKToolsDlg::OnBnClickedCreateDatabaseButton()
+{
+	// TODO: Add your control notification handler code here
 }
