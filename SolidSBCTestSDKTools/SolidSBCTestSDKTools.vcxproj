@@ -202,7 +202,8 @@
     <None Include="res\SolidSBCTestSDKTools.rc2" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="resource.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="Resource.h.old" />
     <ClInclude Include="SolidSBCTestSDKTools.h" />
     <ClInclude Include="SolidSBCTestSDKToolsDlg.h" />
     <ClInclude Include="stdafx.h" />
