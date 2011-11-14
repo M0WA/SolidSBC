@@ -53,7 +53,7 @@ std::string CSolidSBCTestResult::GetTestDBStructure(void)
 	std::stringstream ssCreateTableSQL;
 	ssCreateTableSQL << "\r\nCREATE TABLE `" << m_sTableName << "`";
 	ssCreateTableSQL << "\r\n(";
-	ssCreateTableSQL << "\r\n\t`ID` INT NOT NULL AUTO INCREMENT,";
+	ssCreateTableSQL << "\r\n\t`ID` INT NOT NULL AUTO_INCREMENT,";
 	ssCreateTableSQL << "\r\n\t`CLIENT_ID` INT NOT NULL,";
 
 	int nCount = 0;
@@ -81,15 +81,6 @@ bool CSolidSBCTestResult::DataTypeToString(std::string& strDataType, const DataT
 		break;
 	case DB_INT64:
 		strDataType = "BIGINT";
-		break;
-	case DB_UINT16:
-		strDataType = "UNSIGNED SMALLINT";
-		break;
-	case DB_UINT32:
-		strDataType = "UNSIGNED INT";
-		break;
-	case DB_UINT64:
-		strDataType = "UNSIGNED BIGINT";
 		break;
 	case DB_DOUBLE:
 		strDataType = "DOUBLE";
