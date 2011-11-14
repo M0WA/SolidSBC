@@ -22,6 +22,9 @@
     <None Include="res\SolidSBCTestSDKTools.ico">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="res\create_database.sql" />
+    <None Include="res\create_GetClientName_procedure.sql" />
+    <None Include="res\create_views.sql" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SolidSBCTestSDKTools.h">

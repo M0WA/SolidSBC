@@ -136,7 +136,6 @@ BOOL CSolidSBCTestSDKToolsDlg::OnInitDialog()
 	m_ctlGenerateDBStructure.EnableWindow(FALSE);
 
 	InitDatabase(SSBC_DB_TYPE_MYSQL);
-	m_pDatabase = GetDatabaseConnection();
 	
 	m_ctlDbHostIp.SetWindowText(_T("127.0.0.1"));
 	m_ctlDbPort.SetWindowText(_T("3306"));
@@ -224,7 +223,7 @@ void CSolidSBCTestSDKToolsDlg::OnBnClickedLoadDllfileButton()
 	for(; iIter != vecTestNames.end(); iIter++)
 		m_ctlTestList.AddString(CString((*iIter).c_str()));
 
-	if(vecTestNames.size())
+	if(m_pDatabase && m_ctlTestList.GetCount())
 		m_ctlGenerateDBStructure.EnableWindow(TRUE);
 }
 
@@ -339,11 +338,21 @@ void CSolidSBCTestSDKToolsDlg::OnBnClickedGenerateStuctureButton()
 	CSolidSBCTestManager* pManager = GetTestManager();
 	if( !pManager )
 		return;
-
+	
 	std::string sCreateTableStatements = "";
 	pManager->GetCreateTableStatements(sCreateTableStatements);
-	CXMLDlg xmlDlg(A2T(sCreateTableStatements.c_str()));
-	xmlDlg.DoModal();
+	if(m_pDatabase)
+	{
+		if ( AfxMessageBox(_T("!!! This will delete all test-data in your database !!!\nContinue ?"), MB_YESNO) != IDYES )
+			return;
+		m_pDatabase->ExecStmts(sCreateTableStatements,true);
+	}
+	else
+	{
+#ifdef _DEBUG
+		AfxMessageBox(_T("Please connect to database first..."));
+#endif
+	}
 }
 
 bool CSolidSBCTestSDKToolsDlg::UnloadTestLibrary()
@@ -357,18 +366,100 @@ bool CSolidSBCTestSDKToolsDlg::UnloadTestLibrary()
 
 void CSolidSBCTestSDKToolsDlg::OnBnClickedCreateDatabaseButton()
 {
-	// TODO: Add your control notification handler code here
+	if(m_pDatabase)
+	{	
+		if ( AfxMessageBox(_T("!!! This will delete all data in your database !!!\nContinue ?"), MB_YESNO) != IDYES )
+			return;
+
+		CreateDatabase();
+		CreateGetClientNameProcedure();
+		CreateViews();
+	}
+	else
+	{
+#ifdef _DEBUG
+		AfxMessageBox(_T("Please connect to database first...\n This message should not be shown, because button should be disabled when not connected..."));
+#endif
+	}
 }
 
+void CSolidSBCTestSDKToolsDlg::CreateViews(void)
+{
+	HRSRC hres = FindResource(NULL, MAKEINTRESOURCE(IDR_CREATE_VIEWS_SQL), _T("SQL_FILES"));
+	if(!hres) //does not happen normally ;)
+		return;
+
+	HGLOBAL hbytes = LoadResource(NULL, hres);
+	if(!hbytes)
+		return;
+
+	LPVOID pdata = LockResource(hbytes);
+	if(!pdata)
+		return;
+
+	LPCSTR sXml = (LPCSTR)pdata;
+	std::string sGetCreateViewsSql = sXml;
+
+	m_pDatabase->ExecStmts(sGetCreateViewsSql,true);
+
+	UnlockResource(hbytes);
+	FreeResource(hres);
+}
+
+void CSolidSBCTestSDKToolsDlg::CreateGetClientNameProcedure(void)
+{
+	HRSRC hres = FindResource(NULL, MAKEINTRESOURCE(IDR_CREATE_GETCLIENTNAME_PROCEDURE_SQL), _T("SQL_FILES"));
+	if(!hres) //does not happen normally ;)
+		return;
+
+	HGLOBAL hbytes = LoadResource(NULL, hres);
+	if(!hbytes)
+		return;
+
+	LPVOID pdata = LockResource(hbytes);
+	if(!pdata)
+		return;
+
+	LPCSTR sXml = (LPCSTR)pdata;
+	std::string sGetClientNameSql = sXml;
+
+	m_pDatabase->ExecStmts(sGetClientNameSql,false);
+
+	UnlockResource(hbytes);
+	FreeResource(hres);
+}
+
+void CSolidSBCTestSDKToolsDlg::CreateDatabase(void)
+{
+	HRSRC hres = FindResource(NULL, MAKEINTRESOURCE(IDR_CREATE_DATABASE_SQL), _T("SQL_FILES"));
+	if(!hres) //does not happen normally ;)
+		return;
+
+	HGLOBAL hbytes = LoadResource(NULL, hres);
+	if(!hbytes)
+		return;
+
+	LPVOID pdata = LockResource(hbytes);
+	if(!pdata)
+		return;
+
+	LPCSTR sXml = (LPCSTR)pdata;
+	std::string sCreateDatabaseSql = sXml;
+
+	m_pDatabase->ExecStmts(sCreateDatabaseSql,true);
+
+	UnlockResource(hbytes);
+	FreeResource(hres);
+}
 
 void CSolidSBCTestSDKToolsDlg::OnBnClickedConnectDatabaseButton()
 {
 	CString strHost = _T("");
 	m_ctlDbHostIp.GetWindowText(strHost);
 	
-	/*
-	CEdit m_ctlDbPort;
-	*/
+	CString strPort = _T("");
+	m_ctlDbPort.GetWindowText(strPort);
+	unsigned short nPort = _ttoi(strPort);
 
 	CString strDatabaseName = _T("");
 	m_ctlDbDatabase.GetWindowText(strDatabaseName);
@@ -378,18 +469,38 @@ void CSolidSBCTestSDKToolsDlg::OnBnClickedConnectDatabaseButton()
 
 	CString strPass = _T("");
 	m_ctlDbPass.GetWindowText(strPass);
+
+	CString strButtonText = _T("");
+	m_ctlConnectButton.GetWindowText(strButtonText);
 	
-	m_ctlCreateDatabaseButton.EnableWindow(FALSE);
-	m_pDatabase->Disconnect();
-	m_pDatabase->SetConfig(strHost,3306,strDatabaseName,strUser,strPass);
-	if(!m_pDatabase->Connect())
+	m_pDatabase = GetDatabaseConnection();
+
+	if(strButtonText == _T("Connect"))
 	{
-		AfxMessageBox(_T("error while connecting to database"));
 		m_pDatabase->Disconnect();
+		m_pDatabase->SetConfig(strHost, nPort, strDatabaseName, strUser, strPass);
+		if(!m_pDatabase->Connect())
+		{
+			AfxMessageBox(_T("error while connecting to database"));
+			m_pDatabase->Disconnect();
+			m_pDatabase = 0;
+			m_ctlCreateDatabaseButton.EnableWindow(FALSE);
+			m_ctlGenerateDBStructure.EnableWindow(FALSE);
+		}
+		else
+		{
+			m_ctlConnectButton.SetWindowText(_T("Disconnect"));
+			m_ctlCreateDatabaseButton.EnableWindow(TRUE);
+			if(m_ctlTestList.GetCount())
+				m_ctlGenerateDBStructure.EnableWindow(TRUE);
+		}
 	}
 	else
 	{
-		m_ctlConnectButton.SetWindowText(_T("Disconnect"));
-		m_ctlCreateDatabaseButton.EnableWindow(TRUE);
+			m_pDatabase->Disconnect();
+			m_pDatabase = 0;
+			m_ctlCreateDatabaseButton.EnableWindow(FALSE);
+			m_ctlGenerateDBStructure.EnableWindow(FALSE);
+			m_ctlConnectButton.SetWindowText(_T("Connect"));
 	}
 }

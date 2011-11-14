@@ -49,6 +49,9 @@ private:
 	bool LoadTestLibrary();
 	bool UnloadTestLibrary();
 	bool GetTestNames(std::vector<CString>& vecNames);
+	void CreateDatabase(void);
+	void CreateGetClientNameProcedure(void);
+	void CreateViews(void);
 
 	CButton  m_ctlGenerateConfigButton;
 	CButton  m_ctlStartStopButton;

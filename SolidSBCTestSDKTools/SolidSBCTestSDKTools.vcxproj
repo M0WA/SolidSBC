@@ -198,6 +198,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
+    <None Include="res\create_database.sql" />
+    <None Include="res\create_GetClientName_procedure.sql" />
+    <None Include="res\create_views.sql" />
     <None Include="res\SolidSBCTestSDKTools.ico" />
     <None Include="res\SolidSBCTestSDKTools.rc2" />
   </ItemGroup>
