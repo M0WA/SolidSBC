@@ -126,3 +126,15 @@ int CSolidSBCResultDBConnector::GetNameFromUuidSQLString(const CString& strUuid,
 	*/
 	return 0;
 }
+
+int CSolidSBCResultDBConnector::GetClientsSQLString(CStringArray& arSQLCmds)
+{
+	CString strSQL;
+	strSQL.Format(
+		_T("SELECT `client`.`name`, `client`.`uuid` ")
+		_T("FROM `%s`.`Clients` AS `client` ")
+		, m_strDatabase
+		);
+	arSQLCmds.Add(strSQL);
+	return 0;
+}

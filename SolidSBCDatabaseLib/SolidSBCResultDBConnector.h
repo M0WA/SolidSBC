@@ -32,11 +32,13 @@ public:
 	virtual int GetConfigsForClient(const CString& strClientUUID, std::vector<CString>& vecXmlConfigs)=0;
 	virtual int AddTestResult      (const CString& strClientUUID, const CString& strTestSQL)=0;
 	virtual int AddClientHistory   (const CString& strClientUUID, SSBC_CLIENT_HISTORY_ACTION nAction)=0;
+	virtual int GetClients         (std::vector<std::pair<std::string,std::string > >& vecClients)=0;
 
 protected:
 	int GetAddTestResultSQLString   (const CString& strClientUUID, const CString& strTestSQL, CStringArray& arSQLCmds);
 	int GetAddClientHistorySQLString(const CString& strClientUUID, const SSBC_CLIENT_HISTORY_ACTION nAction, CStringArray& arSQLCmds);
 	int GetConfigsForClientSQLString(const CString& strClientUUID, CStringArray& arSQLCmds);
+	int GetClientsSQLString         (CStringArray& arSQLCmds);
 	
 	////////////////////////////////////////////////////////////////////
 	//

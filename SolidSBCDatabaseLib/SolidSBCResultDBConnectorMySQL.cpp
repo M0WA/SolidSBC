@@ -184,6 +184,8 @@ bool CSolidSBCResultDBConnectorMySQL::ExecStmts(const std::string& sSql, const b
 {
 	USES_CONVERSION;
 
+	m_DBConnMutex.Lock();
+
 	if(bMultipleStmts)
 	{
 		mysql_set_server_option(m_conn,MYSQL_OPTION_MULTI_STATEMENTS_ON);
@@ -217,5 +219,40 @@ bool CSolidSBCResultDBConnectorMySQL::ExecStmts(const std::string& sSql, const b
 	{
 		mysql_set_server_option(m_conn,MYSQL_OPTION_MULTI_STATEMENTS_OFF);
 	}
+
+	m_DBConnMutex.Unlock();
 	return nRet ? true : false; //return true on error
+}
+
+int CSolidSBCResultDBConnectorMySQL::GetClients(std::vector<std::pair<std::string,std::string > >& vecClients)
+{
+	USES_CONVERSION;
+
+	CStringArray arSQLCmds;
+	if ( CSolidSBCResultDBConnector::GetClientsSQLString(arSQLCmds) != 0 )
+		return 1;
+
+	m_DBConnMutex.Lock();
+	int nReturn = 0;
+	for (int i = 0; i < arSQLCmds.GetSize(); i++){
+		if ( mysql_query( m_conn, T2A(arSQLCmds.GetAt(i)) ) )
+        {
+			MYSQL_RES* result = mysql_store_result(m_conn);
+			if (result)
+			{
+				MYSQL_ROW row;
+				while((row = mysql_fetch_row(result)))
+				{
+					std::string sKey   = (char*)row[0];
+					std::string sValue = (char*)row[1];					
+					vecClients.push_back( std::pair<std::string,std::string >(sKey,sValue) );
+				}
+				mysql_free_result(result);
+			}
+			nReturn++;
+			break;
+		}
+	}
+	m_DBConnMutex.Unlock();
+	return nReturn;
 }
