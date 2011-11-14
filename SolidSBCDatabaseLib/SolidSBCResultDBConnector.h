@@ -20,8 +20,9 @@ public:
 	// pure virtual functions (need to be implemented by derived child classes)
 	//
 public:
-	virtual int Connect					(void)=0;
-	virtual int Disconnect				(void)=0;
+	virtual int Connect	  (void)=0;
+	virtual int Disconnect(void)=0;
+	virtual bool ExecStmts(const std::string& sSql)=0;
 
 	////////////////////////////////////////////////////////////////////
 	//

@@ -179,3 +179,16 @@ int CSolidSBCResultDBConnectorMySQL::GetNameFromUuid(const CString& strUuid, CSt
 
 	return nResults;
 }
+
+void CSolidSBCResultDBConnectorMySQL::EnableMultistatment(bool bEnable)
+{
+	mysql_set_server_option(m_conn, bEnable ? MYSQL_OPTION_MULTI_STATEMENTS_ON : MYSQL_OPTION_MULTI_STATEMENTS_OFF );
+}
+
+bool CSolidSBCResultDBConnectorMySQL::ExecStmts(const std::string& sSql)
+{
+	EnableMultistatment();
+	int nRet = mysql_query(m_conn,sSql.c_str());
+	EnableMultistatment(false);
+	return nRet ? true : false; //return true on error
+}
