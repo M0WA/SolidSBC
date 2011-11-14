@@ -51,6 +51,7 @@ END_MESSAGE_MAP()
 CSolidSBCTestSDKToolsDlg::CSolidSBCTestSDKToolsDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CSolidSBCTestSDKToolsDlg::IDD, pParent)
 	, m_hTestLibrary(NULL)
+	, m_pDatabase(NULL)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -58,6 +59,13 @@ CSolidSBCTestSDKToolsDlg::CSolidSBCTestSDKToolsDlg(CWnd* pParent /*=NULL*/)
 CSolidSBCTestSDKToolsDlg::~CSolidSBCTestSDKToolsDlg()
 {
 	UnloadTestLibrary();
+
+	if(m_pDatabase)
+	{
+		m_pDatabase->Disconnect();
+		delete m_pDatabase;
+		m_pDatabase = NULL;
+	}
 }
 
 void CSolidSBCTestSDKToolsDlg::DoDataExchange(CDataExchange* pDX)
@@ -68,6 +76,13 @@ void CSolidSBCTestSDKToolsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_GENERATE_EMPTY_CONFIG_XML_BUTTON, m_ctlGenerateConfigButton);
 	DDX_Control(pDX, IDC_START_STOP_BUTTON, m_ctlStartStopButton);
 	DDX_Control(pDX, IDC_GENERATE_STUCTURE_BUTTON, m_ctlGenerateDBStructure);
+	DDX_Control(pDX, IDC_HOST_IPADDRESS, m_ctlDbHostIp);
+	DDX_Control(pDX, IDC_PORT_EDIT, m_ctlDbPort);
+	DDX_Control(pDX, IDC_DATABASE_EDIT, m_ctlDbDatabase);
+	DDX_Control(pDX, IDC_USER_EDIT, m_ctlDbUser);
+	DDX_Control(pDX, IDC_PASS_EDIT, m_ctlDbPass);
+	DDX_Control(pDX, IDC_CONNECT_DATABASE_BUTTON, m_ctlConnectButton);
+	DDX_Control(pDX, IDC_CREATE_DATABASE_BUTTON, m_ctlCreateDatabaseButton);
 }
 
 BEGIN_MESSAGE_MAP(CSolidSBCTestSDKToolsDlg, CDialogEx)
@@ -81,6 +96,7 @@ BEGIN_MESSAGE_MAP(CSolidSBCTestSDKToolsDlg, CDialogEx)
 	ON_LBN_SELCHANGE(IDC_TEST_LIST, &CSolidSBCTestSDKToolsDlg::OnLbnSelchangeTestList)
 	ON_BN_CLICKED(IDC_GENERATE_STUCTURE_BUTTON, &CSolidSBCTestSDKToolsDlg::OnBnClickedGenerateStuctureButton)
 	ON_BN_CLICKED(IDC_CREATE_DATABASE_BUTTON, &CSolidSBCTestSDKToolsDlg::OnBnClickedCreateDatabaseButton)
+	ON_BN_CLICKED(IDC_CONNECT_DATABASE_BUTTON, &CSolidSBCTestSDKToolsDlg::OnBnClickedConnectDatabaseButton)
 END_MESSAGE_MAP()
 
 
@@ -119,6 +135,16 @@ BOOL CSolidSBCTestSDKToolsDlg::OnInitDialog()
 	m_ctlStartStopButton.EnableWindow(FALSE);
 	m_ctlGenerateDBStructure.EnableWindow(FALSE);
 
+	InitDatabase(SSBC_DB_TYPE_MYSQL);
+	m_pDatabase = GetDatabaseConnection();
+	
+	m_ctlDbHostIp.SetWindowText(_T("127.0.0.1"));
+	m_ctlDbPort.SetWindowText(_T("3306"));
+	m_ctlDbDatabase.SetWindowText(_T("SolidSBC"));
+	m_ctlDbUser.SetWindowText(_T("root"));
+	m_ctlDbPass.SetWindowText(_T(""));
+
+	m_ctlCreateDatabaseButton.EnableWindow(FALSE);
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
@@ -332,4 +358,38 @@ bool CSolidSBCTestSDKToolsDlg::UnloadTestLibrary()
 void CSolidSBCTestSDKToolsDlg::OnBnClickedCreateDatabaseButton()
 {
 	// TODO: Add your control notification handler code here
+}
+
+
+void CSolidSBCTestSDKToolsDlg::OnBnClickedConnectDatabaseButton()
+{
+	CString strHost = _T("");
+	m_ctlDbHostIp.GetWindowText(strHost);
+	
+	/*
+	CEdit m_ctlDbPort;
+	*/
+
+	CString strDatabaseName = _T("");
+	m_ctlDbDatabase.GetWindowText(strDatabaseName);
+
+	CString strUser = _T("");
+	m_ctlDbUser.GetWindowText(strUser);
+
+	CString strPass = _T("");
+	m_ctlDbPass.GetWindowText(strPass);
+	
+	m_ctlCreateDatabaseButton.EnableWindow(FALSE);
+	m_pDatabase->Disconnect();
+	m_pDatabase->SetConfig(strHost,3306,strDatabaseName,strUser,strPass);
+	if(!m_pDatabase->Connect())
+	{
+		AfxMessageBox(_T("error while connecting to database"));
+		m_pDatabase->Disconnect();
+	}
+	else
+	{
+		m_ctlConnectButton.SetWindowText(_T("Disconnect"));
+		m_ctlCreateDatabaseButton.EnableWindow(TRUE);
+	}
 }

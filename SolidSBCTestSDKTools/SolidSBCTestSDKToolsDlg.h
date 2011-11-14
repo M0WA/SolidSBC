@@ -7,6 +7,8 @@
 #include "afxwin.h"
 #include <vector>
 #include <SolidSBCTestSDK.h>
+#include <SolidSBCDatabaseLib.h>
+#include "afxcmn.h"
 
 // CSolidSBCTestSDKToolsDlg dialog
 class CSolidSBCTestSDKToolsDlg : public CDialogEx
@@ -37,6 +39,9 @@ protected:
 	afx_msg void OnBnClickedGenerateEmptyConfigXmlButton();
 	afx_msg void OnBnClickedStartStopButton();
 	afx_msg void OnLbnSelchangeTestList();
+	afx_msg void OnBnClickedCreateDatabaseButton();
+	afx_msg void OnBnClickedConnectDatabaseButton();
+	afx_msg void OnBnClickedGenerateStuctureButton();
 	DECLARE_MESSAGE_MAP()
 
 private:
@@ -47,13 +52,17 @@ private:
 
 	CButton  m_ctlGenerateConfigButton;
 	CButton  m_ctlStartStopButton;
+	CButton m_ctlGenerateDBStructure;
+	CButton m_ctlConnectButton;
+	CButton m_ctlCreateDatabaseButton;
 	CEdit    m_cDllFileName;
 	CListBox m_ctlTestList;
 	HMODULE  m_hTestLibrary;
-public:
-	afx_msg void OnBnClickedGenerateStuctureButton();
-private:
-	CButton m_ctlGenerateDBStructure;
-public:
-	afx_msg void OnBnClickedCreateDatabaseButton();
+	CIPAddressCtrl m_ctlDbHostIp;
+	CEdit m_ctlDbPort;
+	CEdit m_ctlDbDatabase;
+	CEdit m_ctlDbUser;
+	CEdit m_ctlDbPass;
+
+	CSolidSBCResultDBConnector* m_pDatabase;
 };
