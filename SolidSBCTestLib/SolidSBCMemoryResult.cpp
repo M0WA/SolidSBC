@@ -5,7 +5,7 @@ CSolidSBCMemoryResult::CSolidSBCMemoryResult(void)
 : CSolidSBCTestResult("testLib_MemoryResults")
 {
 	RegisterAttributeDataType("malloczeroduration", DB_DOUBLE);
-	RegisterAttributeDataType("bytes", DB_UINT32);
+	RegisterAttributeDataType("bytes", DB_INT32);
 }
 
 DOUBLE CSolidSBCMemoryResult::GetMallocZeroDuration(void)

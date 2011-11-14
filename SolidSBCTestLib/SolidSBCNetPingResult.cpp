@@ -4,8 +4,8 @@
 CSolidSBCNetPingResult::CSolidSBCNetPingResult(void) 
 : CSolidSBCTestResult("testLib_NetPingResults")
 {
-	RegisterAttributeDataType("rtt_duration", DB_UINT32);
-	RegisterAttributeDataType("icmp_opts", DB_UINT64);
+	RegisterAttributeDataType("rtt_duration", DB_INT32);
+	RegisterAttributeDataType("icmp_opts", DB_INT64);
 }
 
 ULONG CSolidSBCNetPingResult::GetDuration(void)

@@ -6,8 +6,8 @@ CSolidSBCCPUMeasureResult::CSolidSBCCPUMeasureResult(void) : CSolidSBCTestResult
 	RegisterAttributeDataType("addduration", DB_DOUBLE);
 	RegisterAttributeDataType("divduration", DB_DOUBLE);
 	RegisterAttributeDataType("overallduration", DB_DOUBLE);
-	RegisterAttributeDataType("addmultiplier", DB_UINT64);
-	RegisterAttributeDataType("divmultiplier", DB_UINT64);
+	RegisterAttributeDataType("addmultiplier", DB_INT64);
+	RegisterAttributeDataType("divmultiplier", DB_INT64);
 }
 
 DOUBLE CSolidSBCCPUMeasureResult::GetAddDuration(void)
