@@ -22,7 +22,7 @@ public:
 public:
 	virtual int Connect	  (void)=0;
 	virtual int Disconnect(void)=0;
-	virtual bool ExecStmts(const std::string& sSql)=0;
+	virtual bool ExecStmts(const std::string& sSql, const bool bMultipleStmts = false)=0;
 
 	////////////////////////////////////////////////////////////////////
 	//

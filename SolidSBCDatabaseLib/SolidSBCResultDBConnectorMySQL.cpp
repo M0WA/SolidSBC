@@ -180,15 +180,42 @@ int CSolidSBCResultDBConnectorMySQL::GetNameFromUuid(const CString& strUuid, CSt
 	return nResults;
 }
 
-void CSolidSBCResultDBConnectorMySQL::EnableMultistatment(bool bEnable)
+bool CSolidSBCResultDBConnectorMySQL::ExecStmts(const std::string& sSql, const bool bMultipleStmts)
 {
-	mysql_set_server_option(m_conn, bEnable ? MYSQL_OPTION_MULTI_STATEMENTS_ON : MYSQL_OPTION_MULTI_STATEMENTS_OFF );
-}
+	USES_CONVERSION;
 
-bool CSolidSBCResultDBConnectorMySQL::ExecStmts(const std::string& sSql)
-{
-	EnableMultistatment();
+	if(bMultipleStmts)
+	{
+		mysql_set_server_option(m_conn,MYSQL_OPTION_MULTI_STATEMENTS_ON);
+	}
+
+	int status = 0;
 	int nRet = mysql_query(m_conn,sSql.c_str());
-	EnableMultistatment(false);
+	do {
+		MYSQL_RES* result = mysql_store_result(m_conn);
+		if (result)
+		{
+			mysql_free_result(result);
+		}
+		else
+		{
+			if (mysql_field_count(m_conn) != 0)
+			{
+				break;
+			}
+		}
+		if ((status = mysql_next_result(m_conn)) > 0)
+		{
+			CString sMsg = A2T(mysql_error(m_conn));
+			AfxMessageBox(sMsg);
+		}
+	} while (status != -1);
+
+	mysql_commit(m_conn);
+
+	if(bMultipleStmts)
+	{
+		mysql_set_server_option(m_conn,MYSQL_OPTION_MULTI_STATEMENTS_OFF);
+	}
 	return nRet ? true : false; //return true on error
 }
