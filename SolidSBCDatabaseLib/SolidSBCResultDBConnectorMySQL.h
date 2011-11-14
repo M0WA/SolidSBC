@@ -6,11 +6,11 @@
 class CSolidSBCResultDBConnectorMySQL : public CSolidSBCResultDBConnector
 {
 public:
-	CSolidSBCResultDBConnectorMySQL				(void);
-	virtual ~CSolidSBCResultDBConnectorMySQL	(void);
-	virtual int Connect							(void);
-	virtual int Disconnect						(void);
-	virtual bool ExecStmts                      (const std::string& sSql, const bool bMultipleStmts = false);
+	CSolidSBCResultDBConnectorMySQL			(void);
+	virtual ~CSolidSBCResultDBConnectorMySQL(void);
+	virtual int Connect						(void);
+	virtual int Disconnect					(void);
+	virtual bool ExecStmts                  (const std::string& sSql, const bool bMultipleStmts = false);
 
 	virtual int GetConfigsForClient(const CString& strClientUUID, std::vector<CString>& vecXmlConfigs);
 	virtual int AddTestResult      (const CString& strClientUUID, const CString& strTestSQL);
