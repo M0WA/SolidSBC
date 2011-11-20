@@ -47,8 +47,6 @@ protected:
 public:
 	virtual int GetNameFromUuid(const CString& strUuid, CString& strName)=0;
 
-	int GetAllUniqueClients(std::map<CString,CString>& mapClientIdUuid) { mapClientIdUuid = m_mapClientIdUuid ; return (int)m_mapClientIdUuid.size(); }
-
 protected:
 	int GetNameFromUuidSQLString(const CString& strUuid, CStringArray& arSQLCmds);
 	
@@ -64,7 +62,4 @@ protected:
 	CString			m_strUser;
 	CString			m_strPassword;
 	SSBC_DB_TYPE	m_Type;
-
-private:
-	std::map<CString,CString> m_mapClientIdUuid;
 };
